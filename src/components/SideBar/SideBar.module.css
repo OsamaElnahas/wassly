@@ -1,33 +1,37 @@
 .parent {
     position: relative;
     top: 0px;
+    /* overflow-x: hidden; */
 }
 
 .burgerMenu {
-    padding: 6px;
+    /* padding: 6px; */
     font-size: 28px;
     cursor: pointer;
-    z-index: 2000;
-    position: absolute;
-    top: 0;
+    z-index: 0;
     transition: 0.5s ease-in-out;
-    right: 0px;
-    font-size: 30px;
-    color: var(--secondaryColor);
+    font-size: 32px;
+    color: var(--mainColor);
+    position: fixed;
+    left: 2px;
 }
 
-.burgerMenuLeft {
+.burgerMenuRight {
+    position: absolute;
     padding-left: 6px;
     font-size: 28px;
     cursor: pointer;
     z-index: 2000;
     position: absolute;
-    color: var(--mainColor);
-    font-size: 38px;
-    left: 400%;
+    color: var(--secondaryColor);
+    font-size: 30px;
+    top: 0;
+    right: 1px;
 }
 
 .sideBar {
+    top: 85px;
+    z-index: 2000;
     position: fixed !important;
     width: 240px;
     height: 100vh;
@@ -40,7 +44,7 @@
 }
 
 .nonVisible {
-    position: fixed;
+    position: absolute;
     width: 240px;
     height: 100vh;
     background-color: var(--mainColor);

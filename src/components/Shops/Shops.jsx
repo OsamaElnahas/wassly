@@ -51,8 +51,6 @@ export default function Shops() {
     const filterdData=data?.results?.filter((shop)=>
         shop.id.toString().includes(searchTerm) || shop.shop_name.toLowerCase().includes(searchTerm.toLowerCase())|| shop.shop_phone_number.toString().includes(searchTerm)
 
-    
-
     )
 
     return (

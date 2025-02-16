@@ -26,8 +26,9 @@ export default function SideBar({isVisable ,setVisable}) {
   return <> 
     <div className={`${styles.parent}`}>
     
-    <div className={` ${isVisable?styles.sideBar:styles.nonVisible} col-12 `} >
-    <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={`${isVisable ? styles.burgerMenu : styles.burgerMenuLeft}`} />
+    <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={styles.burgerMenu} />
+    <div className={` ${isVisable?styles.sideBar:styles.nonVisible}  `} >
+    <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={styles.burgerMenuRight} />
         <Link to={"/"} onClick={()=>handleClick("/")} className= {`${styles.item} ${isClicked=="/" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faHome}/> <div>Home</div></Link>
         <Link to={"/Shops"} onClick={()=>handleClick("/Shops")} className={`${styles.item} ${isClicked=="/Shops" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faStore}/> <div>Shops</div></Link>
         <Link to={"/orders"}onClick={()=>handleClick("/orders")} className={`${styles.item} ${isClicked=="/orders" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faCartShopping}/> <div>Orders</div></Link>
