@@ -1,0 +1,51 @@
+.parent {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border: 1px solid rgba(156, 156, 156, 0.667);
+    text-transform: capitalize;
+    color: var(--mainColor);
+}
+
+.parent .description {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.parent .description .image {
+    background-color: var(--mainColor);
+}
+
+.parent .description .detailsOfDescription div {
+    padding: 4px 10px;
+}
+
+.parent .description .title {
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid var(--borderColor);
+}
+
+.parent .description .describe {
+    font-size: 18px;
+    color: gray;
+}
+
+.parent .details {
+    flex: 5;
+    font-size: 20px;
+    padding: 10px;
+    border-left: 1px solid var(--borderColor);
+}
+
+.parent .details div {
+    margin-bottom: 7px;
+    border-bottom: 1px solid rgba(156, 156, 156, 0.667);
+    font-weight: 600;
+}
+
+.status {
+    color: green;
+    font-weight: bold;
+}

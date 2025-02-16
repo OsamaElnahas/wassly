@@ -1,0 +1,58 @@
+ .overlay {
+     background-color: var(--thirdColor);
+     height: 100vh;
+     width: 100%;
+     position: absolute;
+ }
+ 
+ .parent {
+     background-color: var(--secondaryColor);
+     padding: 15px;
+     margin: 40px auto;
+     width: 800px;
+     z-index: 1000;
+ }
+ 
+ .parent .title {
+     font-size: 24px;
+     color: var(--mainColor);
+     text-align: center;
+     padding: 6px;
+     margin-bottom: 12px;
+     font-weight: bold;
+ }
+ 
+ .parent form {
+     display: flex;
+     flex-direction: column;
+ }
+ 
+ .parent form input {
+     margin-bottom: 12px;
+     background-color: var(--secondaryColor);
+     outline: none;
+     border: none;
+     border: 1px solid var(--mainColor);
+     border-radius: 5px;
+     color: var(--thirdColor);
+     padding: 5px 8px;
+ }
+ 
+ .parent form input::placeholder {
+     color: var(--mainColor);
+ }
+ 
+ .parent form button {
+     background-color: var(--mainColor);
+     color: var(--secondaryColor);
+     margin-top: 18px;
+ }
+ 
+ .parent form button:hover {
+     background-color: var(--thirdColor);
+     color: var(--secondaryColor);
+ }
+ 
+ .parent form p {
+     color: red;
+ }

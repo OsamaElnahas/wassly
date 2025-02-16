@@ -1,0 +1,74 @@
+.parent {
+    position: relative;
+    top: 0px;
+}
+
+.burgerMenu {
+    padding: 6px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 2000;
+    position: absolute;
+    top: 0;
+    transition: 0.5s ease-in-out;
+    right: 0px;
+    font-size: 30px;
+    color: var(--secondaryColor);
+}
+
+.burgerMenuLeft {
+    padding-left: 6px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 2000;
+    position: absolute;
+    color: var(--mainColor);
+    font-size: 38px;
+    left: 400%;
+}
+
+.sideBar {
+    position: fixed !important;
+    width: 240px;
+    height: 100vh;
+    background-color: var(--mainColor);
+    color: white;
+    box-shadow: 5px 0px 15px 0px black;
+    transform: translateX(0%);
+    z-index: 1000;
+    transition: 0.3s ease-in-out;
+}
+
+.nonVisible {
+    position: fixed;
+    width: 240px;
+    height: 100vh;
+    background-color: var(--mainColor);
+    color: white;
+    box-shadow: 5px 0px 15px 0px black;
+    transform: translateX(-400%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.item {
+    padding: 15px;
+    border-bottom: 1px solid var(--secondaryColor);
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--secondaryColor);
+    display: flex;
+    align-items: center;
+}
+
+.item div {
+    margin-left: 8px;
+}
+
+.item:hover {
+    background-color: var(--thirdColor);
+}
+
+.active {
+    background-color: var(--thirdColor);
+}

@@ -1,0 +1,30 @@
+.Card {
+    background-color: var(--mainColor);
+    padding: 26px 6px;
+    border-radius: 8px;
+}
+
+.cardBody {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardBody div {
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.cardBody svg {
+    font-size: 20px;
+}
+
+.Card:hover {
+    outline: 2px solid var(--thirdColor);
+}
+
+a {
+    text-decoration: none !important;
+    color: var(--secondaryColor) !important;
+}

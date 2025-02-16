@@ -1,0 +1,28 @@
+nav {
+    background-color: var(--mainColor);
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+nav a {
+    color: var(--secondaryColor) !important;
+}
+
+nav a:hover {
+    color: var(--thirdColor) !important;
+}
+
+nav form .searchBtn {
+    color: var(--secondaryColor) !important;
+    outline: 1px solid white;
+}
+
+nav button {
+    color: var(--secondaryColor) !important;
+}
+
+nav button:hover {
+    background-color: var(--thirdColor) !important;
+    color: var(--secondaryColor);
+}

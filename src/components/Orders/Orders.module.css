@@ -1,0 +1,31 @@
+.ordersLength {
+    color: var(--mainColor);
+    font-size: 24px;
+    margin-bottom: 12px;
+    font-weight: 800;
+}
+
+.order {
+    border: 1px solid var(--borderColor);
+    background-color: rgba(215, 219, 233, 0.429);
+    color: var(--mainColor) !important;
+    font-weight: 700;
+    text-transform: capitalize;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.order:hover {
+    outline: 1px solid var(--mainColor);
+}
+
+.order div {
+    margin-bottom: 10px;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-left: 1px solid var(--borderColor);
+}
