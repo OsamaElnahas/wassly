@@ -18,7 +18,7 @@ export default function OrderDetails() {
   };
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // Ensure this is correct
+    googleMapsApiKey: import.meta.env.VITE_API_KEY, // Ensure this is correct
   });
 
   const zoom = 15; // Zoom level for a closer view

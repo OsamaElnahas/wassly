@@ -67,9 +67,9 @@ export default function Orders() {
 
     return (
         <div className="container">
-            <div className="d-flex align-items-center justify-content-between mb-4">
+            <div className="d-flex align-items-center justify-content-between mb-4 gx-0">
                 <div className={styles.ordersLength}>Orders ({filteredData?.length})</div>
-                <div className="d-flex align-items-center gap-3">
+                <div className="d-flex align-items-center gap-2">
                     <div style={{ color: "var(--mainColor)", fontSize: "21px" }}>Filter by Status</div>
                     {["All", "PENDING", "IN_PROGRESS", "DELIVERED", "CANCELED"].map((status) => (
                         <div key={status} className="form-check">

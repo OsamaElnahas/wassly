@@ -63,7 +63,7 @@ export default function ShopsDetails() {
         
 
   return <>
-   <CardIdentifier title={data?.data?.shop_name} describtion={data?.data?.shop_description}
+   <CardIdentifier title={data?.data?.shop_name} describtion={data?.data?.shop_description } status={data?.data?.status}
    image={data?.data?.shop_image ||logo} phone={data?.data?.shop_phone_number} orders={data?.data?.confirmed_orders} location={data?.data?.shop_location.address} id={data?.data?.id}  
 />
   </>

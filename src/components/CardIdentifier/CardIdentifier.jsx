@@ -21,7 +21,9 @@ export default function CardIdentifier({image,title,describtion,status,phone,loc
             </div>
             <div className={styles.details}>
 
-                <div className={styles.status}>Status : {status}</div>
+                <div style={{ color: status === "Online" ? "green" : "red", fontWeight: "bold" }}>
+                {status}
+                </div>
                 {order_price && <div >Order Price : {order_price}</div>}
                 {delivery_fee && <div >Delivery Fee : {delivery_fee}</div>}
                 {total_price && <div >total Price : {total_price}</div>}

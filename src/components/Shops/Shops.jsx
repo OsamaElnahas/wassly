@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Shops() {
     const [searchTerm, setSearchTerm] = useState(""); // State for search
+    const [statusTerm, setStatusTerm] = useState("All"); // State for filterStatus
 
     const [page, setPage] = useState(1); // State for pagination
     const pageSize = 12; // Number of items per page
@@ -49,10 +50,14 @@ export default function Shops() {
         if (status >= 500) return <Errors errorMessage="Server Error, Please Try Again;" />;
         return <Errors errorMessage={`Error: ${error.message}`} />;
     }
-    const filterdData=data?.results?.filter((shop)=>
-        shop.id.toString().includes(searchTerm) || shop.shop_name.toLowerCase().includes(searchTerm.toLowerCase())|| shop.shop_phone_number.toString().includes(searchTerm)
-
-    )
+    const filteredData = data?.results?.filter((shop) =>
+      (statusTerm === "All" || shop.status === statusTerm) &&
+      (shop.id.toString().includes(searchTerm) ||
+          shop.shop_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          shop.shop_phone_number.toString().includes(searchTerm))
+  );
+  
+  
 
     return (
         <>
@@ -71,7 +76,38 @@ export default function Shops() {
                     </div>
                     </div>
                   </div>
-                  <div className="col-4 search-container" style={{  
+                
+                        
+                </div>
+                <div className="row align-items-center justify-content-between mb-4 gx-0">
+                <div className='col-2' style={{
+                            fontSize:"24px",
+                            fontWeight:"800",
+                            color:"var(--mainColor)",
+                            marginBottom:"8px"
+                          }}>Shops ({data?.results.length})</div>
+
+                    <div className="d-flex align-items-center gap-3 col-4">
+                        <div style={{ color: "var(--mainColor)", fontSize: "21px" }}>Filter by Status</div>
+                        {["All", "Online", "Offline"].map((status) => (
+                            <div key={status} className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="status"
+                                    id={status}
+                                    value={status}
+                                    onChange={(e) => setStatusTerm(e.target.value)}
+                                    checked={statusTerm === status}
+                                />
+                                <label className="form-check-label" htmlFor={status} style={{ color: "var(--mainColor)" }}>
+                                    {status}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+
+                <div className="col-4 search-container" style={{  
                               display:"flex",
                               alignItems:"center",
                               border:"1px solid var(--mainColor)",
@@ -99,15 +135,10 @@ export default function Shops() {
                           fontSize:"22px",
                         }}/>                      
                         </div>
-                        
                 </div>
+                       
 
-                        <div  style={{
-                            fontSize:"24px",
-                            fontWeight:"800",
-                            color:"var(--mainColor)",
-                            marginBottom:"8px"
-                          }}>Shops ({data?.results.length})</div>
+                          
                             
 
 
@@ -133,8 +164,8 @@ export default function Shops() {
                             No Items Found.
                         </p>
                     )} */}
-                    {filterdData?.length > 0 ? (
-                        filterdData.map((shop) => (
+                    {filteredData?.length > 0 ? (
+                        filteredData.map((shop) => (
                             <div className="col-2 px-1 py-2" key={shop.id}>
                                 <Card
                                     image={shop.shop_image || logo}
@@ -143,6 +174,7 @@ export default function Shops() {
                                     offer={shop.has_offer}
                                     key={shop.id}
                                     id={shop.id}
+                                    status={shop.status}
                                 />
                             </div>
                         ))
