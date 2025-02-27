@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from "../../images/logoo.png";
+import logo from "../../images/3998266.png"
 import Card from '../Cards/Card';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -11,7 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 export default function Shops() {
-    const [searchTerm, setSearchTerm] = useState(""); // State for pagination
+    const [searchTerm, setSearchTerm] = useState(""); // State for search
+
     const [page, setPage] = useState(1); // State for pagination
     const pageSize = 12; // Number of items per page
 
@@ -55,51 +56,61 @@ export default function Shops() {
 
     return (
         <>
-                <div className={` container parent`}>
+                <div className={`container`}>
 
-                <div className="row mb-4" style={{
-                  alignItems:"center",                }}>
-                    <div className="col-2">
+                <div className="row g-0 mb-4 align-items-center justify-content-between">
+                  
+                  <div className='col-4'>
+                  <div className='row'>
+
+                    <div className="col-6">
                         <AccessCard link="/AddShop" title="Add Shop" iconProp={faPlus} BGC="var(--mainColor)" />
                     </div>
-                    <div className="col-2">
+                    <div className="col-6">
                         <AccessCard link="/DeleteShop" title="Delete Shop" iconProp={faDeleteLeft} BGC="var(--thirdColor)" />
                     </div>
-                    <div className="col-4 search-container p-2 " style={{  
-                      display:"flex",
-                      alignItems:"center",
-                    }}>
+                    </div>
+                  </div>
+                  <div className="col-4 search-container" style={{  
+                              display:"flex",
+                              alignItems:"center",
+                              border:"1px solid var(--mainColor)",
+                              borderRadius:"6px",
+
+                            }}>
                       <input 
                       
-                        className="p-3 ps-4" 
+                        className="p-2" 
                         type="search" 
-                        placeholder="You can search by ID, Phone Number, or Name  " 
+                        placeholder={`You can search by ID, Phone Number, or Name`}
                         style={{
                           borderRadius:"6px",
                           outline:"none",
-                          border:"1px solid var(--mainColor)",
                           width:"100%",
+                          border:"none",
                           
                         }}
                         onChange={(e)=>setSearchTerm(e.target.value)}
-                      />
+                        
+                        />
                         <FontAwesomeIcon icon={faSearch} className="search-icon " style={{
-                          marginLeft  :"6px",
+                          marginRight  :"6px",
                           color:"var(--mainColor)",
                           fontSize:"22px",
-                        }}/>
-
-                    
-                    </div>
-                      
+                        }}/>                      
+                        </div>
+                        
                 </div>
 
-                  <div style={{
-                    fontSize:"24px",
-                    fontWeight:"800",
-                    margin:"10px 0px",
-                    color:"var(--mainColor)",
-                  }}>Shops ({data?.results.length})</div>
+                        <div  style={{
+                            fontSize:"24px",
+                            fontWeight:"800",
+                            color:"var(--mainColor)",
+                            marginBottom:"8px"
+                          }}>Shops ({data?.results.length})</div>
+                            
+
+
 
                   <div className="row g-0">
 

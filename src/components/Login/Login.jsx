@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { ColorRing } from "react-loader-spinner";
+import logo from "../../images/logo.png"
 
 import axios from 'axios';
 
@@ -42,8 +43,9 @@ export default function Login() {
   return (
     <div className={styles.overlay}>
       <div className="container">
+        <div className={styles.head}><img src={logo} alt="logo" /><span className={styles.title}>Dashboard</span> </div>
         <div className={styles.parent}>
-          <div className={styles.title}>Login</div>
+          <div className={styles.loginTitle}>Login</div>
           <form onSubmit={formik.handleSubmit} className={styles.form}>
             <input
               name="username"

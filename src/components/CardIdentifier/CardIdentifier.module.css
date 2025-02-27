@@ -14,7 +14,7 @@
 }
 
 .parent .description .image {
-    background-color: var(--mainColor);
+    background-color: var(--backgroundColor);
 }
 
 .parent .description .detailsOfDescription div {

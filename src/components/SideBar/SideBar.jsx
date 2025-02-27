@@ -3,7 +3,8 @@ import styles from "./SideBar.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars ,faHome,faStore,faCartShopping} from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom';
+
 
 
 

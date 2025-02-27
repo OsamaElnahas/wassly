@@ -17,15 +17,22 @@ export default function Nav() {
     <nav className={`${styles.nav} navbar navbar-expand-lg w-100`}>
     
   <div className="container-fluid">
-    <Link className="navbar-brand" to="/">
-                        <img  src={mylogo} alt="logo" width={"150px"} height={"60px"}/>
+    <Link className="navbar-brand  d-flex align-items-center me-auto" to="/">
+                        <img  src={mylogo} alt="logo" width={"100px"} height={"40px"}/>
         
+    <div  style={{
+      fontWeight:"bolder ",
+      fontSize:"24px",
+      paddingTop:"8px",
+      color:"whitesmoke",
+    }}>Dashboard</div>
     </Link>
+
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul className="navbar-nav ms-auto  mb-2 mb-lg-0">
         <li className="nav-item">
           <Link className="nav-link active" aria-current="page" to="#">Tayareen</Link>
         </li>

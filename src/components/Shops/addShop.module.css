@@ -1,5 +1,5 @@
 .parent {
-    background-color: var(--secondaryColor);
+    background-color: var(--backgroundColor);
     padding: 15px;
     border-radius: 10px;
 }
@@ -20,7 +20,7 @@
 
 .parent form input {
     margin-bottom: 12px;
-    background-color: var(--secondaryColor);
+    background-color: var(--backgroundColor);
     outline: none;
     border: none;
     border: 1px solid var(--mainColor);

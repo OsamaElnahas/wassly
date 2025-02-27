@@ -1,6 +1,5 @@
 .parent {
     position: relative;
-    top: 0px;
     /* overflow-x: hidden; */
 }
 
@@ -30,14 +29,15 @@
 }
 
 .sideBar {
-    top: 85px;
+    outline: 1px solid var(--thirdColor);
+    top: 70px;
     z-index: 2000;
     position: fixed !important;
     width: 240px;
     height: 100vh;
     background-color: var(--mainColor);
     color: white;
-    box-shadow: 5px 0px 15px 0px black;
+    /* box-shadow: 3px 10px 8px 0px black; */
     transform: translateX(0%);
     z-index: 1000;
     transition: 0.3s ease-in-out;

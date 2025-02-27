@@ -1,6 +1,6 @@
 import React from 'react'
 // import styles from './ShopsDetails.module.css'
-import logo from '../../images/logo.png'
+import logo from '../../images/3998266.png'
 import Card from '../Cards/Card'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -64,7 +64,7 @@ export default function ShopsDetails() {
 
   return <>
    <CardIdentifier title={data?.data?.shop_name} describtion={data?.data?.shop_description}
-   image={data?.data?.shop_image} phone={data?.data?.shop_phone_number} orders={data?.data?.confirmed_orders} location={data?.data?.shop_location.address} id={data?.data?.id}  
+   image={data?.data?.shop_image ||logo} phone={data?.data?.shop_phone_number} orders={data?.data?.confirmed_orders} location={data?.data?.shop_location.address} id={data?.data?.id}  
 />
   </>
 }

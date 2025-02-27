@@ -1,19 +1,41 @@
  .overlay {
-     background-color: var(--thirdColor);
+     background-color: var(--mainColor);
      height: 100vh;
      width: 100%;
      position: absolute;
  }
  
- .parent {
-     background-color: var(--secondaryColor);
-     padding: 15px;
-     margin: 40px auto;
-     width: 800px;
-     z-index: 1000;
+ .head {
+     display: flex;
+     justify-content: center;
+     align-items: center;
  }
  
- .parent .title {
+ .head img {
+     width: 140px;
+     height: 160px;
+ }
+ 
+ .title {
+     color: rgba(223, 237, 255, 0.932);
+     font-size: 38px;
+     font-weight: 900;
+ }
+ 
+ .parent {
+     margin: 1px auto;
+     background-color: rgba(223, 237, 255, 0.932);
+     padding: 15px;
+     width: 800px;
+     height: 300px;
+     z-index: 1000;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-around;
+     border-radius: 8px;
+ }
+ 
+ .parent .loginTitle {
      font-size: 24px;
      color: var(--mainColor);
      text-align: center;
