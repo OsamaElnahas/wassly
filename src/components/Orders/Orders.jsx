@@ -67,9 +67,9 @@ export default function Orders() {
 
     return (
         <div className="container">
-            <div className="d-flex align-items-center justify-content-between mb-4 gx-0">
+            <div className="d-flex align-items-center justify-content-between mb-4 gx-0 flex-wrap">
                 <div className={styles.ordersLength}>Orders ({filteredData?.length})</div>
-                <div className="d-flex align-items-center gap-2">
+                <div className="d-flex align-items-center gap-2 flex-wrap">
                     <div style={{ color: "var(--mainColor)", fontSize: "21px" }}>Filter by Status</div>
                     {["All", "PENDING", "IN_PROGRESS", "DELIVERED", "CANCELED"].map((status) => (
                         <div key={status} className="form-check">
@@ -88,44 +88,33 @@ export default function Orders() {
                         </div>
                     ))}
                 </div>
-                <div className="col-4 search-container" style={{ display: "flex", alignItems: "center", 
-                      border:"1px solid var(--mainColor)",
-                      borderRadius:"6px",
-                }}>
-                    <input
-                        className="p-2"
-                        type="search"
-                        placeholder="You can search by ID or Name"
-                        style={{
-                            borderRadius: "6px",
-                            outline: "none",
-                            border: "none",
-                            width: "100%",
-                        }}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <FontAwesomeIcon icon={faSearch} className="search-icon" style={{ marginRight: "6px", color: "var(--mainColor)", fontSize: "22px" }} />
-                </div>
+               <div className="col-md-4 col-12">
+                                   <div className="search-container d-flex align-items-center border p-2 rounded" style={{ borderColor: "var(--mainColor)" }}>
+                                       <input className="form-control border-0" type="search" placeholder="Search by ID, Phone Number, or Name" onChange={(e) => setSearchTerm(e.target.value)} />
+                                       <FontAwesomeIcon icon={faSearch} className="ms-2" style={{ color: "var(--mainColor)", fontSize: "22px" }} />
+                                   </div>
+                               </div>
+                  
             </div>
-            <div className={`${styles.orders} row mb-1 g-0`}>
+            <div className={`${styles.orders} row mb-1 gx-0`}>
                 {filteredData?.length > 0 ? (
                     filteredData.map((order) => (
-                        <div className={`col-6 px-2`} key={order.id}>
+                    <div className="col-md-6 col-sm-12 g-2" key={order.id}>
                             <Link className={`${styles.order} d-block`} to={`/orderDetails/${order.id}`}>
                                 <div className="row">
-                                    <div className="col-3">
+                                    <div className=" col-6">
                                         <div className="title">Name: {order.order_name}</div>
                                         <div className={styles.id}>ID: {order.id}</div>
                                         <div className={styles.totalprice}>Total Price: {order.total_price} LE</div>
                                     </div>
-                                    <div className="col-4">
+                                    <div className=" col-6">
                                         <div className={styles.status}>Status: {order.status}</div>
                                         <div className={styles.delevired}>Delivered: {order.is_delivered?.toString()}</div>
                                         <div className={styles.picked}>Picked: {order.is_picked?.toString()}</div>
                                     </div>
-                                    <div className={`col-5 ${styles.details}`}>
-                                        <div className={styles.location}>Location: {order.location.address}</div>
-                                        <div className={styles.date}>Date:<br /> {order.order_date}</div>
+                                    <div className={`col-12 ${styles.details}`}>
+                                        <div className={styles.location}>Location : {order.location.address}</div>
+                                        <div className={styles.date}>Date : {order.order_date}</div>
                                     </div>
                                 </div>
                             </Link>

@@ -8,8 +8,8 @@
     border-radius: 12px !important;
     padding: 0px;
     color: var(--mainColor);
-    /* height: auto; */
     min-height: 280px;
+    height: 100%;
 }
 
 .card:hover {
@@ -18,13 +18,11 @@
 
 .card img {
     width: 100%;
-    margin: 0px;
-    border-radius: 12px 12px 0px 0px !important;
-    max-height: 66.6%;
-    flex: 2 !important;
+    height: 70%;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0 !important;
     background-color: rgba(255, 255, 255, 0.25);
     opacity: 0.8;
-    /* filter: brightness(91%); */
 }
 
 .card .cardBody {
@@ -77,20 +75,4 @@
     text-overflow: ellipsis;
     max-width: 100%;
     word-wrap: break-word;
-}
-
-.card .cardBody {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* Ensures text stays centered */
-    text-align: center;
-    /* Makes it look cleaner */
-}
-
-.card {
-    /* height: auto; */
-    /* min-height: 280px; */
-    /* Set a reasonable minimum height */
 }

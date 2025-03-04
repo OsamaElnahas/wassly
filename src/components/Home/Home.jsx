@@ -10,13 +10,13 @@ export default function Home() {
   return <>
   <div className= {`container ${styles.parent}` }  >
 <div className={`row` }  >
-<div className="col-3 ">
+<div className="col-md-3 col-6 ">
 
  
 <AccessCard  link="/AddShop" title={"Add Shop"} iconProp={faPlus}  BGC={"var(--mainColor)"}/>
 
 </div>
-<div className="col-3">
+<div className="col-md-3 col-6">
 <AccessCard  link="#" title={"Add Tayaar"} iconProp={faUserPlus}  BGC={"var(--thirdColor)"}/>
 
 
