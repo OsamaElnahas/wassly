@@ -14,27 +14,21 @@
             < >
             
               <Nav />
-                <div className="parent" style={{
-                  display:"flex",
-                  flexDirection:"column",
-
-                }}>
-
-              <div className="d-flex" style={{
-                flex:"1",
-                minHeight: "29.15vh" 
+                
+              <div className="row gx-0 " style={{ 
+                minHeight: "52.4vh" 
               }}>
                 <div className={ isVisable? "col-2":""}>
                   <SideBar setVisable={setVisable} isVisable={isVisable}/>
                 </div>
-                <div className= {!isVisable? "col-12  mt-3" :   " col-10 content flex-grow-1 mt-3"} style={{
+                <div className= {!isVisable? "col-12  mt-3" : "col-10 mt-3"} style={{
                   transition: '0.3s ease',
                 }}>
-                  <Outlet />
+
+                  <Outlet  />
                 </div>
               </div>
               <Footer />
-                  </div>
             </>
           );
         }

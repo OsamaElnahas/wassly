@@ -7,13 +7,13 @@
 
 .order {
     border: 1px solid var(--borderColor);
-    background-color: rgba(215, 219, 233, 0.429);
+    background-color: var(--backgroundColor);
     color: var(--mainColor) !important;
     font-weight: 700;
     text-transform: capitalize;
     border-radius: 8px;
-    padding: 8px 12px;
     margin-bottom: 12px;
+    padding: 0px 12px;
 }
 
 .order:hover {
@@ -21,10 +21,19 @@
 }
 
 .order div {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.order>div>div {
+    border: 1px solid var(--borderColor);
+    /* padding: 12px; */
+}
+
+.order>div>div>div {
+    padding: 7px 4px;
 }
 
 .details {
@@ -32,5 +41,5 @@
     flex-direction: column;
     justify-content: space-between;
     border-top: 1px solid var(--borderColor);
-    padding-top: 10px;
+    /* padding-top: 10px; */
 }

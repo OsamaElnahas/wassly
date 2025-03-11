@@ -5,6 +5,7 @@
     color: white !important;
     bottom: 0px;
     width: 100%;
+    /* top: auto; */
     /* background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23FFFFFF"><path d="M0 0v100-79.4a1892 1892 0 0 1 500 0l500 66.7V0H0Z"></path></svg>'); */
 }
 

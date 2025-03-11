@@ -16,31 +16,36 @@
 }
 
 .burgerMenuRight {
-    position: absolute;
-    padding-left: 6px;
-    font-size: 28px;
     cursor: pointer;
-    z-index: 2000;
-    position: absolute;
     color: var(--secondaryColor);
     font-size: 30px;
-    top: 0;
-    right: 1px;
+}
+
+.logo {
+    padding: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
 }
 
 .sideBar {
-    outline: 1px solid var(--thirdColor);
-    top: 70px;
+    outline: 1px solid var(--secondaryColor);
+    top: 0px;
     z-index: 2000;
     position: fixed !important;
-    width: 240px;
+    width: 246px;
+    /* width: 100%; */
     height: 100vh;
     background-color: var(--mainColor);
     color: white;
-    /* box-shadow: 3px 10px 8px 0px black; */
+    box-shadow: 3px 10px 8px 0px var(--mainColor);
     transform: translateX(0%);
     z-index: 1000;
     transition: 0.3s ease-in-out;
+    border-radius: 6px;
 }
 
 .nonVisible {
@@ -56,7 +61,7 @@
 }
 
 .item {
-    padding: 15px;
+    padding: 15px 6px;
     border-bottom: 1px solid var(--secondaryColor);
     cursor: pointer;
     text-decoration: none;
@@ -65,8 +70,8 @@
     align-items: center;
 }
 
-.item div {
-    margin-left: 8px;
+.item>div {
+    margin-left: 12px;
 }
 
 .item:hover {

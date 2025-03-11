@@ -99,8 +99,29 @@ export default function AddShop() {
           } else if (status >= 500) {
             setError("Server Error, Please Try Again");
           } else {
-            setError(error.response?.data?.errors?.non_field_errors || "Something went wrong!");
-          }
+            const errors = error.response?.data?.errors;
+            let errorMessages = [];
+        
+            // Check if errors exist and is an object
+            if (errors && typeof errors === 'object') {
+              // Check for non_field_errors directly under errors
+              if (Array.isArray(errors.non_field_errors)) {
+                errorMessages = errorMessages.concat(errors.non_field_errors);
+              }
+              // Check for nested non_field_errors under dynamic keys
+              for (let key in errors) {
+                if (errors[key] && typeof errors[key] === 'object' && Array.isArray(errors[key].non_field_errors)) {
+                  errorMessages = errorMessages.concat(errors[key].non_field_errors);
+                }
+              }
+            }
+        
+            // Set the error message
+            if (errorMessages.length > 0) {
+              setError(errorMessages.join(', ')); // Join multiple errors with a comma
+            } else {
+              setError(error.response?.data?.errors[0] || "Something went wrong!");
+            }      }
         }
       }
       setIsLoading(false)

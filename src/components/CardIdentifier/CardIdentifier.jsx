@@ -3,13 +3,15 @@ import styles from "./CardIdentifier.module.css"
 import logo from "../../images/logo.png"
 
 export default function CardIdentifier({image,title,describtion,status,phone,location,orders,id,order_name,order_date,order_price,delivery_fee,total_price,from_multiple_shops,coins,is_delivered,is_picked,user,delivery_crew,notes}) {
+    const optimizedImage = `${image}?format=webp&quality=80`;
+
   return <>
    <div className="container">
         <div className={styles.parent}>
             <div className={styles.description}>
                 <div className="col-12">
 
-                <img src={image?image:logo} alt="" className={`card-img-top  container-fluid  ${styles.image}`} />
+                <img src={image?optimizedImage:logo} alt="" className={`card-img-top  container-fluid  ${styles.image}`} />
                 </div>
                 <div className={styles.detailsOfDescription}>
 

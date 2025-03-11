@@ -51,9 +51,7 @@ export default function Shops() {
                         <div className="col-6">
                             <AccessCard link="/AddShop" title="Add Shop" iconProp={faPlus} BGC="var(--mainColor)" />
                         </div>
-                        <div className="col-6">
-                            <AccessCard link="/DeleteShop" title="Delete Shop" iconProp={faDeleteLeft} BGC="var(--thirdColor)" />
-                        </div>
+                        
                     </div>
                 </div>
             </div>

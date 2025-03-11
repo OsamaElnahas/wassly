@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars ,faHome,faStore,faCartShopping} from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
+import mylogo from "../../images/logoo.png"
 
 
 
@@ -25,11 +25,25 @@ export default function SideBar({isVisable ,setVisable}) {
 
   }
   return <> 
+     <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={styles.burgerMenu} />
     <div className={`${styles.parent}`}>
     
-    <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={styles.burgerMenu} />
     <div className={` ${isVisable?styles.sideBar:styles.nonVisible}  `} >
-    <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={styles.burgerMenuRight} />
+      
+    <div className={`${styles.logo}`}>
+         <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={styles.burgerMenuRight} />
+
+         <Link className={`navbar-brand d-flex align-items-center`} to="/">
+                                <img  src={mylogo} alt="logo" width={"70px"} height={"30px"}/>
+                
+            <div  style={{
+              fontWeight:"bolder ",
+              fontSize:"22px",
+              paddingTop:"8px",
+              color:"whitesmoke",
+            }}>Dashboard</div>
+            </Link>
+         </div>
         <Link to={"/"} onClick={()=>handleClick("/")} className= {`${styles.item} ${isClicked=="/" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faHome}/> <div>Home</div></Link>
         <Link to={"/Shops"} onClick={()=>handleClick("/Shops")} className={`${styles.item} ${isClicked=="/Shops" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faStore}/> <div>Shops</div></Link>
         <Link to={"/orders"}onClick={()=>handleClick("/orders")} className={`${styles.item} ${isClicked=="/orders" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faCartShopping}/> <div>Orders</div></Link>
