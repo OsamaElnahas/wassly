@@ -5,7 +5,7 @@ import axios from "axios";
 import Loader from "../Loader/Loader";
 import { useQuery } from "@tanstack/react-query";
 import Errors from "../Error/Errors";
-import logo from "../../images/ordder.png";
+import logo from "../../images/ordder.webp";
 import { GoogleMap, useJsApiLoader,MarkerF } from '@react-google-maps/api';
 
 export default function OrderDetails() {

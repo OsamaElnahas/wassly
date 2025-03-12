@@ -1,0 +1,43 @@
+.userCard {
+    background-color: var(--backgroundColor);
+    border-radius: 10px;
+    flex-wrap: nowrap;
+    padding: 8px;
+    border: 1px solid var(--borderColor);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, outline 0.3s ease;
+}
+
+.userCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    outline: 1px solid var(--mainColor);
+    cursor: pointer;
+}
+
+.userCard:focus {
+    outline: 2px solid var(--thirdColor);
+    outline-offset: 2px;
+}
+
+.userCard svg {
+    width: 100%;
+    font-size: 100px;
+}
+
+.userCard img {
+    width: 100%;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.userCard .details div {
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--borderColor);
+    color: var(--mainColor);
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

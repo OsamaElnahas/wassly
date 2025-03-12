@@ -8,6 +8,7 @@ import ShopsDetails from "../Shops/ShopsDetails";
 import AddShop from "../Shops/addShop";
 import Orders from "../Orders/Orders";
 import OrderDetails from "../Orders/OrderDetails";
+import Tayareen from "../../Tayareen/Tayareen";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
                     { path: "/addShop", element:<AddShop/> },
                     { path: "/orders", element:<Orders/> },
                     { path: "/orderDetails/:id", element:<OrderDetails/> },
+                    { path: "/tayareen", element:<Tayareen/> },
                 ],
             }
         ],

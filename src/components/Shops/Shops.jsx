@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from "../../images/3998266.png";
+import logo from "../../images/3998266.webp";
 import Card from '../Cards/Card';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';

@@ -1,6 +1,6 @@
 import React from 'react'
 // import styles from './ShopsDetails.module.css'
-import logo from '../../images/3998266.png'
+import logo from '../../images/3998266.webp'
 import Card from '../Cards/Card'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';

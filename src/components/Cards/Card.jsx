@@ -7,15 +7,19 @@ export default function Card({title,image,description,offer,id,status}) {
   return  <>
 
     <Link to={`/shopsDetails/${id}`} className={` ${styles.card}`}>
-  <img src={optimizedImage} loading="lazy" className="card-img-top" alt="..."/>
-  <div className={styles.cardBody}>
-    <div className={styles.title}>{title}</div>
-    <div className={styles.description}>{description}</div>
-    {status && (
+    <div className={styles.imageDiv}>
+
+  <img src={optimizedImage} loading="lazy" className="" alt="..."/>
+  {status && (
   <div style={{ color: status === "Online" ? "green" : "red", fontWeight: "bold" }}>
     {status}
   </div>
 )}
+    </div>
+  <div className={styles.cardBody}>
+    <div className={styles.title}>{title}</div>
+    <div className={styles.description}>{description}</div>
+   
     {/* {offer&&<p className={styles.offer}>{offer}</p>} */}
     </div>
      </Link>
