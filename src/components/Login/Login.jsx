@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { ColorRing } from "react-loader-spinner";
-import logo from "../../images/logo.png"
+import logo from "../../images/logoo.webp"
 
 import axios from 'axios';
 

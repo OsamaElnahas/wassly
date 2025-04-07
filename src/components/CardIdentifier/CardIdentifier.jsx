@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from "./CardIdentifier.module.css"
-import logo from "../../images/logo.png"
+// import logo from "../../images/logo.png"
 
-export default function CardIdentifier({image,title,describtion,status,phone,location,orders,id,order_name,order_date,order_price,delivery_fee,total_price,from_multiple_shops,coins,is_delivered,is_picked,user,delivery_crew,notes}) {
+export default function CardIdentifier({image,title,describtion,status,phone,location,orders,imageFallback,id,order_name,order_date,order_price,delivery_fee,total_price,from_multiple_shops,coins,is_delivered,is_picked,user,delivery_crew,notes}) {
     const optimizedImage = `${image}?format=webp&quality=80`;
+      const [imgSrc, setImgSrc] = useState(optimizedImage);
 
   return <>
    <div className="container">
@@ -11,7 +12,17 @@ export default function CardIdentifier({image,title,describtion,status,phone,loc
             <div className={styles.description}>
                 <div className="col-12">
 
-                <img src={image?optimizedImage:logo} alt="" className={`card-img-top  container-fluid  ${styles.image}`} />
+                <img 
+                    loading="lazy"
+                    src={image}
+                    alt="shop"
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = imageFallback;  
+                    }}
+
+
+            className={`card-img-top  container-fluid  ${styles.image}`} />
                 </div>
                 <div className={styles.detailsOfDescription}>
 

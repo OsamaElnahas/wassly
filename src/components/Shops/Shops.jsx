@@ -81,7 +81,7 @@ export default function Shops() {
                 {filteredData?.length > 0 ? (
                     filteredData.map((shop) => (
                         <div className="col-lg-2 col-md-3 col-sm-4 col-6 px-1" key={shop.id}>
-                            <Card image={shop.shop_image || logo} title={shop.shop_name} description={shop.shop_description} offer={shop.has_offer} id={shop.id} status={shop.status} />
+                            <Card image={shop.shop_image? shop.shop_image: logo} title={shop.shop_name} description={shop.shop_description} offer={shop.has_offer} id={shop.id} status={shop.status} />
                         </div>
                     ))
                 ) : (
