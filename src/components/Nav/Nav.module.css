@@ -1,28 +1,88 @@
-nav {
-    background-color: var(--mainColor);
-    position: sticky !important;
-    top: 0 !important;
-    left: 0 !important;
+.nav {
+    background-color: var(--cardBg);
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: calc(100% - 250px);
+    z-index: 999;
+    transition: var(--transition);
+    display: flex;
+    justify-content: flex-end;
 }
 
-nav a {
-    color: var(--secondaryColor) !important;
+.nav.fullWidth {
+    width: 100%;
 }
 
-nav a:hover {
-    color: var(--thirdColor) !important;
+.searchContainer {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
 }
 
-nav form .searchBtn {
-    color: var(--secondaryColor) !important;
-    outline: 1px solid white;
+.searchInput {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border: 1px solid var(--borderColor);
+    border-radius: 8px;
+    background-color: var(--backgroundColor);
+    color: var(--textGray);
+    transition: var(--transition);
 }
 
-nav button {
-    color: var(--secondaryColor) !important;
+.searchInput:focus {
+    outline: none;
+    border-color: var(--mainColor);
+    box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.1);
 }
 
-nav button:hover {
-    background-color: var(--thirdColor) !important;
-    color: var(--secondaryColor);
+.searchIcon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--textGray);
+    font-size: 1rem;
+}
+
+.userSection {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--textGray);
+    font-weight: 500;
+}
+
+.logoutBtn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    color: var(--textGray);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.logoutBtn:hover {
+    color: var(--mainColor);
+}
+
+@media (max-width: 768px) {
+    .nav {
+        width: 100%;
+        padding: 0.75rem 1rem;
+    }
+    .searchContainer {
+        max-width: 100%;
+    }
 }

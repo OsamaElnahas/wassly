@@ -1,4 +1,4 @@
-.parent {
+.formContainer {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     padding: 1.5rem;
@@ -9,7 +9,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.parent .title {
+.formTitle {
     font-size: 1.75rem;
     color: var(--mainColor);
     text-align: center;
@@ -20,7 +20,7 @@
     letter-spacing: -0.5px;
 }
 
-.parent .title::after {
+.formTitle::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -32,13 +32,13 @@
     border-radius: 2px;
 }
 
-.parent form {
+.form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
 }
 
-.parent form input {
+.formInput {
     background: rgba(255, 255, 255, 0.9);
     border: 2px solid rgba(var(--mainColor-rgb), 0.1);
     border-radius: 8px;
@@ -50,19 +50,19 @@
     width: 100%;
 }
 
-.parent form input:focus {
+.formInput:focus {
     border-color: var(--mainColor);
     box-shadow: 0 0 0 4px rgba(var(--mainColor-rgb), 0.1);
     background: white;
     transform: translateY(-1px);
 }
 
-.parent form input::placeholder {
+.formInput::placeholder {
     color: rgba(var(--mainColor-rgb), 0.5);
     font-weight: 500;
 }
 
-.parent form button {
+.formButton {
     background: linear-gradient(135deg, var(--mainColor), var(--thirdColor));
     color: white;
     padding: 0.75rem 1.5rem;
@@ -82,13 +82,13 @@
     margin-right: auto;
 }
 
-.parent form button:hover {
+.formButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     background: linear-gradient(135deg, var(--thirdColor), var(--mainColor));
 }
 
-.parent form p {
+.formError {
     color: #ff4d4f;
     font-size: 0.8125rem;
     margin-top: -0.25rem;
@@ -102,22 +102,22 @@
 /* Responsive adjustments */
 
 @media (max-width: 768px) {
-    .parent {
+    .formContainer {
         padding: 1rem;
         margin: 0.75rem;
     }
-    .parent form {
+    .form {
         grid-template-columns: 1fr;
     }
-    .parent .title {
+    .formTitle {
         font-size: 1.5rem;
         margin-bottom: 0.75rem;
     }
-    .parent form input {
+    .formInput {
         padding: 0.625rem 0.875rem;
         font-size: 0.875rem;
     }
-    .parent form button {
+    .formButton {
         padding: 0.625rem 1.25rem;
         font-size: 0.875rem;
     }
@@ -137,27 +137,27 @@
     }
 }
 
-.parent form input,
-.parent form button {
+.formInput,
+.formButton {
     animation: fadeIn 0.5s ease-out forwards;
 }
 
-.parent form input:nth-child(1) {
+.formInput:nth-child(1) {
     animation-delay: 0.1s;
 }
 
-.parent form input:nth-child(2) {
+.formInput:nth-child(2) {
     animation-delay: 0.2s;
 }
 
-.parent form input:nth-child(3) {
+.formInput:nth-child(3) {
     animation-delay: 0.3s;
 }
 
-.parent form input:nth-child(4) {
+.formInput:nth-child(4) {
     animation-delay: 0.4s;
 }
 
-.parent form button {
+.formButton {
     animation-delay: 0.5s;
 }

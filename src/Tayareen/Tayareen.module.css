@@ -35,7 +35,7 @@
     margin-bottom: 6px;
     border-bottom: 1px solid var(--borderColor);
     color: var(--mainColor);
-    font-size: 18px;
+    /* font-size: 18px; */
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;

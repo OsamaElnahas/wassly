@@ -10,7 +10,7 @@ export default function CardIdentifier({image,title,describtion,status,phone,loc
    <div className="container">
         <div className={styles.parent}>
             <div className={styles.description}>
-                <div className="col-12">
+                <div className="">
 
                 <img 
                     loading="lazy"
@@ -26,15 +26,15 @@ export default function CardIdentifier({image,title,describtion,status,phone,loc
                 </div>
                 <div className={styles.detailsOfDescription}>
 
-                <div className={styles.title}>{title}</div>
-                {id && <div className={styles.title}> id : {id}</div> }
+                <div className={styles.title}><span>{title} </span></div>
+                {/* {id && <div className={styles.title}> id : {id}</div> } */}
                 {user && <div className={styles.title}>user : {user} </div>}
-                {/* {describtion && <div className={styles.describe}>{describtion}</div>} */}
                 </div>
+                {/* {describtion && <div className={styles.describe}>{describtion}</div>} */}
             </div>
             <div className={styles.details}>
 
-                <div style={{ color: status === "Online" ? "green" : "red", fontWeight: "bold" }}>
+                <div style={{ color: status === "Online" || status===  "مفتوح" ? "green" : "red", fontWeight: "bold" }}>
                 {status}
                 </div>
                 {order_price && <div >Order Price : {order_price}</div>}

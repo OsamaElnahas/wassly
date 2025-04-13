@@ -1,83 +1,103 @@
 .parent {
-    position: relative;
-    /* overflow-x: hidden; */
-}
-
-.burgerMenu {
-    /* padding: 6px; */
-    font-size: 28px;
-    cursor: pointer;
-    z-index: 0;
-    transition: 0.5s ease-in-out;
-    font-size: 32px;
-    color: var(--mainColor);
+    height: 100vh;
     position: fixed;
-    left: 2px;
-}
-
-.burgerMenuRight {
-    cursor: pointer;
-    color: var(--secondaryColor);
-    font-size: 30px;
-}
-
-.logo {
-    padding: 8px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .sideBar {
-    outline: 1px solid var(--secondaryColor);
-    top: 0px;
-    z-index: 2000;
-    position: fixed !important;
-    width: 246px;
-    /* width: 100%; */
-    height: 100vh;
-    background-color: var(--mainColor);
-    color: white;
-    box-shadow: 3px 10px 8px 0px var(--mainColor);
-    transform: translateX(0%);
-    z-index: 1000;
-    transition: 0.3s ease-in-out;
-    border-radius: 6px;
+    background-color: var(--sidebarBg);
+    width: 250px;
+    height: 100%;
+    padding: 1.5rem 1rem;
+    transition: var(--transition);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transform: translateX(0);
 }
 
 .nonVisible {
-    position: absolute;
-    width: 240px;
-    height: 100vh;
-    background-color: var(--mainColor);
-    color: white;
-    box-shadow: 5px 0px 15px 0px black;
-    transform: translateX(-400%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
+    transform: translateX(-250px);
+    box-shadow: none;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--hoverBg);
+    margin-bottom: 1.25rem;
+}
+
+.logo img {
+    width: 35px;
+    height: auto;
+}
+
+.logo a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--textLight);
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.menuItems {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .item {
-    padding: 15px 6px;
-    border-bottom: 1px solid var(--secondaryColor);
-    cursor: pointer;
-    text-decoration: none;
-    color: var(--secondaryColor);
     display: flex;
     align-items: center;
-}
-
-.item>div {
-    margin-left: 12px;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: var(--textLight);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: var(--transition);
 }
 
 .item:hover {
-    background-color: var(--thirdColor);
+    background-color: var(--hoverBg);
+    color: var(--textLight);
 }
 
 .active {
-    background-color: var(--thirdColor);
+    background-color: var(--hoverBg);
+    font-weight: 600;
+}
+
+.burgerMenu {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    color: var(--mainColor);
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 1001;
+    width: 25px;
+    height: 40px;
+}
+
+.burgerMenuRight {
+    color: var(--textLight);
+    font-size: 1.25rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .sideBar {
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
 }

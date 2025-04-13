@@ -1,0 +1,33 @@
+.layoutContainer {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--backgroundColor);
+}
+
+.mainContent {
+    flex: 1;
+    margin-left: 250px;
+    transition: var(--transition);
+    min-height: 100vh;
+    width: calc(100% - 250px);
+}
+
+.mainContent.expanded {
+    margin-left: 0;
+    width: 100%;
+}
+
+.pageContent {
+    padding: 5rem 2rem 2rem;
+    min-height: calc(100vh - 60px);
+}
+
+@media (max-width: 768px) {
+    .mainContent {
+        margin-left: 0;
+        width: 100%;
+    }
+    .pageContent {
+        padding: 5rem 1rem 1rem;
+    }
+}

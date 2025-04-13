@@ -62,7 +62,7 @@ export default function ShopsDetails() {
       describtion={data?.data?.shop_description}
       status={data?.data?.status}
       image={data?.data?.shop_image}
-      imageFallback={logo} // ✅ هنا بنبعت صورة default حسب السياق
+      imageFallback={logo} 
       phone={data?.data?.shop_phone_number}
       orders={data?.data?.confirmed_orders}
       location={data?.data?.shop_location.address}

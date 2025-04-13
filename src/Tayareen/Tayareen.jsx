@@ -11,21 +11,21 @@ export default function Tayareen() {
     <div className="container">
 
         <div className="row gx-0 mb-4">
-            <div className="col-2">
+            <div className=" col-md-4 col-lg-2 col-sm-6 col-12">
 
             <AccessCard title={"Add Tayaar"} iconProp={faUserPlus} BGC={"var(--thirdColor)"} />
             </div>
             </div>
         <div className="row gx-0">
 
-      <div className={`${styles.userCard} col-4`}>
+      <div className={`${styles.userCard}   col-lg-4 col-sm-6 col-12 `}>
         <div className="row">
             <div className="col-4">
             <FontAwesomeIcon icon={faUserCircle} /> 
             {/* <img src={photo} alt="" /> */}
             
                 </div>
-            <div className="col-8">
+            <div className="col-8 ">
             <div className={styles.details}>
                <div className={styles.name}>
                  Name : osama kamal elsayed

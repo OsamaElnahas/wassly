@@ -1,5 +1,5 @@
 .error {
-    position: fixed;
+    /* position: fixed; */
     top: 12%;
     width: 100%;
     background-color: red;

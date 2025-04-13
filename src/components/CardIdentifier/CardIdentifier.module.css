@@ -1,52 +1,121 @@
 .parent {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
-    border: 1px solid rgba(156, 156, 156, 0.667);
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin: 20px 0;
+    overflow: hidden;
     text-transform: capitalize;
-    color: var(--mainColor);
+    color: #333;
+    transition: all 0.3s ease-in-out;
 }
 
-.parent .description {
+.parent:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.description {
     flex: 1;
+    min-width: 280px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    border-right: 1px solid #f0f0f0;
+    justify-content: center;
 }
 
-.parent .description .image {
-    background-color: var(--backgroundColor);
-    padding: 0px;
-    min-height: 200px;
-    border-radius: 50%;
+.image {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    background-color: #f9f9f9;
     padding: 4px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    margin-bottom: 16px;
+    transition: transform 0.3s ease;
 }
 
-.parent .description .detailsOfDescription div {
-    padding: 4px 10px;
-    line-height: 1.7;
+.image:hover {
+    transform: scale(1.05);
 }
 
-.parent .description .title {
+.detailsOfDescription {
+    width: 100%;
+    gap: 6px;
+    justify-content: center;
+}
+
+.detailsOfDescription div {
+    padding: 6px 12px;
+    line-height: 1.6;
+    text-align: center;
+    /* width: 100%; */
+}
+
+.title {
     font-size: 18px;
-    font-weight: bold;
-    border: 1px solid var(--borderColor);
-}
-
-.parent .description .describe {
-    font-size: 18px;
-    color: gray;
-}
-
-.parent .details {
-    flex: 5;
-    font-size: 20px;
-    padding: 10px;
-    border-left: 1px solid var(--borderColor);
-}
-
-.parent .details div {
-    margin-bottom: 7px;
-    border-bottom: 1px solid rgba(156, 156, 156, 0.667);
     font-weight: 600;
-    line-height: 1.8;
+    margin-bottom: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background-color: #f7f7f7;
+    width: 100%;
+}
+
+.describe {
+    font-size: 16px;
+    color: #666;
+    background-color: #f7f7f7;
+    padding: 0px 20px;
+}
+
+.details {
+    flex: 3;
+    padding: 20px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.details div {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
+    color: #444;
+}
+
+.details div:last-child {
+    border-bottom: none;
+}
+
+.phoneNumber,
+.location {
+    font-weight: 600;
+    color: #1a73e8;
+}
+
+@media (max-width: 768px) {
+    .parent {
+        flex-direction: column;
+        border-radius: 10px;
+    }
+    .description {
+        border-right: none;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .image {
+        width: 140px;
+        height: 140px;
+    }
+    .details {
+        font-size: 15px;
+        padding: 16px;
+    }
 }

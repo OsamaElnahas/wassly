@@ -1,61 +1,72 @@
-import React, { useEffect } from 'react'
-import styles from "./SideBar.module.css"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars ,faHome,faStore,faCartShopping,faUserPlus,faCircleUser, faUser, faUserGroup, faUsers} from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import mylogo from "../../images/logoo.webp"
-import { faUserNinja } from '@fortawesome/free-solid-svg-icons/faUserNinja';
-import { faUserTie } from '@fortawesome/free-solid-svg-icons/faUserTie';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faBars,
+  faHome,
+  faStore,
+  faCartShopping,
+  faUsers
+} from '@fortawesome/free-solid-svg-icons';
+import styles from "./SideBar.module.css";
+import mylogo from "../../images/logoo.webp";
+import { useState } from 'react';
 
-
-
-
-export default function SideBar({isVisable ,setVisable}) {
+export default function SideBar({ isVisible, setVisible }) {
   const location = useLocation();
-  const [isClicked,setClicked]=useState(location.pathname)
-  useEffect(() => {
-    setClicked(location.pathname); 
-  }, [location.pathname]);
+const [activeItem, setActiveItem] = useState(location.pathname);
   
-  function toggleSidebar(){
-    setVisable(!isVisable);
 
-  }
-  function handleClick(Link){
-    setClicked(Link)
-
-  }
-  return <> 
-     <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={styles.burgerMenu} />
-    <div className={`${styles.parent}`}>
-    
-    <div className={` ${isVisable?styles.sideBar:styles.nonVisible}  `} >
-      
-    <div className={`${styles.logo}`}>
-         <FontAwesomeIcon onClick={toggleSidebar} icon={faBars}  className={styles.burgerMenuRight} />
-
-         <Link className={`navbar-brand d-flex align-items-center`} to="/">
-                                <img  src={mylogo} alt="logo" width={"70px"} height={"30px"}/>
-                
-            <div  style={{
-              fontWeight:"bolder ",
-              fontSize:"22px",
-              paddingTop:"8px",
-              color:"whitesmoke",
-            }}>Dashboard</div>
-            </Link>
-         </div>
-        <Link to={"/"} onClick={()=>handleClick("/")} className= {`${styles.item} ${isClicked=="/" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faHome}/> <div>Home</div></Link>
-        <Link to={"/Shops"} onClick={()=>handleClick("/Shops")} className={`${styles.item} ${isClicked=="/Shops" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faStore}/> <div>Shops</div></Link>
-        <Link to={"/orders"}onClick={()=>handleClick("/orders")} className={`${styles.item} ${isClicked=="/orders" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faCartShopping}/> <div>Orders</div></Link>
-        <Link to={"/tayareen"}onClick={()=>handleClick("/tayareen")} className={`${styles.item} ${isClicked=="/tayareen" &&styles.active} ps-lg-3 ps-sm-2 `}><FontAwesomeIcon icon={faUsers}/> <div>Tayareen</div></Link>
+  const menuItems = [
+    { path: "/", icon: faHome, label: "Home" },
+    { path: "/shops", icon: faStore, label: "Shops" },
+    { path: "/orders", icon: faCartShopping, label: "Orders" },
+    { path: "/tayareen", icon: faUsers, label: "Tayareen" }
+  ];
+  
+  return (
+    <div className={styles.parent}>
+      <div className={`${styles.sideBar} ${!isVisible ? styles.nonVisible : ''}`}>
+        <div className={styles.logo}>
+          <FontAwesomeIcon 
+            icon={faBars} 
+            style={{ width: "25px", height: "40px" }}
+            className={styles.burgerMenuRight}
+            onClick={() => setVisible(!isVisible)}
+          />
+          <Link to="/" className="d-flex align-items-center justify-center">
+            {/* <img src={mylogo} alt="logo" style={{ width: "70px", height: "40px" }} /> */}
+            <span>Wassly Dashboard</span>
+          </Link>
+        </div>
         
-
+        <div className={styles.menuItems}>
+          {menuItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setActiveItem(item.path)}
+              className={`${styles.item} ${activeItem === item.path ? styles.active : ''}`}
+            >
+              <FontAwesomeIcon icon={item.icon} />
+              <span>{item.label}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+      
+      {!isVisible && (
+        <FontAwesomeIcon
+          icon={faBars}
+          className={styles.burgerMenu}
+          onClick={() => setVisible(true)}
+        />
+      )}
     </div>
-
-    </div>
-  
-
-  </>
+  );
 }
+
+SideBar.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
+  setVisible: PropTypes.func.isRequired
+};

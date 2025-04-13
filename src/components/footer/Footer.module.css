@@ -1,12 +1,13 @@
 .footer {
-    /* background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23DCE2F0"><path d="M0 0v100c166.7 0 166.7-66 333.3-66S500 77 666.7 77 833.3 28 1000 28V0H0Z" opacity=".5"></path><path d="M0 0v100c166.7 0 166.7-66 333.3-66S500 70 666.7 70 833.3 16 1000 16V0H0Z" opacity=".5"></path><path d="M0 0v100c166.7 0 166.7-66 333.3-66S500 63 666.7 63 833.3 4 1000 4V0H0Z"></path></svg>'); */
-    /* background-size: cover; */
-    background-color: var(--mainColor);
-    color: white !important;
+    background: linear-gradient(to right, var(--mainColor) 0%, #0a0a1a 100%);
+    color: white;
+    padding: 0.25rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     bottom: 0px;
     width: 100%;
-    /* top: auto; */
-    /* background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23FFFFFF"><path d="M0 0v100-79.4a1892 1892 0 0 1 500 0l500 66.7V0H0Z"></path></svg>'); */
+    height: fit-content;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+    height: fit-content;
 }
 
 .footer ul li {
@@ -45,4 +46,5 @@
     justify-content: space-between;
     padding-bottom: 10px;
     border-bottom: 1px solid white;
+    padding: 0px 8px;
 }
