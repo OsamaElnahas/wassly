@@ -36,7 +36,7 @@ const [activeItem, setActiveItem] = useState(location.pathname);
           />
           <Link to="/" className="d-flex align-items-center justify-center">
             {/* <img src={mylogo} alt="logo" style={{ width: "70px", height: "40px" }} /> */}
-            <span>Wassly Dashboard</span>
+            <span>Wassally Dashboard</span>
           </Link>
         </div>
         

@@ -5,7 +5,7 @@ import Home from "../Home/Home";
 import Shops from "../Shops/Shops";
 import Login from "../Login/Login";
 import ShopsDetails from "../Shops/ShopsDetails";
-import AddShop from "../Shops/addShop";
+import AddShop from "../Shops/AddShop";
 import Orders from "../Orders/Orders";
 import OrderDetails from "../Orders/OrderDetails";
 import Tayareen from "../../Tayareen/Tayareen";
