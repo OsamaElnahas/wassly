@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { ColorRing } from "react-loader-spinner";
 import logo from "../../images/logoo.webp"
-
+import backImg from "../../images//ChatGPT Image Apr 14, 2025, 06_53_40 AM.png"
 import axios from 'axios';
 
 export default function Login() {
@@ -43,10 +43,16 @@ export default function Login() {
   return (
     <div className={styles.overlay}>
       <div className="container">
-        <div className={styles.head}><img src={logo} alt="logo" /><span className={styles.title}>Dashboard</span> </div>
-        <div className={styles.parent}>
-          <div className={styles.loginTitle}>Login</div>
-          <form onSubmit={formik.handleSubmit} className={styles.form}>
+       
+        <div className={` ${styles.parent} row gx-0 `}>
+          <div className={` ${styles.ImagePart} col-md-8 col-12 `}>
+            <img src={backImg} alt="" />
+            <div className={` ${styles.description}`}>Power up your workflow</div>
+          </div>
+          <div className={`${styles.rightSide} col-md-4 col-12`}>
+            <div className={styles.head}><img src={logo} alt="logo" /><span className={styles.title}>Dashboard</span> </div>
+
+          <form onSubmit={formik.handleSubmit} className={` ${styles.form}`}>
             <input
               name="username"
               value={formik.values.username}
@@ -64,7 +70,7 @@ export default function Login() {
               onBlur={formik.handleBlur}
               type="password"
               placeholder="Enter Your Password"
-            />
+              />
             {formik.touched.password && formik.errors.password && <p>{formik.errors.password}</p>}
 
             <button type="submit" className="btn">
@@ -76,10 +82,11 @@ export default function Login() {
             wrapperStyle={{}}
             wrapperClass="color-ring-wrapper"
             colors={['#fff', '#fff', '#fff', '#fff', '#fff']}
-                />:"Login"}
+            />:"Login"}
             </button>
             {error && <p>{error}</p>}
           </form>
+            </div>
         </div>
       </div>
     </div>

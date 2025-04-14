@@ -63,7 +63,6 @@
 }
 
 .parent form button {
-    background: linear-gradient(135deg, var(--mainColor), var(--thirdColor));
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
@@ -80,6 +79,7 @@
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
+    background: linear-gradient(90deg, var(--mainColor), var(--thirdColor));
 }
 
 .parent form button:hover {
