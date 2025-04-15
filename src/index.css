@@ -32,3 +32,9 @@ body {
     color: white !important;
     transition: var(--transition);
 }
+
+html,
+body,
+#root {
+    height: 100%;
+}
