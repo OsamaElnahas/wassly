@@ -6,6 +6,8 @@ import { ColorRing } from "react-loader-spinner";
 import logo from "../../images/logoo.webp";
 import backImg from "../../images/ChatGPT Image Apr 14, 2025, 06_53_40 AM.png";
 import axios from 'axios';
+import 'animate.css';
+
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,14 +39,21 @@ export default function Login() {
   });
 
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light ">
+    <div className={` min-vh-100 d-flex align-items-center justify-content-center bg-light ${isLoading && !error ? "animate__animated animate__fadeOut animate__delay-1s " :""}`}>
+
       <div className="container">
-        <div className="row gx-0 shadow rounded overflow-hidden flex-row-reverse h-100  ">
+      <div
+    className="text-center mb-5 fs-1 fs-md-2 fw-bold animate__animated animate__fadeIn animate__delay-0.5s animate__zoomIn"
+    style={{ color: 'var(--mainColor)', fontSize: '2rem' }}
+  >
+    Welcome to Wassally Dashboard
+  </div>
+        <div className="row gx-0 shadow rounded overflow-hidden flex-row-reverse h-100  animate__animated animate__fadeIn animate__delay-1s animate__zoomIn  ">
 
           {/* Image Section */}
           <div className="col-md-8 d-none d-md-block position-relative">
             <img src={backImg} alt="" className="w-100 h-100 object-fit-cover" />
-            <div className="position-absolute  fs-3 fw-bold" style={{ top: '5%', left: '10%',color:'var(--mainColor)' }}
+            <div className="position-absolute  fs-3 fw-bold" style={{ bottom: '5%', right: '10%',color:'var(--mainColor)' }}
 >
               Power up your workflow
             </div>

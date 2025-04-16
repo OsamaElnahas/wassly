@@ -39,8 +39,8 @@
 }
 
 .iconContainer {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -67,8 +67,8 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     background: var(--mainColor);
     border-top-left-radius: 15px;
     display: flex;
@@ -130,9 +130,11 @@
 .titleHighlight {
     position: relative;
     display: inline-block;
+    color: var(--mainColor);
 }
 
-.titleHighlight::after {
+
+/* .titleHighlight::after {
     content: '';
     position: absolute;
     bottom: 5px;
@@ -143,10 +145,10 @@
     z-index: -1;
     border-radius: 4px;
     transform: skewX(-15deg);
-}
+} */
 
 .titleUnderline {
-    width: 100px;
+    width: 15rem;
     height: 4px;
     background: linear-gradient(90deg, transparent, var(--mainColor), transparent);
     margin: 0 auto 2rem;
