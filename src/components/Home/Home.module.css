@@ -116,7 +116,7 @@
 }
 
 .mainTitle {
-    font-size: 3.5rem;
+    font-size: 2.1rem;
     font-weight: 800;
     background: linear-gradient(135deg, var(--mainColor) 0%, #2c3e50 100%);
     -webkit-background-clip: text;

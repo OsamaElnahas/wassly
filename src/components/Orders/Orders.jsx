@@ -25,7 +25,7 @@ export default function Orders() {
                 },
                 params: params 
             });
-            console.log(res?.data?.data);
+            console.log(res?.data);
             return res?.data?.data;
         } catch (error) {
             console.error("Error fetching data", error);

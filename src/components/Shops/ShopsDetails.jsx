@@ -61,7 +61,7 @@ export default function ShopsDetails() {
       title={data?.data?.shop_name}
       describtion={data?.data?.shop_description}
       status={data?.data?.status}
-      image={data?.data?.shop_image}
+      image={  data?.data?.shop_image ? data.data.shop_image : logo }
       imageFallback={logo} 
       phone={data?.data?.shop_phone_number}
       orders={data?.data?.confirmed_orders}
