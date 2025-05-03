@@ -80,8 +80,7 @@ export default function OrderDetails() {
     <>
       <CardIdentifier
         status={data?.status}
-        title={data?.order_name}
-        id={data?.id}
+        title={data?.receiver_name}
         order_date={data?.order_date}
         order_price={data?.order_price}
         delivery_fee={data?.delivery_fee}
@@ -90,7 +89,6 @@ export default function OrderDetails() {
         coins={data?.coins}
         is_delivered={data?.is_delivered}
         is_picked={data?.is_picked}
-        user={data?.user}
         delivery_crew={data?.delivery_crew}
         notes={data?.notes}
         location={data?.location?.address}

@@ -54,7 +54,7 @@ export default function Login() {
           <div className="col-md-8 d-none d-md-block position-relative">
             <img src={backImg} alt="" className="w-100 h-100 object-fit-cover" />
             <div className="position-absolute  fs-3 fw-bold" style={{ bottom: '5%', right: '10%',color:'var(--mainColor)' }}
->
+    >
               Power up your workflow
             </div>
           </div>

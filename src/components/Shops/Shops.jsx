@@ -47,17 +47,16 @@ export default function Shops() {
     return (
         <div className="container d-flex flex-column align-items-center">
             <div className="row g-0 mb-4 align-items-center w-100" style={{ maxWidth: "1200px" }}>
-                <div className='col-md-4 col-lg-2 col-sm-6 col-12 '>
+                <div className='col-md-6 col-lg-3 col-sm-6 col-12'>
                     <AccessCard link="/AddShop" title="Add Shop" iconProp={faPlus} BGC="var(--mainColor)" />
                 </div>
             </div>
             
-            <div className="row align-items-center mb-4 gx-0 w-100" style={{ maxWidth: "1200px" }}>
-                <div className='col-md-2 col-12' style={{ fontSize: "24px", fontWeight: "800", color: "var(--mainColor)", marginBottom: "8px" }}>
-                    Shops ({data?.results.length})
-                </div>
-                <div className="d-flex flex-wrap align-items-center gap-3 col-md-4 col-12 mb-sm-0 mb-3">
-                    <div className='fs-md-4 fs-5' style={{ color: "var(--mainColor)" }}>Filter by </div>
+            
+            <div className="row align-items-center mb-4 gx-0 w-100 justify-content-between" style={{ maxWidth: "1200px" }}>
+               
+                <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12  mb-3">
+                    <div className='fs-5' style={{ color: "var(--mainColor)" }}>Filter by </div>
                     {["All", "Online", "Offline"].map((status) => (
                         <div key={status} className="form-check">
                             <input className="form-check-input" type="radio" name="status" id={status} value={status} onChange={(e) => setStatusTerm(e.target.value)} checked={statusTerm === status} />
@@ -65,19 +64,25 @@ export default function Shops() {
                         </div>
                     ))}
                 </div>
-                <div className="col-md-4 col-12">
-                    <div className="search-container d-flex align-items-center border p-2 rounded" style={{ borderColor: "var(--mainColor)", maxWidth: "400px", width: "100%" }}>
-                        <input className="form-control border-0" type="search" placeholder="Search by ID, Phone Number, or Name" onChange={(e) => setSearchTerm(e.target.value)} />
-                        <FontAwesomeIcon icon={faSearch} className="ms-2" style={{ color: "var(--mainColor)", fontSize: "22px" }} />
+                <div className="col-lg-5 col-12">
+                    <div className="search-container d-flex align-items-center gap-2 border p-1 px-2 rounded bg-white">
+                        <FontAwesomeIcon icon={faSearch}  style={{ color: "var(--mainColor)", fontSize: "20px" }} />
+                        <input className='w-100 border-0 p-1 outline-hidden'
+                         type="search" placeholder="Search" onChange={(e) => setSearchTerm(e.target.value)} style={{ outline: 'none' }}/>
                     </div>
                 </div>
             </div>
+            <div className="row align-items-center mb-4 gx-0 w-100" style={{ maxWidth: "1200px" }}>
+                <div className='col-md-2 col-12' style={{ fontWeight: "800", color: "var(--mainColor)", marginBottom: "8px" }}>
+                    Shops ({data?.results.length})
+                </div>
+                </div>
 
             <div className="row g-3 w-100" style={{ maxWidth: "1200px", margin: "0 auto" }}>
                 {filteredData?.length > 0 ? (
                     filteredData.map((shop) => (
                         <div className="col-lg-2 col-md-4 col-sm-4 col-12 px-1" key={shop.id}>
-                            <Card image={shop.shop_image? shop.shop_image: logo} title={shop.shop_name} description={shop.shop_description} offer={shop.has_offer} id={shop.id} status={shop.status} />
+                            <Card image={shop.shop_image_url? shop.shop_image_url: logo} title={shop.shop_name} description={shop.shop_description} offer={shop.has_offer} id={shop.id} status={shop.status} />
                         </div>
                     ))
                 ) : (
