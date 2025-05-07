@@ -1,233 +1,415 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ColorRing } from "react-loader-spinner";
-import Errors from "../Error/Errors";
-import toast, { Toaster } from 'react-hot-toast';
-import styles from "../../styles/sharedForm.module.css";
+import toast, { Toaster } from "react-hot-toast";
+import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
 
 export default function AddShop() {
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
-  const [isPost, setIsPost] = useState(false)
-  const [isClicked, setIsClicked] = useState(false)
-  const navigate=useNavigate()
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPost, setIsPost] = useState(false);
+  const [position, setPosition] = useState({ lat: 30.0444, lng: 31.2357 }); // Default to Cairo, Egypt
+  const [address, setAddress] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
 
-  function clicked(){
-    setIsClicked(!clicked)
-  }
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          const egyptBounds = {
+            north: 31.7,
+            south: 22.0,
+            west: 24.7,
+            east: 36.9,
+          };
+          if (
+            latitude >= egyptBounds.south &&
+            latitude <= egyptBounds.north &&
+            longitude >= egyptBounds.west &&
+            longitude <= egyptBounds.east
+          ) {
+            setPosition({ lat: latitude, lng: longitude });
+            formik.setFieldValue("shop.shop_location.latitude", latitude);
+            formik.setFieldValue("shop.shop_location.longitude", longitude);
+            fetchAddress(latitude, longitude);
+          } else {
+            toast.error("Location outside Egypt. Using default (Cairo).");
+            fetchAddress(30.0444, 31.2357);
+          }
+        },
+        () => {
+          toast.error("Could not fetch location. Using default (Cairo).");
+          fetchAddress(30.0444, 31.2357);
+        }
+      );
+    } else {
+      toast.error("Geolocation not supported. Using default (Cairo).");
+      fetchAddress(30.0444, 31.2357);
+    }
+  }, []);
+
+  const fetchAddress = async (lat, lng) => {
+    try {
+      const res = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAIsV8XbX_RjYEBJYveFkDgZTBxOvL_wMQ`
+      );
+      const data = await res.json();
+      const fetchedAddress = data.results[0]?.formatted_address || "Address not found";
+      setAddress(fetchedAddress);
+      formik.setFieldValue("shop.shop_location.address", fetchedAddress);
+    } catch {
+      formik.setFieldValue("shop.shop_location.address", "Address not found");
+    }
+  };
+
+  const onMapClick = (e) => {
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+    const egyptBounds = {
+      north: 31.7,
+      south: 22.0,
+      west: 24.7,
+      east: 36.9,
+    };
+    if (
+      lat >= egyptBounds.south &&
+      lat <= egyptBounds.north &&
+      lng >= egyptBounds.west &&
+      lng <= egyptBounds.east
+    ) {
+      setPosition({ lat, lng });
+      formik.setFieldValue("shop.shop_location.latitude", lat);
+      formik.setFieldValue("shop.shop_location.longitude", lng);
+      fetchAddress(lat, lng);
+    } else {
+      toast.error("Please select a location within Egypt.");
+    }
+  };
+
+  const onSearch = () => {
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ address: searchValue + ", Egypt" }, (results, status) => {
+      if (status === "OK") {
+        const location = results[0].geometry.location;
+        const lat = location.lat();
+        const lng = location.lng();
+        const egyptBounds = {
+          north: 31.7,
+          south: 22.0,
+          west: 24.7,
+          east: 36.9,
+        };
+        if (
+          lat >= egyptBounds.south &&
+          lat <= egyptBounds.north &&
+          lng >= egyptBounds.west &&
+          lng <= egyptBounds.east
+        ) {
+          setPosition({ lat, lng });
+          formik.setFieldValue("shop.shop_location.latitude", lat);
+          formik.setFieldValue("shop.shop_location.longitude", lng);
+          fetchAddress(lat, lng);
+        } else {
+          toast.error("Location outside Egypt.");
+        }
+      } else {
+        toast.error("Location not found in Egypt.");
+      }
+    });
+  };
+
+  const detectCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          const egyptBounds = {
+            north: 31.7,
+            south: 22.0,
+            west: 24.7,
+            east: 36.9,
+          };
+          if (
+            latitude >= egyptBounds.south &&
+            latitude <= egyptBounds.north &&
+            longitude >= egyptBounds.west &&
+            longitude <= egyptBounds.east
+          ) {
+            setPosition({ lat: latitude, lng: longitude });
+            formik.setFieldValue("shop.shop_location.latitude", latitude);
+            formik.setFieldValue("shop.shop_location.longitude", longitude);
+            fetchAddress(latitude, longitude);
+            toast.success("Current location detected.");
+          } else {
+            toast.error("Current location outside Egypt. Using default (Cairo).");
+            setPosition({ lat: 30.0444, lng: 31.2357 });
+            fetchAddress(30.0444, 31.2357);
+          }
+        },
+        () => {
+          toast.error("Could not fetch current location.");
+        }
+      );
+    } else {
+      toast.error("Geolocation not supported.");
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
-        username: "",
-        phone_number: "",
-        shop: {
-          shop_name: "",
-          shop_description: "",
-          shop_location: {
-            address: "",
-            longitude: "",
-            latitude: ""
-          },
-          shop_phone_number: "",
-          shop_facebook_url:"", 
-          shop_category: "",
-        }
+      username: "",
+      phone_number: "",
+      shop: {
+        shop_name: "",
+        shop_description: "",
+        shop_phone_number: "",
+        shop_facebook_url: "",
+        shop_category: null,
+        status: "Online",
+        shop_location: {
+          address: "",
+          latitude: 0,
+          longitude: 0,
+        },
+      },
     },
     validationSchema: Yup.object({
-      username:Yup.string().required("user name is required"),
-      phone_number:Yup.string().required("Phone number is required"),
-      shop:Yup.object({
-          shop_name: Yup.string().required("Required"),
-          shop_description: Yup.string().required("Required"),
-          shop_location: Yup.object({
-            address: Yup.string().required("Required"),
-            longitude: Yup.number().required("Required"),
-            latitude: Yup.number().required("Required"),
-          }),
-          shop_phone_number: Yup.string().required("Required"),
-          shop_facebook_url: Yup.string(),
-          shop_category: Yup.number()
-      })
+      username: Yup.string().required("Username is required"),
+      phone_number: Yup.string().required("Phone number is required"),
+      shop: Yup.object({
+        shop_name: Yup.string().required("Shop name is required"),
+        shop_description: Yup.string().required("Shop description is required"),
+        shop_phone_number: Yup.string().required("Shop phone number is required"),
+        shop_facebook_url: Yup.string().url("Invalid URL").max(200).nullable(),
+        shop_category: Yup.number().integer("Invalid category").nullable(),
+        status: Yup.string().oneOf(["Online", "Busy", "Offline"]).required(),
+        shop_location: Yup.object({
+          address: Yup.string().required("Address is required"),
+          latitude: Yup.number().required("Latitude is required"),
+          longitude: Yup.number().required("Longitude is required"),
+        }),
+      }),
     }),
-
     onSubmit: async (values) => {
-      setIsLoading(true)
+      console.log("data to be sent",values);
+      
+      setIsLoading(true);
       try {
-        const response = await axios.post("http://localhost:8000/api/shops/", values);
+        const response = await axios.post("https://wassally.onrender.com/api/business-owner/sign-up/", values, {
+          headers: {
+            Authorization: "Token " + localStorage.getItem("token"),
+          },
+        });
+
         if (response.status === 201) {
-          setIsPost(true);
-          toast.success("Shop added successfully!");
-          setTimeout(() => {
-            navigate("/shops");
-          }, 2000);
+          toast.success("Shop created successfully!");
+          navigate("/shops");
         }
-      } catch (error) {
-        setError(error.response?.data?.message || "An error occurred");
-        toast.error(error.response?.data?.message || "An error occurred");
+      } catch (err) {
+        const errorData = err.response?.data;
+        if (errorData && typeof errorData === "object" && Object.keys(errorData).length > 0) {
+          let errorMessages = [];
+          for (const [key, value] of Object.entries(errorData)) {
+            if (Array.isArray(value)) {
+              errorMessages = errorMessages.concat(value);
+            } else if (typeof value === "string") {
+              errorMessages.push(value);
+            }
+          }
+          toast.error(errorMessages.join(" "));
+        } else {
+          toast.error("Unknown error occurred.");
+        }
       } finally {
         setIsLoading(false);
       }
-    }
+    },
   });
 
   return (
-    <div className="container">
-      <div className={styles.formContainer}>
-        <div className={styles.formTitle}>Add Shop</div>
-        <form onSubmit={formik.handleSubmit} className={styles.form}>
-          <input
-            name="username"
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            placeholder="Enter Your user Name"
-            className={styles.formInput}
-          />
-          {formik.touched.username && formik.errors.username && (
-            <p className={styles.formError}>{formik.errors.username}</p>
-          )}
-          <input
-            name="phone_number"
-            value={formik.values.phone_number}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            placeholder="Enter Your phone Number"
-            className={styles.formInput}
-          />
-          {formik.touched.phone_number && formik.errors.phone_number && (
-            <p className={styles.formError}>{formik.errors.phone_number}</p>
-          )}
-          <input
-            name="shop.shop_name"
-            value={formik.values.shop?.shop_name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            placeholder="Enter Your Shop Name"
-            className={styles.formInput}
-          />
-          {formik.touched.shop?.shop_name && formik.errors.shop_name && (
-            <p className={styles.formError}>{formik.errors.shop?.shop_name}</p>
-          )}
-          <input
-            name="shop.shop_description"
-            value={formik.values.shop?.shop_description}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            placeholder="Enter Shop Description"
-            className={styles.formInput}
-          />
-          {formik.touched.shop?.shop_description &&
-            formik.errors.shop?.shop_description && (
-              <p className={styles.formError}>{formik.errors.shop?.shop_description}</p>
+    <div className="container mt-4">
+      <Toaster />
+      <div className="card p-4">
+        <h2 className="mb-5 "
+        style={{
+          color:"var(--mainColor)",
+          fontWeight:"bold"
+        }}
+        >Add Shop</h2>
+        <form onSubmit={formik.handleSubmit}>
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Username</label >
+            <input
+              type="text"
+              name="username"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.username}
+            />
+            {formik.touched.username && formik.errors.username && (
+              <div className="text-danger">{formik.errors.username}</div>
             )}
+          </div>
 
-          <input
-            name="shop.shop_location.address"
-            value={formik.values.shop?.shop_location?.address}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            placeholder="Enter Shop Location"
-            className={styles.formInput}
-          />
-          {formik.touched.shop?.shop_location?.address &&
-            formik.errors.shop?.shop_location?.address && (
-              <p className={styles.formError}>{formik.errors.shop?.shop_location?.address}</p>
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Phone Number</label >
+            <input
+              type="text"
+              name="phone_number"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.phone_number}
+            />
+            {formik.touched.phone_number && formik.errors.phone_number && (
+              <div className="text-danger">{formik.errors.phone_number}</div>
             )}
+          </div>
 
-          <input
-            name="shop.shop_location.latitude"
-            value={formik.values.shop?.shop_location?.latitude}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="number"
-            placeholder="Enter Shop latitude"
-            className={styles.formInput}
-          />
-          {formik.touched.shop?.shop_location?.latitude &&
-            formik.errors.shop?.shop_location?.latitude && (
-              <p className={styles.formError}>{formik.errors.shop?.shop_location?.latitude}</p>
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Shop Name</label >
+            <input
+              type="text"
+              name="shop.shop_name"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.shop.shop_name}
+            />
+            {formik.touched.shop?.shop_name && formik.errors.shop?.shop_name && (
+              <div className="text-danger">{formik.errors.shop.shop_name}</div>
             )}
-          <input
-            name="shop.shop_location.longitude"
-            value={formik.values.shop?.shop_location?.longitude}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="number"
-            placeholder="Enter Shop longituder"
-            className={styles.formInput}
-          />
-          {formik.touched.shop?.shop_location?.longitude &&
-            formik.errors.shop?.shop_location?.longitude && (
-              <p className={styles.formError}>{formik.errors.shop?.shop_location?.longitude}</p>
-            )}
+          </div>
 
-          <input
-            name="shop.shop_phone_number"
-            value={formik.values.shop?.shop_phone_number}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            placeholder="Enter Shop Number"
-            className={styles.formInput}
-          />
-          {formik.touched.shop?.shop_phone_number &&
-            formik.errors.shop?.shop_phone_number && (
-              <p className={styles.formError}>{formik.errors.shop?.shop_phone_number}</p>
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Shop Description</label >
+            <input
+              type="text"
+              name="shop.shop_description"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.shop.shop_description}
+            />
+            {formik.touched.shop?.shop_description && formik.errors.shop?.shop_description && (
+              <div className="text-danger">{formik.errors.shop.shop_description}</div>
             )}
+          </div>
 
-          <input
-            name="shop.shop_facebook_url"
-            value={formik.values.shop?.shop_facebook_url}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            placeholder="Enter Shop Facebook URL"
-            className={styles.formInput}
-          />
-          {formik.touched.shop?.shop_facebook_url &&
-            formik.errors.shop?.shop_facebook_url && (
-              <p className={styles.formError}>{formik.errors.shop?.shop_facebook_url}</p>
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Shop Phone Number</label >
+            <input
+              type="text"
+              name="shop.shop_phone_number"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.shop.shop_phone_number}
+            />
+            {formik.touched.shop?.shop_phone_number && formik.errors.shop?.shop_phone_number && (
+              <div className="text-danger">{formik.errors.shop.shop_phone_number}</div>
             )}
-          <input
-            name="shop.shop_category"
-            value={formik.values.shop?.shop_category}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="number"
-            placeholder="Enter Shop cetegory"
-            className={styles.formInput}
-          />
-          {formik.touched.shop?.shop_category && formik.errors.shop_category && (
-            <p className={styles.formError}>{formik.errors.shop?.shop_category}</p>
-          )}
+          </div>
 
-          <button type="submit" className={styles.formButton}>
-            {isLoading ? (
-              <ColorRing
-                visible={true}
-                height="40"
-                width="40"
-                ariaLabel="color-ring-loading"
-                wrapperStyle={{}}
-                wrapperClass="color-ring-wrapper"
-                colors={['#fff', '#fff', '#fff', '#fff', '#fff']}
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Facebook URL</label >
+            <input
+              type="text"
+              name="shop.shop_facebook_url"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.shop.shop_facebook_url}
+            />
+            {formik.touched.shop?.shop_facebook_url && formik.errors.shop?.shop_facebook_url && (
+              <div className="text-danger">{formik.errors.shop.shop_facebook_url}</div>
+            )}
+          </div>
+
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Shop Category (Optional)</label >
+            <input
+              type="number"
+              name="shop.shop_category"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.shop.shop_category || ""}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Status</label >
+            <select
+              name="shop.status"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.shop.status}
+            >
+              <option value="Online">Online</option>
+              <option value="Busy">Busy</option>
+              <option value="Offline">Offline</option>
+            </select>
+            {formik.touched.shop?.status && formik.errors.shop?.status && (
+              <div className="text-danger">{formik.errors.shop.status}</div>
+            )}
+          </div>
+
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Search Location</label >
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+            
+             
               />
-            ) : "Add"}
-          </button>
-          {clicked && (
-            <>
-              {error && !isPost ? <p className={styles.formError}>{error}</p> : ""}
-              <Toaster/>
-            </>
-          )}
+              <button className="btn btn-primary" type="button" onClick={onSearch}>
+                Search
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-3 position-relative">
+            <LoadScript googleMapsApiKey="AIzaSyAIsV8XbX_RjYEBJYveFkDgZTBxOvL_wMQ">
+              <GoogleMap
+                mapContainerStyle={{ height: "300px", width: "100%" }}
+                center={position}
+                zoom={13}
+                onClick={onMapClick}
+              >
+                <MarkerF position={position} />
+              </GoogleMap>
+            </LoadScript>
+            <button
+              className="btn btn-primary position-absolute"
+              style={{ bottom: "1px", left: "0%", zIndex: 10 ,
+                borderRadius:"4px"
+              }}
+              type="button"
+              onClick={detectCurrentLocation}
+            >
+              Detect My Location
+            </button>
+          </div>
+
+          <div className="mb-3">
+            <label className="mb-2 fw-semibold" >Shop Address</label >
+            <input
+              type="text"
+              name="shop.shop_location.address"
+              className="form-control"
+              value={formik.values.shop.shop_location.address}
+              readOnly
+            />
+          </div>
+
+          <div className="mt-5">
+            <button type="submit" className="btn btn-primary w-100 " disabled={isLoading}>
+              {isLoading ? <ColorRing height={30} width={30} /> : "Add Shop"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -10,13 +10,13 @@ export default function Tayareen() {
       <div className="d-flex justify-content-between align-items-center mb-4 gap-3 flex-wrap">
         <div className="row g-0 w-100" style={{ maxWidth: "1200px" }}>
           <div className='col-md-6 col-lg-3 col-sm-6 col-12'>
-            <AccessCard link="/AddShop" title="Add Shop" iconProp={faUserPlus} />
+            <AccessCard link="/" title="Add Tayaar" iconProp={faUserPlus} />
           </div>
         </div>
       </div>
 
       <div className="row g-4">
-        <div className="col-sm-12 col-md-6 col-lg-4 ">
+        <div className="col-sm-12  col-lg-6 ">
           <Link className="d-block bg-white rounded p-3 shadow-sm border position-relative overflow-hiddend " style={{ transition: 'transform 0.3s ease, box-shadow 0.3s ease', cursor: 'pointer' }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-5px)';
