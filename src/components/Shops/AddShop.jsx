@@ -196,8 +196,7 @@ export default function AddShop() {
       }),
     }),
     onSubmit: async (values) => {
-      console.log("data to be sent",values);
-      
+      console.log("data to be sent", values);
       setIsLoading(true);
       try {
         const response = await axios.post("https://wassally.onrender.com/api/business-owner/sign-up/", values, {
@@ -205,45 +204,55 @@ export default function AddShop() {
             Authorization: "Token " + localStorage.getItem("token"),
           },
         });
-
+    
         if (response.status === 201) {
           toast.success("Shop created successfully!");
-          navigate("/shops");
+          setTimeout(() => {
+            navigate("/shops");
+          }, 1000);
         }
       } catch (err) {
+        console.log(err);
         const errorData = err.response?.data;
         if (errorData && typeof errorData === "object" && Object.keys(errorData).length > 0) {
           let errorMessages = [];
-          for (const [key, value] of Object.entries(errorData)) {
-            if (Array.isArray(value)) {
-              errorMessages = errorMessages.concat(value);
-            } else if (typeof value === "string") {
-              errorMessages.push(value);
+          
+          const extractErrors = (obj) => {
+            for (const [key, value] of Object.entries(obj)) {
+              if (Array.isArray(value)) {
+                errorMessages = errorMessages.concat(value.filter(item => typeof item === "string"));
+              } else if (typeof value === "object" && value !== null) {
+                extractErrors(value); 
+              }
             }
+          };
+    
+          if (errorData.errors) {
+            extractErrors(errorData.errors);
           }
-          toast.error(errorMessages.join(" "));
+    
+          if (errorMessages.length > 0) {
+            toast.error(errorMessages.join(" "));
+          } else {
+            toast.error("Unknown error occurred.");
+          }
         } else {
           toast.error("Unknown error occurred.");
         }
       } finally {
         setIsLoading(false);
       }
-    },
+    } 
   });
 
   return (
     <div className="container mt-4">
       <Toaster />
       <div className="card p-4">
-        <h2 className="mb-5 "
-        style={{
-          color:"var(--mainColor)",
-          fontWeight:"bold"
-        }}
-        >Add Shop</h2>
+        <h2 className="mb-4">Add Shop</h2>
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Username</label >
+            <label>Username</label>
             <input
               type="text"
               name="username"
@@ -257,7 +266,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Phone Number</label >
+            <label>Phone Number</label>
             <input
               type="text"
               name="phone_number"
@@ -271,7 +280,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Shop Name</label >
+            <label>Shop Name</label>
             <input
               type="text"
               name="shop.shop_name"
@@ -285,7 +294,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Shop Description</label >
+            <label>Shop Description</label>
             <input
               type="text"
               name="shop.shop_description"
@@ -299,7 +308,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Shop Phone Number</label >
+            <label>Shop Phone Number</label>
             <input
               type="text"
               name="shop.shop_phone_number"
@@ -313,7 +322,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Facebook URL</label >
+            <label>Facebook URL</label>
             <input
               type="text"
               name="shop.shop_facebook_url"
@@ -327,7 +336,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Shop Category (Optional)</label >
+            <label>Shop Category (Optional)</label>
             <input
               type="number"
               name="shop.shop_category"
@@ -338,7 +347,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Status</label >
+            <label>Status</label>
             <select
               name="shop.status"
               className="form-control"
@@ -355,15 +364,13 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Search Location</label >
+            <label>Search Location</label>
             <div className="input-group">
               <input
                 type="text"
                 className="form-control"
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-            
-             
               />
               <button className="btn btn-primary" type="button" onClick={onSearch}>
                 Search
@@ -384,9 +391,7 @@ export default function AddShop() {
             </LoadScript>
             <button
               className="btn btn-primary position-absolute"
-              style={{ bottom: "1px", left: "0%", zIndex: 10 ,
-                borderRadius:"4px"
-              }}
+              style={{ top: "10px", right: "10px", zIndex: 10 }}
               type="button"
               onClick={detectCurrentLocation}
             >
@@ -395,7 +400,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="mb-2 fw-semibold" >Shop Address</label >
+            <label>Shop Address</label>
             <input
               type="text"
               name="shop.shop_location.address"
@@ -405,9 +410,9 @@ export default function AddShop() {
             />
           </div>
 
-          <div className="mt-5">
-            <button type="submit" className="btn btn-primary w-100 " disabled={isLoading}>
-              {isLoading ? <ColorRing height={30} width={30} /> : "Add Shop"}
+          <div className="mb-3">
+            <button type="submit" className="btn btn-success w-100" disabled={isLoading}>
+              {isLoading ? <ColorRing height={20} width={20} /> : "Add Shop"}
             </button>
           </div>
         </form>
