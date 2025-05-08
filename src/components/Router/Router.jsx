@@ -9,7 +9,6 @@ import AddShop from "../Shops/AddShop";
 import Orders from "../Orders/Orders";
 import OrderDetails from "../Orders/OrderDetails";
 import Tayareen from "../TayareeN/Tayareen";
-// import Tayareen from "../../components/TayareeN/Tayareen";
 
 const router = createBrowserRouter([
     {
