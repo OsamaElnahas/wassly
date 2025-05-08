@@ -8,7 +8,7 @@ import ShopsDetails from "../Shops/ShopsDetails";
 import AddShop from "../Shops/AddShop";
 import Orders from "../Orders/Orders";
 import OrderDetails from "../Orders/OrderDetails";
-import Tayareen from "../TayareeN/Tayareen";
+import Tayareen from "../Tayareen/Tayareen";
 
 const router = createBrowserRouter([
     {
