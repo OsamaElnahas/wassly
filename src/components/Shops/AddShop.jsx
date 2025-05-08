@@ -249,10 +249,14 @@ export default function AddShop() {
     <div className="container mt-4">
       <Toaster />
       <div className="card p-4">
-        <h2 className="mb-4">Add Shop</h2>
+        <h2 className="mb-5"
+        style={{
+          color:"var(--mainColor)"
+        }}
+        >Add Shop</h2>
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
-            <label>Username</label>
+            <label className="fw-bold mb-2">Username</label>
             <input
               type="text"
               name="username"
@@ -266,7 +270,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label>Phone Number</label>
+            <label className="fw-bold mb-2">Phone Number</label>
             <input
               type="text"
               name="phone_number"
@@ -280,7 +284,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label>Shop Name</label>
+            <label className="fw-bold mb-2">Shop Name</label>
             <input
               type="text"
               name="shop.shop_name"
@@ -294,7 +298,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label>Shop Description</label>
+            <label className="fw-bold mb-2">Shop Description</label>
             <input
               type="text"
               name="shop.shop_description"
@@ -308,7 +312,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label>Shop Phone Number</label>
+            <label className="fw-bold mb-2">Shop Phone Number</label>
             <input
               type="text"
               name="shop.shop_phone_number"
@@ -322,7 +326,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label>Facebook URL</label>
+            <label className="fw-bold mb-2">Facebook URL</label>
             <input
               type="text"
               name="shop.shop_facebook_url"
@@ -336,7 +340,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label>Shop Category (Optional)</label>
+            <label className="fw-bold mb-2">Shop Category (Optional)</label>
             <input
               type="number"
               name="shop.shop_category"
@@ -347,7 +351,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label>Status</label>
+            <label className="fw-bold mb-2">Status</label>
             <select
               name="shop.status"
               className="form-control"
@@ -364,7 +368,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label>Search Location</label>
+            <label className="fw-bold mb-2">Search Location</label>
             <div className="input-group">
               <input
                 type="text"
@@ -399,8 +403,8 @@ export default function AddShop() {
             </button>
           </div>
 
-          <div className="mb-3">
-            <label>Shop Address</label>
+          <div className="mb-5">
+            <label className="fw-bold mb-2">Shop Address</label>
             <input
               type="text"
               name="shop.shop_location.address"
@@ -410,8 +414,8 @@ export default function AddShop() {
             />
           </div>
 
-          <div className="mb-3">
-            <button type="submit" className="btn btn-success w-100" disabled={isLoading}>
+          <div className="">
+            <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
               {isLoading ? <ColorRing height={20} width={20} /> : "Add Shop"}
             </button>
           </div>
