@@ -249,7 +249,7 @@ export default function AddShop() {
     <div className="container mt-4">
       <Toaster />
       <div className="card p-4">
-        <h2 className="mb-5"
+        <h2 className="mb-5 fw-bold " 
         style={{
           color:"var(--mainColor)"
         }}
