@@ -34,11 +34,12 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 html,
 body,
 #root {
     height: 100%;
+    ;
 }

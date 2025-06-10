@@ -4,7 +4,7 @@ import Card from '../Cards/Card';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Loader from '../Loader/Loader';
-import { faPlus, faDeleteLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faPlus,  faSearch } from '@fortawesome/free-solid-svg-icons';
 import Errors from '../Error/Errors';
 import AccessCard from '../AccessCard/AccessCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,13 +16,15 @@ export default function Shops() {
     const pageSize = 12;
 
     async function getShops() {
-        try {
+        try{
             const res = await axios.get("https://wassally.onrender.com/api/shops/", {
                 headers: { Authorization: "Token " + localStorage.getItem("token") },
-                params: { page, page_size: pageSize },
-            });
-            return res.data?.data || [];
-        } catch (error) {
+                params: { page, page_size: pageSize }
+            })
+            console.log(res?.data);
+            return res?.data || [];
+        }
+        catch (error) {
             throw error;
         }
     }
@@ -32,12 +34,11 @@ export default function Shops() {
         queryFn: getShops,
         keepPreviousData: true,
     });
-    console.log(data?.results);
     
     if (isLoading) return <Loader />;
     if (isError) return <Errors errorMessage={error.response ? `Error: ${error.message}` : "No Internet Connection"} />;
 
-    const filteredData = data?.results?.filter((shop) =>
+    const filteredData = data?.data?.filter((shop) =>
         (statusTerm === "All" || shop.status === statusTerm) &&
         (shop.id.toString().includes(searchTerm) ||
             shop.shop_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -74,7 +75,7 @@ export default function Shops() {
             </div>
             <div className="row align-items-center mb-4 gx-0 w-100" style={{ maxWidth: "1200px" }}>
                 <div className='col-md-2 col-12' style={{ fontWeight: "800", color: "var(--mainColor)", marginBottom: "8px" }}>
-                    Shops ({data?.results.length})
+                    Shops ({data?.data?.length || 0})
                 </div>
                 </div>
 
@@ -86,7 +87,7 @@ export default function Shops() {
                         </div>
                     ))
                 ) : (
-                    <p className="text-center w-100" style={{ fontSize: "32px", fontWeight: "600", color: "var(--mainColor)" }}>No Items Found.</p>
+                    <p className="text-center w-100" style={{ fontSize: "20px", fontWeight: "600", color: "var(--mainColor)" }}>No Items Found.</p>
                 )}
             </div>
             
@@ -129,7 +130,7 @@ export default function Shops() {
                         transition: "all 0.3s ease"
                     }}
                     onClick={() => setPage((prev) => prev + 1)} 
-                    disabled={!data?.next || data.results.length < pageSize}
+                    disabled={!data?.next || data?.length < pageSize}
                 >
                     Next
                 </button>

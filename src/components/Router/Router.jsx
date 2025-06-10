@@ -9,6 +9,8 @@ import AddShop from "../Shops/AddShop";
 import Orders from "../Orders/Orders";
 import OrderDetails from "../Orders/OrderDetails";
 import Tayareen from "../Tayareen/Tayareen";
+import NotFound from "../NotFound/NotFound";
+import Transactions from "../Transactions/Transactions";
 
 const router = createBrowserRouter([
     {
@@ -26,11 +28,13 @@ const router = createBrowserRouter([
                     { path: "/orders", element:<Orders/> },
                     { path: "/orderDetails/:id", element:<OrderDetails/> },
                     { path: "/tayareen", element:<Tayareen/> },
+                    { path: "/transactions", element:<Transactions/> },
                 ],
             }
         ],
     },
     { path: "login", element: <Login/> },
+    { path: "*", element: <NotFound/> }
 ]);
 
 export default router;

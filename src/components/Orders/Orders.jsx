@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import Loader from '../Loader/Loader';
 import Errors from '../Error/Errors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch,faCartShopping, faBoxOpen, faClipboardList, faShoppingBag, faCartArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function Orders() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -106,6 +106,9 @@ export default function Orders() {
                                 boxShadow: hoveredIndex === idx ? "0px 4px 8px rgba(0, 0, 0, 0.1)" : "none",
                             }}
                         >
+                            <FontAwesomeIcon icon={faCartArrowDown} className=" mb-2" style={{ fontSize: "24px",
+                                color: "var(--mainColor)"
+                             }} />
                             <div className="d-flex align-items-center justify-content-between">
                                 <div className='fw-bold'>Status</div>
                                 <div className='text-warning rounded p-2'>{item.status}</div>
