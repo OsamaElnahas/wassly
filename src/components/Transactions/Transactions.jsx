@@ -47,7 +47,7 @@ export default function Transactions() {
   };
 
   return (
-    <div className="container py-4" style={{ maxWidth: '1400px' }}>
+    <div className="container" style={{ maxWidth: '1400px' }}>
       <h2 className="mb-4 text-center fw-bold" style={{ color: 'var(--mainColor, #007bff)' }}>
         Transactions
       </h2>

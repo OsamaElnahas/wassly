@@ -44,7 +44,7 @@ export default function Tayareen() {
   }) || [];
 
   return (
-    <div className="container py-4" style={{ maxWidth: '1400px' }}>
+    <div className="container" style={{ maxWidth: '1400px' }}>
       <div className="d-flex justify-content-between align-items-center mb-4 gap-3 flex-wrap">
         <div className="row g-4 w-100 justify-content-between align-items-center" style={{ maxWidth: '1200px' }}>
           <div className="col-md-6 col-lg-3 col-sm-6 col-12">
