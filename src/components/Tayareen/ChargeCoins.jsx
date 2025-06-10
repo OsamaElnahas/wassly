@@ -68,7 +68,7 @@ const RechargeCoin = ({ id, username, onClose }) => {
             marginBottom: '20px',
           }}
         >
-          Recharge {amount} <FontAwesomeIcon icon={faCoins} /> <br/>     <FontAwesomeIcon icon={faArrowCircleRight}/> {username} osama kamal elsayed
+          Recharge {amount} <FontAwesomeIcon icon={faCoins} /> <br/>     <FontAwesomeIcon icon={faArrowCircleRight}/> {username} 
         </p>
 
         {rechargeMutation.isLoading && <CheckStatus status="loading" />}
