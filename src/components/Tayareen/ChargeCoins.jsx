@@ -37,11 +37,14 @@ const RechargeCoin = ({ id, username, onClose }) => {
           },
         }
       );
-      return res.data;
+      console.log("recharge res",res);
+      
+      return res?.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['tayareen']);
-      setTimeout(onClose, 4000);
+      // setTimeout(onClose, 4000);
+
     },
     onError: (err) => {
       setError(err.message || 'An error occurred during recharge');
