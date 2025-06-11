@@ -18,7 +18,7 @@ export default function Tayareen() {
 
   async function getTayareen() {
     try {
-      const res = await axios.get('https://wassally.onrender.com/api/drivers/', {
+      const res = await axios.get('https://wassally.onrender.com/api/crews/', {
         headers: { Authorization: 'Token ' + localStorage.getItem('token') },
         params: { page, page_size: pageSize },
       });
@@ -36,7 +36,7 @@ export default function Tayareen() {
     keepPreviousData: true,
   });
 
-  const filteredData = data?.data?.filter((tayar) => {
+  const filteredData = data?.results?.filter((tayar) => {
     const matchSearch =
       tayar.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       tayar.phone_number.toString().includes(searchTerm);
@@ -70,8 +70,8 @@ export default function Tayareen() {
         {isError && (
           <Errors errorMessage={error.response ? `Error: ${error.message}` : 'No Internet Connection'} />
         )}
-        {filteredData.length > 0 ? (
-          filteredData.map((tayar) => (
+        {filteredData?.length > 0 ? (
+          filteredData?.map((tayar) => (
             <div className="col-sm-12 col-lg-6" key={tayar.id}>
               <div
                 className="d-block bg-white rounded p-3 shadow-sm border position-relative overflow-hidden"
@@ -95,7 +95,7 @@ export default function Tayareen() {
                   <div className="flex-grow-1 overflow-hidden d-flex flex-column gap-2">
                     <div className="fw-bold text-truncate text-dark">{tayar.username}</div>
                     <div className="text-muted small">{tayar.phone_number}</div>
-                    <div className="text-primary small fw-semibold">in Wassly {tayar.crew_type}</div>
+                    <div className="text-primary small fw-semibold"> Wassly {tayar.crew_type}</div>
                     <div className="text-muted small">Active</div>
                     <div className="d-flex align-items-center gap-3 justify-content-between">
                       <div className="text-muted small">Balance: {tayar.balance} LE</div>
@@ -181,7 +181,7 @@ export default function Tayareen() {
             transition: 'all 0.3s ease',
           }}
           onClick={() => setPage((prev) => prev + 1)}
-          disabled={!data?.next || data?.data.length < pageSize}
+          disabled={!data?.next || data?.results?.length < pageSize}
         >
           Next
         </button>

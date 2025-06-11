@@ -21,8 +21,8 @@ export default function Shops() {
                 headers: { Authorization: "Token " + localStorage.getItem("token") },
                 params: { page, page_size: pageSize }
             })
-            console.log(res?.data);
-            return res?.data || [];
+            console.log(res?.data?.data);
+            return res?.data?.data || [];
         }
         catch (error) {
             throw error;
@@ -38,7 +38,7 @@ export default function Shops() {
     if (isLoading) return <Loader />;
     if (isError) return <Errors errorMessage={error.response ? `Error: ${error.message}` : "No Internet Connection"} />;
 
-    const filteredData = data?.data?.filter((shop) =>
+    const filteredData = data?.results?.filter((shop) =>
         (statusTerm === "All" || shop.status === statusTerm) &&
         (shop.id.toString().includes(searchTerm) ||
             shop.shop_name.toLowerCase().includes(searchTerm.toLowerCase()) ||

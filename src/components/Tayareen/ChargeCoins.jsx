@@ -29,7 +29,7 @@ const RechargeCoin = ({ id, username, onClose }) => {
     mutationFn: async () => {
       const amountValue = parseFloat(amount);
       const res = await axios.post(
-        `https://wassally.onrender.com/api/crews/recharge/${id}`,
+        `https://wassally.onrender.com/api/crews/recharge/${id}/`,
         { amount: amountValue },
         {
           headers: {
@@ -41,10 +41,12 @@ const RechargeCoin = ({ id, username, onClose }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['tayareen']);
-      setTimeout(onClose, 1000);
+      setTimeout(onClose, 4000);
     },
     onError: (err) => {
       setError(err.message || 'An error occurred during recharge');
+      console.log(err);
+      
     },
   });
 
