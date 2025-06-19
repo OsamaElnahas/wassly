@@ -36,7 +36,7 @@ export default function Tayareen() {
     keepPreviousData: true,
   });
 
-  const filteredData = data?.results?.filter((tayar) => {
+  const filteredData = data?.data?.filter((tayar) => {
     const matchSearch =
       tayar.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       tayar.phone_number.toString().includes(searchTerm);
@@ -181,7 +181,7 @@ export default function Tayareen() {
             transition: 'all 0.3s ease',
           }}
           onClick={() => setPage((prev) => prev + 1)}
-          disabled={!data?.next || data?.results?.length < pageSize}
+          disabled={!data?.next || data?.data.length < pageSize}
         >
           Next
         </button>

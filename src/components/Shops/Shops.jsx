@@ -38,7 +38,7 @@ export default function Shops() {
     if (isLoading) return <Loader />;
     if (isError) return <Errors errorMessage={error.response ? `Error: ${error.message}` : "No Internet Connection"} />;
 
-    const filteredData = data?.results?.filter((shop) =>
+    const filteredData = data?.filter((shop) =>
         (statusTerm === "All" || shop.status === statusTerm) &&
         (shop.id.toString().includes(searchTerm) ||
             shop.shop_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -75,14 +75,14 @@ export default function Shops() {
             </div>
             <div className="row align-items-center mb-4 gx-0 w-100" style={{ maxWidth: "1200px" }}>
                 <div className='col-md-2 col-12' style={{ fontWeight: "800", color: "var(--mainColor)", marginBottom: "8px" }}>
-                    Shops ({data?.data?.length || 0})
+                    Shops ({data?.length || 0})
                 </div>
                 </div>
 
             <div className="row g-3 w-100" style={{ maxWidth: "1200px", margin: "0 auto" }}>
                 {filteredData?.length > 0 ? (
                     filteredData.map((shop) => (
-                        <div className="col-lg-2  col-6 px-1" key={shop.id}>
+                        <div className="col-lg-2 col-sm-6 col-12  px-1" key={shop.id}>
                             <Card image={shop.shop_image_url? shop.shop_image_url: logo} title={shop.shop_name} description={shop.shop_description} offer={shop.has_offer} id={shop.id} status={shop.status} />
                         </div>
                     ))
