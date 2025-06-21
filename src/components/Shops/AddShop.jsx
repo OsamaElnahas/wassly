@@ -188,6 +188,8 @@ export default function AddShop() {
         shop_facebook_url: Yup.string().url("Invalid URL").max(200).nullable(),
         shop_category: Yup.number().integer("Invalid category").nullable(),
         status: Yup.string().oneOf(["Online", "Busy", "Offline"]).required(),
+        working_start_time: Yup.string().required("Start time is required"),
+        working_end_time: Yup.string().required("End time is required"),
         shop_location: Yup.object({
           address: Yup.string().required("Address is required"),
           latitude: Yup.number().required("Latitude is required"),
@@ -256,7 +258,7 @@ export default function AddShop() {
         >Add Shop</h2>
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
-            <label className="fw-bold mb-2">Username</label>
+            <label className="fw-bold mb-2">Owner Name</label>
             <input
               type="text"
               name="username"
@@ -270,7 +272,7 @@ export default function AddShop() {
           </div>
 
           <div className="mb-3">
-            <label className="fw-bold mb-2">Phone Number</label>
+            <label className="fw-bold mb-2">Owner Phone Number</label>
             <input
               type="text"
               name="phone_number"
@@ -364,6 +366,35 @@ export default function AddShop() {
             </select>
             {formik.touched.shop?.status && formik.errors.shop?.status && (
               <div className="text-danger">{formik.errors.shop.status}</div>
+            )}
+          </div>
+          <div className="mb-3 d-flex align-items-center gap-3">
+            <div>
+              <label className="fw-bold mb-2">Start From</label>
+              <input
+                type="time"
+                name="shop.working_start_time"
+                className="form-control"
+                onChange={formik.handleChange}
+                value={formik.values.shop.working_start_time || ""}
+              />
+              {formik.touched.shop?.working_start_time && formik.errors.shop?.working_start_time && (
+                <div className="text-danger">{formik.errors.shop.working_start_time}</div>
+              )}
+            </div>
+
+            <div>
+              <label className="fw-bold mb-2">End To</label>
+              <input
+                type="time"
+                name="shop.working_end_time"
+                className="form-control"
+                onChange={formik.handleChange}
+                value={formik.values.shop.working_end_time || ""}
+              />
+            </div>
+            {formik.touched.shop?.working_end_time && formik.errors.shop?.working_end_time && (
+              <div className="text-danger">{formik.errors.shop.working_end_time}</div>
             )}
           </div>
 

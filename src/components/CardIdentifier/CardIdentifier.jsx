@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from "./CardIdentifier.module.css"
 // import logo from "../../images/logo.png"
 
-export default function CardIdentifier({image,title,describtion,status,phone,location,orders,imageFallback,id,order_name,order_date,order_price,delivery_fee,total_price,from_multiple_shops,coins,is_delivered,is_picked,user,delivery_crew,notes}) {
+export default function CardIdentifier({image,title,describtion,status,phone,location,orders,imageFallback,id,order_name,order_date,order_price,delivery_fee,total_price,from_multiple_shops,coins,is_delivered,is_picked,user,delivery_crew,notes, nationalIdFront, nationalIdBack, balance, type,isActive}) {
     const optimizedImage = `${image}?format=webp&quality=80`;
       const [imgSrc, setImgSrc] = useState(optimizedImage);
 
@@ -37,6 +37,13 @@ export default function CardIdentifier({image,title,describtion,status,phone,loc
                 <div style={{ color: status === "Online" || status===  "مفتوح" ? "green" : "red", fontWeight: "bold" }}>
                 {status}
                 </div>
+                {isActive && <div style={{ color: "green", fontWeight: "bold" }}>
+                    {isActive ? "Currently Working" : "Inactive"}
+                </div>}
+                {!isActive && <div style={{ color: "red", fontWeight: "bold" }}>
+                    {isActive ? "Currently Working" : "Inactive"}
+                </div>}
+
                 {order_price && <div >Order Price : {order_price}</div>}
                 {delivery_fee && <div >Delivery Fee : {delivery_fee}</div>}
                 {total_price && <div >total Price : {total_price}</div>}
@@ -57,6 +64,24 @@ export default function CardIdentifier({image,title,describtion,status,phone,loc
                 }
                 {orders !=null && <div>Confirmed Orders : {orders}</div>
                 }
+                {type && <div>Type : {type}</div>
+                }
+                {balance !=null && <div>Balance : {balance}</div>
+                }
+               {nationalIdFront && nationalIdBack && (
+  <div className="d-flex flex-column flex-lg-row align-items-center justify-content-between p-2">
+    {nationalIdFront && (
+      <div className="m-2">
+        <img src={nationalIdFront} alt="National ID Front" className="w-50 rounded" />
+      </div>
+    )}
+    {nationalIdBack && (
+      <div className="m-2">
+        <img src={nationalIdBack} alt="National ID Back" className="w-50 rounded" />
+      </div>
+    )}
+  </div>
+)}
             </div>
         </div>
     </div>

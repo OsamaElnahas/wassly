@@ -2,24 +2,43 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBillWave, faTruck, faExclamationTriangle, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
+import { faMoneyBillWave, faExclamationTriangle, faMotorcycle, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Transaction.module.css'; // Custom CSS for additional styling
 import Loader from '../Loader/Loader';
 import Errors from '../Error/Errors';
 
 export default function Transactions() {
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const [filterTerm, setFilterTerm] = useState('All');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const pageSize = 50;
 
   // Fetch transactions using useQuery
   const fetchTransactions = async () => {
     try {
+      const type = filterTerm === 'All' ? '' : filterTerm.toLowerCase().replace(' ', '_');
+      const params = {
+        page,
+        page_size: pageSize,
+      };
+      if (type) params.transaction_type = type;
+      // Add date filters if API supports them (commented out for now)
+      // if (startDate) params.start_date = startDate;
+      // if (endDate) params.end_date = endDate;
+
       const res = await axios.get('https://wassally.onrender.com/api/transactions/', {
         headers: { Authorization: 'Token ' + localStorage.getItem('token') },
-        params: { page, page_size: pageSize },
+        params,
       });
-      console.log(res?.data);
+      console.log('Transactions:', {
+        page,
+        params,
+        data: res?.data?.data,
+        next: res?.data?.next,
+        count: res?.data?.count,
+        length: res?.data?.data?.length,
+      });
       return res?.data || { data: [] };
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -28,16 +47,37 @@ export default function Transactions() {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['transactions', page],
+    queryKey: ['transactions', page, filterTerm],
     queryFn: fetchTransactions,
     keepPreviousData: true,
   });
 
   const transactionStyles = {
     order_picked: { icon: faMotorcycle, color: 'text-primary' },
-    balance_charged: { icon: faMoneyBillWave, color: 'text-success' },
-    warning_fine: { icon: faExclamationTriangle, color: 'text-danger' },
+    balance_recharged: { icon: faMoneyBill, color: 'text-success' },
   };
+
+  // Filter transactions by date (client-side, as API doesn't support date filtering)
+  const filterData = data?.data?.filter((transaction) => {
+    const transactionDate = new Date(transaction.date);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+
+    if (start) start.setHours(0, 0, 0, 0);
+    if (end) end.setHours(23, 59, 59, 999);
+
+    const dateMatch = (!start || transactionDate >= start) && (!end || transactionDate <= end);
+
+    return dateMatch;
+  }) || [];
+
+  console.log('Filtered transactions:', {
+    page,
+    filterTerm,
+    startDate,
+    endDate,
+    length: filterData.length,
+  });
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString('en-US', {
@@ -52,8 +92,76 @@ export default function Transactions() {
         Transactions
       </h2>
 
-      {isLoading && <Loader/>}
       {isError && <Errors message={error.message || 'Failed to load transactions'} />}
+      {isLoading && <Loader />}
+
+      {/* Filter UI */}
+      <div className="mb-4">
+        <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
+          <div className="fs-5" style={{ color: 'var(--mainColor)' }}>Filter by Type</div>
+          {['All', 'Order Picked', 'Balance Recharged'].map((status) => (
+            <div key={status} className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="status"
+                id={status}
+                value={status}
+                onChange={(e) => {
+                  setFilterTerm(e.target.value);
+                  setPage(1);
+                }}
+                checked={filterTerm === status}
+              />
+              <label className="form-check-label" htmlFor={status} style={{ color: 'var(--mainColor)' }}>
+                {status}
+              </label>
+            </div>
+          ))}
+        </div>
+        <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12">
+          <div className="fs-5" style={{ color: 'var(--mainColor)' }}>Filter by Date</div>
+          <div>
+            <label htmlFor="startDate" className="form-label me-2">From:</label>
+            <input
+              type="date"
+              id="startDate"
+              className="form-control"
+              value={startDate}
+              onChange={(e) => {
+                setStartDate(e.target.value);
+                setPage(1);
+              }}
+              style={{ display: 'inline-block', width: 'auto' }}
+            />
+          </div>
+          <div>
+            <label htmlFor="endDate" className="form-label me-2">To:</label>
+            <input
+              type="date"
+              id="endDate"
+              className="form-control"
+              value={endDate}
+              onChange={(e) => {
+                setEndDate(e.target.value);
+                setPage(1);
+              }}
+              style={{ display: 'inline-block', width: 'auto' }}
+            />
+          </div>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => {
+              setFilterTerm('All');
+              setStartDate('');
+              setEndDate('');
+              setPage(1);
+            }}
+          >
+            Clear Filters
+          </button>
+        </div>
+      </div>
 
       {/* Transactions Table (Visible on md and larger screens) */}
       <div className="d-none d-md-block card shadow-sm mb-4">
@@ -68,13 +176,13 @@ export default function Transactions() {
               </tr>
             </thead>
             <tbody>
-              {data?.data?.length > 0 ? (
-                data.data.map((transaction, index) => (
+              {filterData?.length > 0 ? (
+                filterData?.map((transaction, index) => (
                   <tr key={index} className="align-middle">
                     <td className="px-4 py-3">
                       <FontAwesomeIcon
-                        icon={transactionStyles[transaction.transaction_type]?.icon}
-                        className={transactionStyles[transaction.transaction_type]?.color}
+                        icon={transactionStyles[transaction?.transaction_type]?.icon || faMoneyBillWave}
+                        className={transactionStyles[transaction?.transaction_type]?.color || 'text-secondary'}
                         size="lg"
                       />
                       <span className="ms-2 text-capitalize">
@@ -89,7 +197,7 @@ export default function Transactions() {
               ) : (
                 <tr>
                   <td colSpan="4" className="text-center py-4 text-muted">
-                    No transactions found
+                    {isLoading ? <Loader /> : 'No transactions found'}
                   </td>
                 </tr>
               )}
@@ -100,15 +208,15 @@ export default function Transactions() {
 
       {/* Transactions Cards (Visible on sm and smaller screens) */}
       <div className="d-md-none row g-3">
-        {data?.data?.length > 0 ? (
-          data.data.map((transaction, index) => (
+        {filterData?.length > 0 ? (
+          filterData.map((transaction, index) => (
             <div key={index} className="col-12">
               <div className="card shadow-sm border-0 h-100">
                 <div className="card-body d-flex flex-column gap-2">
                   <div className="d-flex align-items-center gap-2">
                     <FontAwesomeIcon
-                      icon={transactionStyles[transaction.transaction_type]?.icon}
-                      className={transactionStyles[transaction.transaction_type]?.color}
+                      icon={transactionStyles[transaction.transaction_type]?.icon || faMoneyBillWave}
+                      className={transactionStyles[transaction.transaction_type]?.color || 'text-secondary'}
                       size="lg"
                     />
                     <h6 className="mb-0 text-capitalize">
@@ -130,17 +238,21 @@ export default function Transactions() {
           ))
         ) : (
           <div className="col-12">
-            <p className="text-center text-muted py-4">No transactions found</p>
+            <div className="text-center text-muted py-4">
+              {isLoading ? <Loader /> : 'No transactions found'}
+            </div>
           </div>
         )}
       </div>
 
+      {/* Pagination */}
       {data?.data?.length > 0 && (
         <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
           <button
             className="btn btn-outline-primary"
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
+            style={{ width: '100px', padding: '8px 16px', borderRadius: '8px', border: '2px solid var(--mainColor, #007bff)', color: 'var(--mainColor, #007bff)', fontWeight: '600', transition: 'all 0.3s ease' }}
           >
             Previous
           </button>
@@ -150,7 +262,8 @@ export default function Transactions() {
           <button
             className="btn btn-outline-primary"
             onClick={() => setPage((prev) => prev + 1)}
-            disabled={!data?.next || data?.data.length < pageSize}
+            disabled={!data?.next}
+            style={{ width: '100px', padding: '8px 16px', borderRadius: '8px', border: '2px solid var(--mainColor, #007bff)', color: 'var(--mainColor, #007bff)', fontWeight: '600', transition: 'all 0.3s ease' }}
           >
             Next
           </button>

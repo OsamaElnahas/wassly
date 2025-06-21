@@ -11,6 +11,8 @@ import OrderDetails from "../Orders/OrderDetails";
 import Tayareen from "../Tayareen/Tayareen";
 import NotFound from "../NotFound/NotFound";
 import Transactions from "../Transactions/Transactions";
+import AddTayar from "../Tayareen/AddTayar";
+import TayarDetails from "../Tayareen/TayarDetails";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +31,8 @@ const router = createBrowserRouter([
                     { path: "/orderDetails/:id", element:<OrderDetails/> },
                     { path: "/tayareen", element:<Tayareen/> },
                     { path: "/transactions", element:<Transactions/> },
+                    { path: "/addTayaar", element:<AddTayar/> },
+                    { path: "/tayaarDetails/:id", element:<TayarDetails/> },
                 ],
             }
         ],

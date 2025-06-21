@@ -22,7 +22,7 @@ export default function Tayareen() {
         headers: { Authorization: 'Token ' + localStorage.getItem('token') },
         params: { page, page_size: pageSize },
       });
-      console.log(res?.data);
+      console.log(res);
       return res?.data || [];
     } catch (error) {
       console.error('Error fetching tayareen:', error);
@@ -48,7 +48,7 @@ export default function Tayareen() {
       <div className="d-flex justify-content-between align-items-center mb-4 gap-3 flex-wrap">
         <div className="row g-4 w-100 justify-content-between align-items-center" style={{ maxWidth: '1200px' }}>
           <div className="col-md-6 col-lg-3 col-sm-6 col-12">
-            <AccessCard link="/" title="Add Tayaar" iconProp={faUserPlus} />
+            <AccessCard link="/addTayaar" title="Add Tayaar" iconProp={faUserPlus} />
           </div>
           <div className="col-lg-4 col-12 mb-1 mb-lg-0">
             <div className="search-container d-flex align-items-center gap-2 border p-1 px-2 rounded bg-white">
@@ -72,7 +72,7 @@ export default function Tayareen() {
         )}
         {filteredData?.length > 0 ? (
           filteredData?.map((tayar) => (
-            <div className="col-sm-12 col-lg-6" key={tayar.id}>
+            <Link to={`/tayaarDetails/${tayar.id}`} className="col-sm-12 col-lg-6" key={tayar.id}>
               <div
                 className="d-block bg-white rounded p-3 shadow-sm border position-relative overflow-hidden"
                 style={{ transition: 'transform 0.3s ease, box-shadow 0.3s ease' }}
@@ -120,7 +120,7 @@ export default function Tayareen() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))
         ) : (
           <div className="col-12">

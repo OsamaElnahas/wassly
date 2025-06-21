@@ -29,14 +29,14 @@
     justify-content: center;
 }
 
-.image {
+.parent>.description>div>.image {
     width: 180px;
     height: 180px;
-    object-fit: cover;
+    /* object-fit: cover; */
     background-color: #f9f9f9;
-    padding: 4px;
-    border-radius: 50%;
+    padding: 3px;
     border: 2px solid #ddd;
+    border-radius: 50%;
     margin-bottom: 16px;
     transition: transform 0.3s ease;
 }
@@ -118,4 +118,19 @@
         font-size: 15px;
         padding: 16px;
     }
+}
+
+.nationalIdContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.nationalIdContainer img {
+    width: 60%;
+    height: auto;
+    border-radius: 8px;
+    margin: 7px;
 }

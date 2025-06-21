@@ -80,9 +80,10 @@ export default function Shops() {
                 </div>
 
             <div className="row g-3 w-100" style={{ maxWidth: "1200px", margin: "0 auto" }}>
+                
                 {filteredData?.length > 0 ? (
                     filteredData.map((shop) => (
-                        <div className="col-lg-2 col-sm-6 col-12  px-1" key={shop.id}>
+                        <div className="col-lg-2  col-md-4 col-sm-6 col-12  px-1" key={shop.id}>
                             <Card image={shop.shop_image_url? shop.shop_image_url: logo} title={shop.shop_name} description={shop.shop_description} offer={shop.has_offer} id={shop.id} status={shop.status} />
                         </div>
                     ))
