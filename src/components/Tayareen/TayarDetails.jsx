@@ -112,13 +112,13 @@ export default function TayarDetails() {
           className="text-center fw-bold"
           style={{
             color: 'var(--mainColor, #007bff)',
-            fontSize: '1.4rem',
+            fontSize: '1.2rem',
             backgroundColor: 'white',
             padding: '10px',
             borderRadius: '8px',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
             transition: 'all 0.3s ease-in-out',
-            marginBottom: '40px',
+            marginBottom: '30px',
           }}
         >
           Transactions for {tayarData?.username || 'Tayar'}
@@ -155,6 +155,7 @@ export default function TayarDetails() {
         {isLoading && <Loader />}
 
         {/* Filter UI */}
+        {data?.data?.length > 0 && (
         <div className="mb-4">
           <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
             <div className="fs-5" style={{ color: 'var(--mainColor, #007bff)' }}></div>
@@ -218,6 +219,7 @@ export default function TayarDetails() {
             </button>
           </div>
         </div>
+        )}
 
         {/* Transactions Table (Large Screens) */}
         <div className="d-none d-md-block card shadow-sm mb-4 border-0">
