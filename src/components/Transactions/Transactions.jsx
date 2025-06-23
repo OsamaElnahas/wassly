@@ -9,11 +9,11 @@ import Errors from '../Error/Errors';
 
 export default function Transactions() {
   const [page, setPage] = useState(1);
+  const pageSize = 20;
   const [filterTerm, setFilterTerm] = useState('All');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const pageSize = 50;
-
+  
   // Fetch transactions using useQuery
   const fetchTransactions = async () => {
     try {
@@ -98,7 +98,7 @@ export default function Transactions() {
       {/* Filter UI */}
       <div className="mb-4">
         <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
-          <div className="fs-5" style={{ color: 'var(--mainColor)' }}>Filter by Type</div>
+          <div className="fs-5" style={{ color: 'var(--mainColor)' }}></div>
           {['All', 'Order Picked', 'Balance Recharged'].map((status) => (
             <div key={status} className="form-check">
               <input
@@ -120,7 +120,7 @@ export default function Transactions() {
           ))}
         </div>
         <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12">
-          <div className="fs-5" style={{ color: 'var(--mainColor)' }}>Filter by Date</div>
+          <div className="fs-5" style={{ color: 'var(--mainColor)' }}></div>
           <div>
             <label htmlFor="startDate" className="form-label me-2">From:</label>
             <input

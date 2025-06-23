@@ -24,7 +24,7 @@ export default function AddTayar() {
       phone_number: Yup.string().required("Phone number is required"),
       national_id_image_front: Yup.mixed().required("Front image is required"),
       national_id_image_back: Yup.mixed().required("Back image is required"),
-        type: Yup.string().required("Type is required").oneOf([" طيار مستقل", " يعمل لدى وصلي  "]),
+        type: Yup.string().required("Type is required").oneOf(["طيار مستقل", "يعمل لدى وصلي"]),
     }),
     onSubmit: async (values) => {
     //   console.log("data to be sent", values);
