@@ -123,6 +123,8 @@ export default function Tayareen() {
                     <div className="text-muted small">{tayar.is_active ? 'Active' : 'Inactive'}</div>
                     <div className="d-flex align-items-center gap-3 justify-content-between">
                       <div className="text-muted small">Balance: {tayar.balance} LE</div>
+                      <div className='btns d-flex gap-4  flex-column flex-md-row'>
+
                       <button
                         className="btn px-4 py-1 rounded-3 shadow-sm"
                         onClick={() => {
@@ -144,16 +146,17 @@ export default function Tayareen() {
                         to={`/tayaarDetails/${tayar.id}`}
                         className="btn px-4 py-1 rounded-3 shadow-sm"
                         style={{
-                          backgroundColor: 'var(--mainColor)',
+                          backgroundColor: 'var(--thirdColor)',
                           color: 'white',
                           border: 'none',
                           transition: 'background-color 0.3s ease, transform 0.3s ease',
                           cursor: 'pointer',
                           fontSize: '14px',
                         }}
-                      >
+                        >
                         Details
                       </Link>
+                        </div>
                     </div>
                   </div>
                 </div>
