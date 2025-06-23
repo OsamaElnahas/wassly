@@ -124,7 +124,7 @@ export default function TayarDetails() {
           Transactions for {tayarData?.username || 'Tayar'}
         </div>
         <button
-          className="btn px-4 py-1 rounded-3 shadow-sm mb-4"
+          className="btn  rounded-3 shadow-sm mb-4"
           onClick={() => {
             setChargePopUp(true);
           }}
@@ -134,7 +134,9 @@ export default function TayarDetails() {
             border: 'none',
             transition: 'background-color 0.3s ease, transform 0.3s ease',
             cursor: 'pointer',
-            fontSize: '14px',
+            fontSize: '16px',
+            width: '130px',
+            padding: ' 8px',
           }}
         >
           Charge
