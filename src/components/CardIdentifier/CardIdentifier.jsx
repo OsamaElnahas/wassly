@@ -39,7 +39,7 @@ export default function CardIdentifier({
   return (
     <div className="container my-4">
       <div
-        className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-sm text-capitalize text-dark"
+        className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-sm text-capitalize text-dark justify-content-center align-items-center"
         style={{ transition: 'all 0.3s ease-in-out', overflow: 'hidden' }}
         onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.1)')}
         onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.05)')}
@@ -71,7 +71,7 @@ export default function CardIdentifier({
             {/* {describtion && <div className="fs-6 text-muted bg-light px-4 text-center">{describtion}</div>} */}
           </div>
         </div>
-        <div className="card-identifier-details d-flex flex-column p-3 fs-6 gap-2">
+        <div className="card-identifier-details d-flex flex-column align-items-center align-items-md-start justify-content-center p-3 fs-6 gap-2 col-12 col-md">
           {status && (
             <div className={`fw-bold ${status === 'Online' || status === 'مفتوح' ? 'text-success' : 'text-danger'}`}>
               {status}
@@ -97,14 +97,14 @@ export default function CardIdentifier({
           {type && <div>Type: {type}</div>}
           {balance != null && <div>Balance: {balance}</div>}
           {nationalIdFront && nationalIdBack && (
-            <div className="d-flex flex-column flex-lg-row align-items-center justify-content-between p-2">
+            <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between  p-2">
               {nationalIdFront && (
-                <div className="m-2">
+                <div className="m-2 d-flex align-items-center justify-content-center">
                   <img src={nationalIdFront} alt="National ID Front" className="w-50 rounded" />
                 </div>
               )}
               {nationalIdBack && (
-                <div className="m-2">
+                <div className="m-2 d-flex align-items-center justify-content-center">
                   <img src={nationalIdBack} alt="National ID Back" className="w-50 rounded" />
                 </div>
               )}

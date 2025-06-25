@@ -37,19 +37,16 @@ const RechargeCoin = ({ id, username, onClose }) => {
           },
         }
       );
-      console.log("recharge res",res);
-      
+      console.log("recharge res", res);
       return res?.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['tayareen']);
       // setTimeout(onClose, 4000);
-
     },
     onError: (err) => {
       setError(err.message || 'An error occurred during recharge');
       console.log(err);
-      
     },
   });
 
@@ -65,16 +62,28 @@ const RechargeCoin = ({ id, username, onClose }) => {
       className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50"
       style={{ zIndex: 1050 }}
     >
-      <div className="bg-white rounded-4 p-4 shadow-lg w-100" style={{ maxWidth: '400px' }}>
-        <p
-          className="fs-5 fw-semibold text-center"
+      <div
+        className="bg-white rounded-4 p-4 shadow-lg w-100 d-flex flex-column gap-5"
+        style={{
+          maxWidth: '700px',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+        }}
+      >
+        <div
+          className="fs-5 fw-semibold text-center d-flex flex-column align-items-center gap-1"
           style={{
             color: 'var(--mainColor)',
-            marginBottom: '20px',
+            marginBottom: '10px',
           }}
         >
-          Recharge {amount} <FontAwesomeIcon icon={faCoins} /> <br/>     <FontAwesomeIcon icon={faArrowCircleRight}/> {username} 
-        </p>
+          <p>
+            Recharge {amount} <FontAwesomeIcon icon={faCoins} />
+          </p>
+          <p>
+            <FontAwesomeIcon icon={faArrowCircleRight} /> {username}
+          </p>
+        </div>
 
         {rechargeMutation.isLoading && <CheckStatus status="loading" />}
         {rechargeMutation.isSuccess && (
@@ -82,9 +91,9 @@ const RechargeCoin = ({ id, username, onClose }) => {
             <CheckStatus status="success" />
             <button
               onClick={onClose}
-              className="btn btn-primary mt-3 fw-semibold w-100"
+              className="btn btn-primary mt-5 fw-semibold w-50"
             >
-              Done
+              Close
             </button>
           </div>
         )}
@@ -94,9 +103,9 @@ const RechargeCoin = ({ id, username, onClose }) => {
             <div className="text-danger fw-semibold mb-3">{error}</div>
             <button
               onClick={onClose}
-              className="btn btn-primary mt-3 fw-semibold w-100"
+              className="btn btn-primary mt-3 fw-semibold w-50"
             >
-              Done
+              Close
             </button>
           </div>
         )}
@@ -110,17 +119,18 @@ const RechargeCoin = ({ id, username, onClose }) => {
               onChange={handleAmountChange}
             />
             {error && <div className="text-danger fw-semibold">{error}</div>}
-            <div className="d-flex justify-content-center gap-3 mt-4">
+            <div className="d-flex justify-content-center gap-3 mt-5">
               <button
                 type="submit"
-                className="btn btn-primary w-100 fw-semibold"
+                className="btn btn-primary w-50 fw-semibold"
                 disabled={rechargeMutation.isLoading || error || !amount}
+                style={{ backgroundColor: 'var(--mainColor)' }}
               >
                 {rechargeMutation.isLoading ? 'Submitting...' : 'Confirm'}
               </button>
               <button
                 onClick={onClose}
-                className="btn btn-danger w-100 fw-semibold"
+                className="btn btn-danger w-50 fw-semibold"
                 disabled={rechargeMutation.isLoading}
               >
                 Close
