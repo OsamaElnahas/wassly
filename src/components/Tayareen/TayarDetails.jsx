@@ -15,8 +15,11 @@ export default function TayarDetails() {
   const [filterTerm, setFilterTerm] = useState('All');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [tempStartDate, setTempStartDate] = useState(''); // Temporary state for start date
+    const [tempEndDate, setTempEndDate] = useState('');
   const [chargePopUp, setChargePopUp] = useState(false);
   const [page, setPage] = useState(1);
+  const[openfilter, setOpenFilter] = useState(false);
   const pageSize = 5;
 
   const fetchTransactions = async () => {
@@ -28,6 +31,9 @@ export default function TayarDetails() {
         user: id,
       };
       if (type) params.transaction_type = type;
+      if (startDate) params.from = startDate;
+      if (endDate) params.to = endDate;
+
       const res = await axios.get(`https://wassally.onrender.com/api/transactions/`, {
         headers: { Authorization: 'Token ' + localStorage.getItem('token') },
         params,
@@ -40,24 +46,15 @@ export default function TayarDetails() {
     }
   };
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['transactions', id, filterTerm, page],
+
+  const { data: transactionData, isLoading, isError, error } = useQuery({
+    queryKey: ['transactions', id, filterTerm, page, startDate, endDate],
     queryFn: fetchTransactions,
     keepPreviousData: true,
   });
 
-  const filterData = data?.data.filter((transaction) => {
-    const transactionDate = new Date(transaction.date);
-    const start = startDate ? new Date(startDate) : null;
-    const end = endDate ? new Date(endDate) : null;
 
-    if (start) start.setHours(0, 0, 0, 0);
-    if (end) end.setHours(23, 59, 59, 999);
-
-    const dateMatch = (!start || transactionDate >= start) && (!end || transactionDate <= end);
-
-    return dateMatch;
-  }) || [];
+ 
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString('en-US', {
@@ -65,6 +62,22 @@ export default function TayarDetails() {
       timeStyle: 'short',
     });
   };
+    const handleApplyFilters = () => {
+    setStartDate(tempStartDate);
+    setEndDate(tempEndDate);
+    setPage(1); 
+  };
+
+  const handleClearFilters = () => {
+    setFilterTerm('All');
+    setTempStartDate('');
+    setTempEndDate('');
+    setStartDate('');
+    setEndDate('');
+    setPage(1);
+    setOpenFilter(false);
+  };
+
 
   async function getTayarDetails() {
     try {
@@ -124,7 +137,7 @@ export default function TayarDetails() {
           Transactions for {tayarData?.username || 'Tayar'}
         </div>
         <button
-          className="btn  rounded-3 shadow-sm mb-5"
+          className="btn  rounded-3 shadow-sm mb-3"
           onClick={() => {
             setChargePopUp(true);
           }}
@@ -135,8 +148,8 @@ export default function TayarDetails() {
             transition: 'background-color 0.3s ease, transform 0.3s ease',
             cursor: 'pointer',
             fontSize: '16px',
-            width: '130px',
-            padding: ' 8px',
+            width: '10rem',
+            padding: '4px',
           }}
         >
           Charge
@@ -155,72 +168,62 @@ export default function TayarDetails() {
         {isLoading && <Loader />}
 
         {/* Filter UI */}
-        {data?.data?.length > 0 && (
         <div className="mb-4">
           <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
-            <div className="fs-5" style={{ color: 'var(--mainColor, #007bff)' }}></div>
-            {['All', 'Order Picked', 'Balance Recharged'].map((status) => (
-              <div key={status} className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="status"
-                  id={status}
-                  value={status}
-                  onChange={(e) => {
-                    setFilterTerm(e.target.value);
-                  }}
-                  checked={filterTerm === status}
-                />
-                <label className="form-check-label" htmlFor={status} style={{ color: 'var(--mainColor, #007bff)' }}>
-                  {status}
-                </label>
-              </div>
-            ))}
-          </div>
-          <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12">
-            <div className="fs-5" style={{ color: 'var(--mainColor, #007bff)' }}></div>
-            <div>
-              <label htmlFor="startDate" className="form-label me-2">From:</label>
-              <input
-                type="date"
-                id="startDate"
-                className="form-control"
-                value={startDate}
-                onChange={(e) => {
-                  setStartDate(e.target.value);
-                }}
-                style={{ display: 'inline-block', width: 'auto' }}
-              />
-            </div>
-            <div>
-              <label htmlFor="endDate" className="form-label me-2">To:</label>
-              <input
-                type="date"
-                id="endDate"
-                className="form-control"
-                value={endDate}
-                onChange={(e) => {
-                  setEndDate(e.target.value);
-                }}
-                style={{ display: 'inline-block', width: 'auto' }}
-              />
-            </div>
-            <button
-              className="btn btn-outline-secondary"
-              onClick={() => {
-                setFilterTerm('All');
-                setStartDate('');
-                setEndDate('');
-                setPage(1);
-              }}
-            >
-              Clear Filters
-            </button>
-          </div>
-        </div>
-        )}
+            <select className=' border-1 rounded-2 px-2 py-1 ' name="transactionType" id="transactionType" value={filterTerm} onChange={(e) => setFilterTerm(e.target.value)}>
+              <option className='p1' value="All">All</option>
+              <option className='p1' value="Order Picked">Order Picked</option>
+              <option className='p1' value="Balance Recharged">Balance Recharged</option>
+            </select>
 
+            
+                
+          </div>
+
+          {!openfilter && <button className='btn btn-outline-secondary mb-2' onClick={() => setOpenFilter(!openfilter)}> Filter By Date</button>}
+            {openfilter && (
+              <div>
+
+           <div className="d-flex flex-wrap align-items-start gap-3">
+          <div className='d-flex align-items-center gap-2'>
+            <label htmlFor="startDate" className="form-label ">From:</label>
+            <input
+              type="date"
+              id="startDate"
+              className="form-control w-100"
+              value={tempStartDate}
+              onChange={(e) => setTempStartDate(e.target.value)}
+              style={{ display: 'inline-block', width: 'auto' }}
+            />
+          </div>
+          <div className='d-flex align-items-center gap-2 justify-content-between'>
+            <label htmlFor="endDate" className="form-label ">To:</label>
+            <input
+              type="date"
+              id="endDate"
+              className="form-control w-100"
+              value={tempEndDate}
+              onChange={(e) => setTempEndDate(e.target.value)}
+              style={{ display: 'inline-block', width: 'auto' }}
+            />
+          </div>
+          <button
+            className="btn btn-primary"
+            onClick={handleApplyFilters}
+          >
+            Apply Filters
+          </button>
+        </div>
+          <button
+            className="btn btn-outline-secondary mt-3"
+            onClick={handleClearFilters}
+          >
+            Clear Filters
+          </button>
+        </div>
+
+            )}
+        </div>
         {/* Transactions Table (Large Screens) */}
         <div className="d-none d-md-block card shadow-sm mb-4 border-0">
           <div className="card-body p-0">
@@ -234,8 +237,8 @@ export default function TayarDetails() {
                 </tr>
               </thead>
               <tbody>
-                {filterData?.length > 0 ? (
-                  filterData?.map((transaction, index) => (
+                {transactionData?.data?.length > 0 ? (
+                  transactionData?.data?.map((transaction, index) => (
                     <tr key={index} className="align-middle">
                       <td className="px-4 py-3">
                         <FontAwesomeIcon
@@ -266,7 +269,7 @@ export default function TayarDetails() {
                   </tr>
                 )}
               </tbody>
-              {filterData?.length > 0 && (
+              {transactionData?.data?.length > 0 && (
                 <tfoot>
                   <tr>
                     <td colSpan="4" className="text-center py-4">
@@ -293,7 +296,7 @@ export default function TayarDetails() {
                         <button
                           className="btn btn-outline-primary"
                           onClick={() => setPage((prev) => prev + 1)}
-                          disabled={!data?.next}
+                          disabled={!transactionData?.next}
                           style={{
                             width: '100px',
                             padding: '4px',
@@ -317,8 +320,8 @@ export default function TayarDetails() {
 
         {/* Transactions (Smaller Screens) */}
         <div className="d-md-none row g-3">
-          {filterData?.length > 0 ? (
-            filterData.map((transaction, index) => (
+          {transactionData?.data?.length > 0 ? (
+            transactionData.data.map((transaction, index) => (
               <div key={index} className="col-12">
                 <div className="card shadow-sm border-0 h-100">
                   <div className="card-body d-flex flex-column gap-2">
@@ -354,7 +357,7 @@ export default function TayarDetails() {
           )}
 
           {/* Pagination for Smaller Screens */}
-          {filterData?.length > 0 && (
+          {transactionData?.data?.length > 0 && (
             <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
               <button
                 className="btn btn-outline-primary"
@@ -378,7 +381,7 @@ export default function TayarDetails() {
               <button
                 className="btn btn-outline-primary"
                 onClick={() => setPage((prev) => prev + 1)}
-                disabled={!data?.next}
+                disabled={!transactionData?.next}
                 style={{
                   width: '100px',
                   padding: '4px',

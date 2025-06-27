@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBillWave, faExclamationTriangle, faMotorcycle, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
+import { faMoneyBillWave, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Loader from '../Loader/Loader';
 import Errors from '../Error/Errors';
@@ -11,21 +11,24 @@ export default function Transactions() {
   const [page, setPage] = useState(1);
   const pageSize = 20;
   const [filterTerm, setFilterTerm] = useState('All');
+  const [tempStartDate, setTempStartDate] = useState('');
+  const [tempEndDate, setTempEndDate] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  
+  const [openFilter, setOpenFilter] = useState(false);
+
   // Fetch transactions using useQuery
   const fetchTransactions = async () => {
     try {
       const type = filterTerm === 'All' ? '' : filterTerm.toLowerCase().replace(' ', '_');
+
       const params = {
         page,
         page_size: pageSize,
       };
       if (type) params.transaction_type = type;
-      // Add date filters if API supports them (commented out for now)
-      // if (startDate) params.start_date = startDate;
-      // if (endDate) params.end_date = endDate;
+      if (startDate) params.from = startDate;
+      if (endDate) params.to = endDate;
 
       const res = await axios.get('https://wassally.onrender.com/api/transactions/', {
         headers: { Authorization: 'Token ' + localStorage.getItem('token') },
@@ -47,43 +50,37 @@ export default function Transactions() {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['transactions', page, filterTerm],
+    queryKey: ['transactions', page, filterTerm, startDate, endDate],
     queryFn: fetchTransactions,
     keepPreviousData: true,
   });
 
   const transactionStyles = {
     order_picked: { icon: faMotorcycle, color: 'text-primary' },
-    balance_recharged: { icon: faMoneyBill, color: 'text-success' },
+    balance_recharged: { icon: faMoneyBillWave, color: 'text-success' },
   };
-
-  // Filter transactions by date (client-side, as API doesn't support date filtering)
-  const filterData = data?.data?.filter((transaction) => {
-    const transactionDate = new Date(transaction.date);
-    const start = startDate ? new Date(startDate) : null;
-    const end = endDate ? new Date(endDate) : null;
-
-    if (start) start.setHours(0, 0, 0, 0);
-    if (end) end.setHours(23, 59, 59, 999);
-
-    const dateMatch = (!start || transactionDate >= start) && (!end || transactionDate <= end);
-
-    return dateMatch;
-  }) || [];
-
-  console.log('Filtered transactions:', {
-    page,
-    filterTerm,
-    startDate,
-    endDate,
-    length: filterData.length,
-  });
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString('en-US', {
       dateStyle: 'medium',
       timeStyle: 'short',
     });
+  };
+
+  const handleApplyFilters = () => {
+    setStartDate(tempStartDate);
+    setEndDate(tempEndDate);
+    setPage(1);
+  };
+
+  const handleClearFilters = () => {
+    setFilterTerm('All');
+    setTempStartDate('');
+    setTempEndDate('');
+    setStartDate('');
+    setEndDate('');
+    setPage(1);
+    setOpenFilter(false);
   };
 
   return (
@@ -98,69 +95,71 @@ export default function Transactions() {
       {/* Filter UI */}
       <div className="mb-4">
         <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
-          <div className="fs-5" style={{ color: 'var(--mainColor)' }}></div>
-          {['All', 'Order Picked', 'Balance Recharged'].map((status) => (
-            <div key={status} className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="status"
-                id={status}
-                value={status}
-                onChange={(e) => {
-                  setFilterTerm(e.target.value);
-                  setPage(1);
-                }}
-                checked={filterTerm === status}
-              />
-              <label className="form-check-label" htmlFor={status} style={{ color: 'var(--mainColor)' }}>
-                {status}
-              </label>
-            </div>
-          ))}
-        </div>
-        <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12">
-          <div className="fs-5" style={{ color: 'var(--mainColor)' }}></div>
-          <div>
-            <label htmlFor="startDate" className="form-label me-2">From:</label>
-            <input
-              type="date"
-              id="startDate"
-              className="form-control"
-              value={startDate}
-              onChange={(e) => {
-                setStartDate(e.target.value);
-                setPage(1);
-              }}
-              style={{ display: 'inline-block', width: 'auto' }}
-            />
-          </div>
-          <div>
-            <label htmlFor="endDate" className="form-label me-2">To:</label>
-            <input
-              type="date"
-              id="endDate"
-              className="form-control"
-              value={endDate}
-              onChange={(e) => {
-                setEndDate(e.target.value);
-                setPage(1);
-              }}
-              style={{ display: 'inline-block', width: 'auto' }}
-            />
-          </div>
-          <button
-            className="btn btn-outline-secondary"
-            onClick={() => {
-              setFilterTerm('All');
-              setStartDate('');
-              setEndDate('');
+          <select
+            className="border-1 rounded-2 px-2 py-1 form-select"
+            name="transactionType"
+            id="transactionType"
+            value={filterTerm}
+            onChange={(e) => {
+              setFilterTerm(e.target.value);
               setPage(1);
             }}
           >
-            Clear Filters
-          </button>
+            <option value="All">All</option>
+            <option value="Order Picked">Order Picked</option>
+            <option value="Balance Recharged">Balance Recharged</option>
+          </select>
         </div>
+
+        {!openFilter && (
+          <button
+            className="btn btn-outline-secondary mb-2"
+            onClick={() => setOpenFilter(!openFilter)}
+          >
+            Filter By Date
+          </button>
+        )}
+        {openFilter && (
+          <div>
+            <div className="d-flex flex-wrap align-items-start gap-3">
+              <div className="d-flex align-items-center gap-2">
+                <label htmlFor="startDate" className="form-label">
+                  From:
+                </label>
+                <input
+                  type="date"
+                  id="startDate"
+                  className="form-control w-100"
+                  value={tempStartDate}
+                  onChange={(e) => setTempStartDate(e.target.value)}
+                  style={{ display: 'inline-block', width: 'auto' }}
+                />
+              </div>
+              <div className="d-flex align-items-center gap-2 justify-content-between">
+                <label htmlFor="endDate" className="form-label">
+                  To:
+                </label>
+                <input
+                  type="date"
+                  id="endDate"
+                  className="form-control w-100"
+                  value={tempEndDate}
+                  onChange={(e) => setTempEndDate(e.target.value)}
+                  style={{ display: 'inline-block', width: 'auto' }}
+                />
+              </div>
+              <button className="btn btn-primary" onClick={handleApplyFilters}>
+                Apply Filters
+              </button>
+            </div>
+            <button
+              className="btn btn-outline-secondary mt-3"
+              onClick={handleClearFilters}
+            >
+              Clear Filters
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Transactions Table (Visible on md and larger screens) */}
@@ -176,8 +175,8 @@ export default function Transactions() {
               </tr>
             </thead>
             <tbody>
-              {filterData?.length > 0 ? (
-                filterData?.map((transaction, index) => (
+              {data?.data?.length > 0 ? (
+                data?.data?.map((transaction, index) => (
                   <tr key={index} className="align-middle">
                     <td className="px-4 py-3">
                       <FontAwesomeIcon
@@ -208,8 +207,8 @@ export default function Transactions() {
 
       {/* Transactions Cards (Visible on sm and smaller screens) */}
       <div className="d-md-none row g-3">
-        {filterData?.length > 0 ? (
-          filterData.map((transaction, index) => (
+        {data?.data?.length > 0 ? (
+          data?.data?.map((transaction, index) => (
             <div key={index} className="col-12">
               <div className="card shadow-sm border-0 h-100">
                 <div className="card-body d-flex flex-column gap-2">
@@ -252,7 +251,15 @@ export default function Transactions() {
             className="btn btn-outline-primary"
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
-            style={{ width: '100px', padding: '8px 16px', borderRadius: '8px', border: '2px solid var(--mainColor, #007bff)', color: 'var(--mainColor, #007bff)', fontWeight: '600', transition: 'all 0.3s ease' }}
+            style={{
+              width: '100px',
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: '2px solid var(--mainColor, #007bff)',
+              color: 'var(--mainColor, #007bff)',
+              fontWeight: '600',
+              transition: 'all 0.3s ease',
+            }}
           >
             Previous
           </button>
@@ -263,7 +270,15 @@ export default function Transactions() {
             className="btn btn-outline-primary"
             onClick={() => setPage((prev) => prev + 1)}
             disabled={!data?.next}
-            style={{ width: '100px', padding: '8px 16px', borderRadius: '8px', border: '2px solid var(--mainColor, #007bff)', color: 'var(--mainColor, #007bff)', fontWeight: '600', transition: 'all 0.3s ease' }}
+            style={{
+              width: '100px',
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: '2px solid var(--mainColor, #007bff)',
+              color: 'var(--mainColor, #007bff)',
+              fontWeight: '600',
+              transition: 'all 0.3s ease',
+            }}
           >
             Next
           </button>

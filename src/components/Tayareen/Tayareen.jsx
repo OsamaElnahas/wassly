@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faUserCircle, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faDollarSign, faSearch, faUserCircle, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import AccessCard from '../AccessCard/AccessCard';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -110,23 +110,25 @@ export default function Tayareen() {
                 }}
               >
                 <div className="d-flex align-items-center gap-3">
-                  <div
+                  <Link
                     className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                    style={{ width: '60px', height: '60px', backgroundColor: 'var(--mainColor)' }}
-                  >
-                    <FontAwesomeIcon icon={faUserCircle} className="text-white fs-3" />
-                  </div>
+                    style={{ width: '70px', height: '70px', backgroundColor: 'var(--mainColor)' }}
+            
+                    to={`/tayaarDetails/${tayar.id}`}
+                      >
+                        <FontAwesomeIcon icon={faUserCircle} className="text-white fs-1 w-100" />
+                      </Link>
                   <div className="flex-grow-1 overflow-hidden d-flex flex-column gap-2">
                     <div className="fw-bold text-truncate text-dark">{tayar.username}</div>
                     <div className="text-muted small">{tayar.phone_number}</div>
                     <div className="text-primary small fw-semibold">Wassly {tayar.crew_type}</div>
                     <div className="text-muted small">{tayar.is_active ? 'Active' : 'Inactive'}</div>
-                    <div className="d-flex align-items-center gap-3 justify-content-between">
-                      <div className="text-muted small">Balance: {tayar.balance} LE</div>
-                      <div className='btns d-flex gap-4  flex-column flex-md-row'>
+                    {/* <div className="d-flex align-items-center gap-3 justify-content-between"> */}
+                      <div className='d-flex justify-content-between align-items-center gap-5 '>
 
+                      <div className="text-muted small">Balance: {tayar.balance} LE</div>
                       <button
-                        className="btn px-4 py-1 rounded-3 shadow-sm"
+                        className="btn px-4 py-1 rounded-3 shadow-sm d-block"
                         onClick={() => {
                           setSelectedTayar({ id: tayar.id, username: tayar.username });
                           setChargePopUp(true);
@@ -140,28 +142,16 @@ export default function Tayareen() {
                           fontSize: '14px',
                         }}
                       >
+                        <FontAwesomeIcon icon={faDollarSign} className="me-2" />
                         Charge
                       </button>
-                      <Link
-                        to={`/tayaarDetails/${tayar.id}`}
-                        className="btn px-4 py-1 rounded-3 shadow-sm"
-                        style={{
-                          backgroundColor: 'var(--thirdColor)',
-                          color: 'white',
-                          border: 'none',
-                          transition: 'background-color 0.3s ease, transform 0.3s ease',
-                          cursor: 'pointer',
-                          fontSize: '14px',
-                        }}
-                        >
-                        Details
-                      </Link>
+                      </div>
+                      
                         </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+            // </div>
           ))
         ) : (
           <div className="col-12">
