@@ -5,8 +5,10 @@ import axios from 'axios';
 import Errors from '../Error/Errors';
 import Loader from '../Loader/Loader';
 import { useQuery } from '@tanstack/react-query';
-import img from '../../images/user.png';
-import { faMoneyBillWave, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
+import img from '../../images/user2.png';
+import img2 from '../../images/user.png';
+
+import { faMoneyBillWave,faDollarSign, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RechargeCoin from './ChargeCoins';
 
@@ -110,16 +112,15 @@ export default function TayarDetails() {
   return (
     <>
       <CardIdentifier
-        image={tayarData?.profile_image || img}
+        image={tayarData?.profile_image || img2}
         title={tayarData?.username || 'Tayar Name'}
         phone={tayarData?.phone_number}
         type={tayarData?.crew_type}
         TayarIsActive={tayarData?.is_active}
-        nationalIdFront={tayarData?.national_id_image_front || img}
-        nationalIdBack={tayarData?.national_id_image_back || img}
+        nationalIdFront={tayarData?.national_id?.front_image_url || null}
+        nationalIdBack={tayarData?.national_id?.back_image_url || null}
         balance={tayarData?.balance || 0}
       />
-      <hr />
       <div className="container mt-5" style={{ maxWidth: '1400px' }}>
         <div
           className="text-center fw-bold"
@@ -136,24 +137,6 @@ export default function TayarDetails() {
         >
           Transactions for {tayarData?.username || 'Tayar'}
         </div>
-        <button
-          className="btn  rounded-3 shadow-sm mb-3"
-          onClick={() => {
-            setChargePopUp(true);
-          }}
-          style={{
-            backgroundColor: 'var(--mainColor)',
-            color: 'white',
-            border: 'none',
-            transition: 'background-color 0.3s ease, transform 0.3s ease',
-            cursor: 'pointer',
-            fontSize: '16px',
-            width: '10rem',
-            padding: '4px',
-          }}
-        >
-          Charge
-        </button>
         {chargePopUp && (
           <RechargeCoin
             id={id}
@@ -168,8 +151,10 @@ export default function TayarDetails() {
         {isLoading && <Loader />}
 
         {/* Filter UI */}
-        <div className="mb-4">
-          <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
+        <div className="mb-4 d-flex flex-column-reverse gap-2 flex-md-row-reverse justify-content-md-between align-items-md-start">
+
+          <div>
+          <div className="d-flex flex-wrap  align-items-center gap-3 col-lg-7 col-12 mb-3">
             <select className=' border-1 rounded-2 px-2 py-1 ' name="transactionType" id="transactionType" value={filterTerm} onChange={(e) => setFilterTerm(e.target.value)}>
               <option className='p1' value="All">All</option>
               <option className='p1' value="Order Picked">Order Picked</option>
@@ -194,7 +179,7 @@ export default function TayarDetails() {
               value={tempStartDate}
               onChange={(e) => setTempStartDate(e.target.value)}
               style={{ display: 'inline-block', width: 'auto' }}
-            />
+              />
           </div>
           <div className='d-flex align-items-center gap-2 justify-content-between'>
             <label htmlFor="endDate" className="form-label ">To:</label>
@@ -223,6 +208,26 @@ export default function TayarDetails() {
         </div>
 
             )}
+</div>
+  <button
+          className="btn  rounded-3 shadow-sm mb-3"
+          onClick={() => {
+            setChargePopUp(true);
+          }}
+          style={{
+            backgroundColor: 'var(--mainColor)',
+            color: 'white',
+            border: 'none',
+            transition: 'background-color 0.3s ease, transform 0.3s ease',
+            cursor: 'pointer',
+            fontSize: '16px',
+            width: '10rem',
+            padding: '4px',
+          }}
+        >
+          <FontAwesomeIcon icon={faDollarSign} className="me-2" /> 
+          Charge
+        </button>
         </div>
         {/* Transactions Table (Large Screens) */}
         <div className="d-none d-md-block card shadow-sm mb-4 border-0">

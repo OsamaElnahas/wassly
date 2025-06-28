@@ -37,24 +37,24 @@ export default function CardIdentifier({
   const isTayarActive = typeof TayarIsActive === 'string' ? TayarIsActive === 'true' : !!TayarIsActive;
 
   return (
-    <div className="container my-4">
+    <div className="container my-3" style={{ maxWidth: '1200px' }}>
       <div
-        className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-sm text-capitalize text-dark justify-content-center align-items-center"
+        className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-md text-capitalize text-dark justify-content-start align-items-center align-items-start gap-3 w-100"
         style={{ transition: 'all 0.3s ease-in-out', overflow: 'hidden' }}
         onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.1)')}
         onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.05)')}
       >
-        <div className="d-flex flex-column align-items-center justify-content-center p-3 border-end border-end-0-md border-bottom col-12 col-md-auto">
+        <div className="d-flex flex-md-column align-items-center gap-3 justify-content-center p-3 col-12 col-md-auto ">
           <div>
             <img
               loading="lazy"
               src={imgSrc}
               alt="shop"
               onError={() => setImgSrc(imageFallback)}
-              className="card-identifier-image rounded-circle border p-1 bg-light"
+              className="card-identifier-image rounded-circle border p-1 shadow-sm bg-light"
               style={{
-                width: '180px',
-                height: '180px',
+                width: '145px',
+                height: '145px',
                 objectFit: 'cover',
                 transition: 'transform 0.3s ease',
                 marginBottom: '16px',
@@ -63,16 +63,21 @@ export default function CardIdentifier({
               onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
             />
           </div>
-          <div className="w-100 d-flex flex-column align-items-center gap-2">
-            <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">
+          <div className="w-100 d-flex flex-column align-items-start gap-2">
+            <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-lg-center">
               <span>{title}</span>
             </div>
             {user && <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">user: {user}</div>}
             {/* {describtion && <div className="fs-6 text-muted bg-light px-4 text-center">{describtion}</div>} */}
           </div>
         </div>
-        <div className="card-identifier-details d-flex flex-column align-items-center align-items-md-start justify-content-center p-3 fs-6 gap-2 col-12 col-md">
-          {status && (
+<div className="card-identifier-details d-flex flex-column align-items-start align-self-md-start justify-content-center p-3 fs-6 gap-2  border-start border-top "
+          style={{
+            height: '100%',
+          
+          }}
+
+>          {status && (
             <div className={`fw-bold ${status === 'Online' || status === 'مفتوح' ? 'text-success' : 'text-danger'}`}>
               {status}
             </div>
@@ -97,15 +102,24 @@ export default function CardIdentifier({
           {type && <div>Type: {type}</div>}
           {balance != null && <div>Balance: {balance}</div>}
           {nationalIdFront && nationalIdBack && (
-            <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between  p-2">
+            <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between gap-5  p-2">
               {nationalIdFront && (
-                <div className="m-2 d-flex align-items-center justify-content-center">
-                  <img src={nationalIdFront} alt="National ID Front" className="w-50 rounded" />
+                <div className="m-2 d-flex  align-items-center justify-content-start "
+                
+                style={{ width: '100%' }}>
+                  <img src={nationalIdFront} alt="National ID Front" className=" rounded"
+                  style={
+                    { width: '100%' }
+                  } />
                 </div>
               )}
               {nationalIdBack && (
-                <div className="m-2 d-flex align-items-center justify-content-center">
-                  <img src={nationalIdBack} alt="National ID Back" className="w-50 rounded" />
+                <div className="m-2 d-flex  align-items-center justify-content-start"
+                style={{ width: '100%' }}>
+                  <img src={nationalIdBack} alt="National ID Back" className="  rounded"
+                  style={
+                    { width: '100%' }
+                  } />
                 </div>
               )}
             </div>

@@ -17,24 +17,33 @@ export default function AddTayar() {
       phone_number: "",
       national_id_image_front: null,
       national_id_image_back: null,
-      type:""
+      crew_type:""
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Username is required"),
       phone_number: Yup.string().required("Phone number is required"),
       national_id_image_front: Yup.mixed().required("Front image is required"),
       national_id_image_back: Yup.mixed().required("Back image is required"),
-        type: Yup.string().required("Type is required").oneOf(["طيار مستقل", "يعمل لدى وصلي"]),
+        crew_type: Yup.string().required("Type is required").oneOf(["طيار مستقل", "يعمل لدى وصلي"]),
     }),
     onSubmit: async (values) => {
     //   console.log("data to be sent", values);
       setIsLoading(true);
+      console.log("Submitting form with values:", values);
+      const formData = new FormData();
+    formData.append("username", values.username);
+    formData.append("phone_number", values.phone_number);
+    formData.append("crew_type", values.crew_type);
+    formData.append("national_id_image_front", values.national_id_image_front);
+    formData.append("national_id_image_back", values.national_id_image_back);
+      
       try {
         const response = await axios.post(
           "https://wassally.onrender.com/api/crew/sign-up/",
-          values,
+          formData,
           {
             headers: {
+              "Content-Type": "multipart/form-data",
               Authorization: "Token " + localStorage.getItem("token"),
             },
           }
@@ -75,7 +84,7 @@ export default function AddTayar() {
         >
           Add Tayar
         </h2>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
           <div className="mb-3">
             <label className="fw-bold mb-2">Username</label>
             <input
@@ -103,7 +112,7 @@ export default function AddTayar() {
               <div className="text-danger">{formik.errors.phone_number}</div>
             )}
           </div>
-            <div className="mb-3">
+             <div className="mb-3">
                 <label className="fw-bold mb-2">National ID Image (Front)</label>
                 <input
                 type="file"
@@ -143,21 +152,21 @@ export default function AddTayar() {
                     {formik.errors.national_id_image_back}
                     </div>
                 )}
-            </div>
+            </div> 
             <div className="mb-5">
                 <label className="fw-bold mb-2">Type</label>
                 <select
-                    name="type"
+                    name="crew_type"
                     className="form-select"
                     onChange={formik.handleChange}
-                    value={formik.values.type}
+                    value={formik.values.crew_type}
                 >
                     <option value="" label="Select type" />
                     <option value="يعمل لدى وصلي">يعمل لدى وصلي</option>
                     <option value="طيار مستقل">طيار مستقل</option>
                 </select>
-                {formik.touched.type && formik.errors.type && (
-                    <div className="text-danger">{formik.errors.type}</div>
+                {formik.touched.crew_type && formik.errors.crew_type && (
+                    <div className="text-danger">{formik.errors.crew_type}</div>
                 )}
             </div>
 

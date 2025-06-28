@@ -96,7 +96,7 @@ export default function Transactions() {
       <div className="mb-4">
         <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
           <select
-            className="border-1 rounded-2 px-2 py-1 form-select"
+            className="border-1 rounded-2 px-2 py-1"
             name="transactionType"
             id="transactionType"
             value={filterTerm}
@@ -105,9 +105,9 @@ export default function Transactions() {
               setPage(1);
             }}
           >
-            <option value="All">All</option>
-            <option value="Order Picked">Order Picked</option>
-            <option value="Balance Recharged">Balance Recharged</option>
+            <option value="All" className='shadow-lg' >All</option>
+            <option value="Order Picked" className='shadow-lg'>Order Picked</option>
+            <option value="Balance Recharged" className='shadow-lg'>Balance Recharged</option>
           </select>
         </div>
 

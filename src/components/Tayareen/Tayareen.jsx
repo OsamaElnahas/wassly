@@ -121,7 +121,7 @@ export default function Tayareen() {
                   <div className="flex-grow-1 overflow-hidden d-flex flex-column gap-2">
                     <div className="fw-bold text-truncate text-dark">{tayar.username}</div>
                     <div className="text-muted small">{tayar.phone_number}</div>
-                    <div className="text-primary small fw-semibold">Wassly {tayar.crew_type}</div>
+                    <div className="text-primary small fw-semibold"> {tayar.crew_type}</div>
                     <div className="text-muted small">{tayar.is_active ? 'Active' : 'Inactive'}</div>
                     {/* <div className="d-flex align-items-center gap-3 justify-content-between"> */}
                       <div className='d-flex justify-content-between align-items-center gap-5 '>
