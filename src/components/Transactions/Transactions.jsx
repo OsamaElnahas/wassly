@@ -85,9 +85,9 @@ export default function Transactions() {
 
   return (
     <div className="container" style={{ maxWidth: '1400px' }}>
-      <h2 className="mb-4 text-center fw-bold" style={{ color: 'var(--mainColor, #007bff)' }}>
+      {/* <h2 className="mb-4 text-center fw-bold" style={{ color: 'var(--mainColor, #007bff)' }}>
         Transactions
-      </h2>
+      </h2> */}
 
       {isError && <Errors message={error.message || 'Failed to load transactions'} />}
       {isLoading && <Loader />}

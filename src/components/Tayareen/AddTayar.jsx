@@ -13,6 +13,7 @@ export default function AddTayar() {
 
   const formik = useFormik({
     initialValues: {
+      email:"",
       username: "",
       phone_number: "",
       national_id_image_front: null,
@@ -20,6 +21,7 @@ export default function AddTayar() {
       crew_type:""
     },
     validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email").required("Email is required"),
       username: Yup.string().required("Username is required"),
       phone_number: Yup.string().required("Phone number is required"),
       national_id_image_front: Yup.mixed().required("Front image is required"),
@@ -31,6 +33,7 @@ export default function AddTayar() {
       setIsLoading(true);
       console.log("Submitting form with values:", values);
       const formData = new FormData();
+    formData.append("email", values.email);
     formData.append("username", values.username);
     formData.append("phone_number", values.phone_number);
     formData.append("crew_type", values.crew_type);
@@ -85,6 +88,21 @@ export default function AddTayar() {
           Add Tayar
         </h2>
         <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+          <div className="mb-3">
+            <label className="fw-bold mb-2">Tayar Email</label>
+            <input
+              type="text"
+              name="email"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <div className="text-danger">{formik.errors.email}</div>
+            )}
+          </div>
+
+
           <div className="mb-3">
             <label className="fw-bold mb-2">Username</label>
             <input

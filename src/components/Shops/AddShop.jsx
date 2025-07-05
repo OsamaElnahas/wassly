@@ -162,6 +162,7 @@ export default function AddShop() {
 
   const formik = useFormik({
     initialValues: {
+      email:"",
       username: "",
       phone_number: "",
       shop: {
@@ -179,6 +180,7 @@ export default function AddShop() {
       },
     },
     validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email").required("Email is required"),
       username: Yup.string().required("Username is required"),
       phone_number: Yup.string().required("Phone number is required"),
       shop: Yup.object({
@@ -257,6 +259,21 @@ export default function AddShop() {
         }}
         >Add Shop</h2>
         <form onSubmit={formik.handleSubmit}>
+          <div className="mb-3">
+            <label className="fw-bold mb-2">Owner Email</label>
+            <input
+              type="text"
+              name="email"
+              className="form-control"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <div className="text-danger">{formik.errors.email}</div>
+            )}
+          </div>
+
+
           <div className="mb-3">
             <label className="fw-bold mb-2">Owner Name</label>
             <input
