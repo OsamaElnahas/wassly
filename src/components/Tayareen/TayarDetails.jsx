@@ -120,7 +120,94 @@ export default function TayarDetails() {
         nationalIdFront={tayarData?.national_id?.front_image_url || null}
         nationalIdBack={tayarData?.national_id?.back_image_url || null}
         balance={tayarData?.balance || 0}
+        numberOfPickedOrders={tayarData?.crew_type === 'يعمل لدى وصلي' && tayarData?.number_of_deliveries}
       />
+      <div className='container'>
+
+      <div className="bg-white px-3 py-4 rounded shadow-sm mt-4 mb-4 mb-md-0">
+  <div className="header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <div
+      className="title fw-bold fs-5"
+      style={{
+        color: 'var(--mainColor)',
+      }}
+    >
+      Monthly Income
+    </div>
+
+    <div style={{ width: '14rem' }}>
+      <select
+        name="month"
+        className="px-2 py-1 rounded  w-100"
+        style={{
+          color: 'var(--mainColor)',
+          border: '1px solid var(--thirdColor)',
+          outline: 'none',
+        }}
+      >
+        <option value="">Select The Month</option>
+        <option value="1">يناير</option>
+        <option value="2">فبراير</option>
+        <option value="3">مارس</option>
+        <option value="4">ابريل</option>
+        <option value="5">مايو</option>
+        <option value="6">يونيو</option>
+        <option value="7">يوليو</option>
+        <option value="8">اغسطس</option>
+        <option value="9">سبتمبر</option>
+        <option value="10">اكتوبر</option>
+        <option value="11">نوفمبر</option>
+        <option value="12">ديسمبر</option>
+      </select>
+    </div>
+  </div>
+
+  <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+    <div className="item d-flex flex-column align-items-center gap-3 w-100">
+      <span
+        className="fw-bold"
+        style={{
+          color: 'var(--mainColor)',
+        }}
+      >
+        Driver Income
+      </span>
+      <span
+        className="fw-bold px-3 py-2 rounded text-white text-center fs-5"
+        style={{
+          backgroundColor: 'var(--thirdColor)',
+          width: '100%',
+          maxWidth: '17rem',
+        }}
+      >
+        7000 LE
+      </span>
+    </div>
+
+    <div className="item d-flex flex-column align-items-center gap-3 w-100">
+      <span
+        className="fw-bold"
+        style={{
+          color: 'var(--mainColor)',
+        }}
+      >
+        Wassaly Income
+      </span>
+      <span
+        className="fw-bold px-3 py-2 rounded text-white text-center fs-5"
+        style={{
+          backgroundColor: 'var(--thirdColor)',
+          width: '100%',
+          maxWidth: '17rem',
+        }}
+      >
+        10000 LE
+      </span>
+    </div>
+  </div>
+</div>
+        </div>
+      
       <div className="container mt-5" style={{ maxWidth: '1400px' }}>
         <div
           className="text-center fw-bold"
@@ -322,6 +409,9 @@ export default function TayarDetails() {
             </table>
           </div>
         </div>
+     
+
+
 
         {/* Transactions (Smaller Screens) */}
         <div className="d-md-none row g-3">
@@ -402,6 +492,7 @@ export default function TayarDetails() {
             </div>
           )}
         </div>
+        
       </div>
     </>
   );
