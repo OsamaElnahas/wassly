@@ -22,7 +22,10 @@ export default function TayarDetails() {
   const [chargePopUp, setChargePopUp] = useState(false);
   const [page, setPage] = useState(1);
   const[openfilter, setOpenFilter] = useState(false);
+const [month, setMonth] = useState(new Date().getMonth() + 1);
+  
   const pageSize = 5;
+
 
   const fetchTransactions = async () => {
     try {
@@ -100,7 +103,29 @@ export default function TayarDetails() {
     queryKey: ['tayarDetails', id],
     queryFn: getTayarDetails,
   });
+async function getTayarProfs() {
+  try {
+    const res = await axios.get(`https://wassally.onrender.com/api/crew/profits/`, {
+      params: {
+        crew_id: id,
+        month:  month
+      },
+      headers: {
+        Authorization: 'Token ' + localStorage.getItem('token'),
+      },
+    });
+    console.log('Tayar profs:', res.data?.data);
+    return res?.data.data;
+  } catch (error) {
+    console.error('Error fetching Tayar profits:', error);
+    throw error;
+  }
+}
 
+  const { data: tayarProfData, isLoading: tayarProfIsLoading, isError: tayarProfIsError, error: tayarProfError } = useQuery({
+    queryKey: ['tayarProf',month,tayarData?.active_orders],
+    queryFn: getTayarProfs,
+  });
   if (tayarIsLoading) return <Loader />;
   if (tayarIsError) return <Errors message={tayarError.message || 'Failed to load Tayar details'} />;
 
@@ -120,12 +145,12 @@ export default function TayarDetails() {
         nationalIdFront={tayarData?.national_id?.front_image_url || null}
         nationalIdBack={tayarData?.national_id?.back_image_url || null}
         balance={tayarData?.balance || 0}
-        numberOfPickedOrders={tayarData?.crew_type === 'يعمل لدى وصلي' && tayarData?.number_of_deliveries}
+        numberOfActiveOrders={tayarData?.active_orders}
       />
-      <div className='container'>
+      <div className='container 'style={{ maxWidth: '1400px' }}>
 
-      <div className="bg-white px-3 py-4 rounded shadow-sm mt-4 mb-4 mb-md-0">
-  <div className="header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+      <div className="bg-white px-3 py-4 rounded shadow-sm mt-4 mb-4 mb-md-0 ">
+  <div className="header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-5 gap-3">
     <div
       className="title fw-bold fs-5"
       style={{
@@ -134,10 +159,12 @@ export default function TayarDetails() {
     >
       Monthly Income
     </div>
-
     <div style={{ width: '14rem' }}>
       <select
+        onChange={(e) => setMonth(e.target.value)}
         name="month"
+        value={month}
+        disabled={tayarProfIsLoading}
         className="px-2 py-1 rounded  w-100"
         style={{
           color: 'var(--mainColor)',
@@ -161,8 +188,33 @@ export default function TayarDetails() {
       </select>
     </div>
   </div>
+  {tayarProfIsLoading ? (
+    <Loader size='10vh' />
+  ) : (
+   
+  
 
-  <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+  <div className="d-flex flex-column flex-lg-row justify-content-between align-items-center gap-4">
+    <div className="item d-flex flex-column align-items-center gap-3 w-100">
+      <span
+        className="fw-bold"
+        style={{
+          color: 'var(--mainColor)',
+        }}
+      >
+        Total Orders
+      </span>
+      <span
+        className="fw-bold px-3 py-2 rounded text-white text-center fs-5"
+        style={{
+          backgroundColor: 'var(--thirdColor)',
+          width: '100%',
+          maxWidth: '17rem',
+        }}
+      >
+        {tayarProfData?.summary?.total_orders}
+      </span>
+    </div>
     <div className="item d-flex flex-column align-items-center gap-3 w-100">
       <span
         className="fw-bold"
@@ -180,7 +232,7 @@ export default function TayarDetails() {
           maxWidth: '17rem',
         }}
       >
-        7000 LE
+        {tayarProfData?.summary?.crew_earnings} LE
       </span>
     </div>
 
@@ -201,10 +253,11 @@ export default function TayarDetails() {
           maxWidth: '17rem',
         }}
       >
-        10000 LE
+        {tayarProfData?.summary?.wassally_cut} LE
       </span>
     </div>
   </div>
+  )}
 </div>
         </div>
       

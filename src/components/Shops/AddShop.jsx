@@ -6,6 +6,7 @@ import axios from "axios";
 import { ColorRing } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
+import { useQuery } from "@tanstack/react-query";
 
 export default function AddShop() {
   const [error, setError] = useState("");
@@ -248,6 +249,23 @@ export default function AddShop() {
       }
     } 
   });
+  async function getCategories(){
+    try {
+      const res = await axios.get("https://wassally.onrender.com/api/shop-categories/", {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("token"),
+        },
+      });
+      console.log(res?.data?.data);
+      return res?.data?.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const{data:categories,isLoading:isCategoryLoading}=useQuery({
+    queryKey:["categories"],
+    queryFn:getCategories
+  })
 
   return (
     <div className="container mt-4">
@@ -360,13 +378,21 @@ export default function AddShop() {
 
           <div className="mb-3">
             <label className="fw-bold mb-2">Shop Category (Optional)</label>
-            <input
+            <select
               type="number"
               name="shop.shop_category"
               className="form-control"
               onChange={formik.handleChange}
               value={formik.values.shop.shop_category || ""}
-            />
+            >
+              {isLoading && <option>Loading...</option>}
+              <option value="">Select Category</option>
+              {categories?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-3">

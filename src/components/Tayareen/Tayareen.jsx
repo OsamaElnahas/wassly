@@ -59,8 +59,8 @@ export default function Tayareen() {
           <div className="col-md-6 col-lg-3 col-sm-6 col-12">
             <AccessCard link="/addTayaar" title="Add Tayaar" iconProp={faUserPlus} />
           </div>
-          <div className="col-lg-4 col-md-6 col-12 mb-3 mb-lg-0">
-            <div className="search-container d-flex align-items-center gap-2 border p-2 rounded bg-white position-relative">
+          <div className="col-lg-5 col-md-6 col-12 mb-3 mb-lg-0">
+            <div className="search-container d-flex align-items-center gap-2 border p-1 px-2 rounded bg-white position-relative w-100">
               <FontAwesomeIcon icon={faSearch} style={{ color: 'var(--mainColor)', fontSize: '18px' }} />
               <input
                 className="w-100 border-0 p-1"

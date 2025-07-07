@@ -29,22 +29,46 @@ export default function CardIdentifier({
   balance,
   type,
   TayarIsActive,
+  numberOfActiveOrders
 }) {
+
   const optimizedImage = image ? `${image}?format=webp&quality=80` : imageFallback;
   const [imgSrc, setImgSrc] = useState(optimizedImage);
 
   // Normalize TayarIsActive to boolean
   const isTayarActive = typeof TayarIsActive === 'string' ? TayarIsActive === 'true' : !!TayarIsActive;
+const getStatusClass = (status) => {
+  switch (status) {
+    case 'قيد الانتظار':
+      return 'text-warning bg-warning bg-opacity-10'; // أصفر خفيف
+    case 'قيد التنفيذ':
+      return 'text-primary bg-primary bg-opacity-10'; // أزرق خفيف
+    case 'قيد العمل':
+      return 'text-info bg-info bg-opacity-10'; // سماوي خفيف
+    case 'تم التوصيل':
+      return 'text-success bg-success bg-opacity-10'; // أخضر خفيف
+    case 'ملغي':
+    case 'مغلق':
+    case 'Offline':
+      return 'text-danger bg-danger bg-opacity-10'; // أحمر خفيف
+    case 'مفتوح':
+    case 'Online':
+      return 'text-success bg-success bg-opacity-10'; // أخضر خفيف
+    default:
+      return 'text-muted bg-light'; // رمادي خفيف
+  }
+};
+
 
   return (
-    <div className="container my-3" style={{ maxWidth: '1200px' }}>
+    <div className="container my-3" style={{ maxWidth: '1400px' }}>
       <div
-        className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-md text-capitalize text-dark justify-content-start align-items-center align-items-start gap-3 w-100"
+        className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-md text-capitalize text-dark justify-content-start align-md-items-center align-items-start gap-md-3 gap-1 w-100"
         style={{ transition: 'all 0.3s ease-in-out', overflow: 'hidden' }}
         onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.1)')}
         onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.05)')}
       >
-        <div className="d-flex flex-md-column align-items-center gap-3 justify-content-center p-3 col-12 col-md-auto ">
+        <div className="d-flex flex-column align-md-items-center gap-3 justify-content-center p-3 col-12 col-md-auto ">
           <div>
             <img
               loading="lazy"
@@ -53,8 +77,8 @@ export default function CardIdentifier({
               onError={() => setImgSrc(imageFallback)}
               className="card-identifier-image rounded-circle border p-1 shadow-sm bg-light"
               style={{
-                width: '145px',
-                height: '145px',
+                width: '130px',
+                height: '130px',
                 objectFit: 'cover',
                 transition: 'transform 0.3s ease',
                 marginBottom: '16px',
@@ -64,23 +88,23 @@ export default function CardIdentifier({
             />
           </div>
           <div className="w-100 d-flex flex-column align-items-start gap-2">
-            <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-lg-center">
-              <span>{title}</span>
+            <div className="fs-md-5  fw-semibold mb-2 p-2 rounded bg-light w-100 text-lg-center white-space-nowrap">
+              <span>{title} </span>
             </div>
             {user && <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">user: {user}</div>}
             {/* {describtion && <div className="fs-6 text-muted bg-light px-4 text-center">{describtion}</div>} */}
           </div>
         </div>
-<div className="card-identifier-details d-flex flex-column align-items-start align-self-md-start justify-content-center p-3 fs-6 gap-2  border-start border-top "
+<div className="card-identifier-details d-flex flex-column align-items-start align-self-md-start justify-content-start   p-3 fs-6 gap-2 "
           style={{
             height: '100%',
           
           }}
 
 >          {status && (
-            <div className={`fw-bold ${status === 'Online' || status === 'مفتوح' ? 'text-success' : 'text-danger'}`}>
-              {status}
-            </div>
+  <div className={`fw-bold rounded p-2 ${getStatusClass(status)}`}>
+    {status}
+  </div>
           )}
           {typeof TayarIsActive !== 'undefined' && (
             <div className={`fw-bold ${isTayarActive ? 'text-success' : 'text-danger'}`}>
@@ -92,15 +116,16 @@ export default function CardIdentifier({
           {total_price && <div>total Price: {total_price}</div>}
           {from_multiple_shops?.toString() && <div>from multiple shops: {from_multiple_shops.toString()}</div>}
           {coins != null && <div>coins: {coins}</div>}
-          {is_picked?.toString() && <div>Picked: {is_picked.toString()}</div>}
-          {is_delivered?.toString() && <div>Delivered: {is_delivered.toString()}</div>}
+          {is_picked?.toString() && <div>Picked : {is_picked.toString()}</div>}
+          {is_delivered?.toString() && <div>Delivered : {is_delivered.toString()}</div>}
           {notes && <div>notes: {notes}</div>}
-          {phone && <div className="fw-semibold text-primary">Phone Number: {phone}</div>}
-          {location && <div className="fw-semibold text-primary">Location: {location}</div>}
-          {order_date && <div>Date: {order_date}</div>}
-          {orders != null && <div>Confirmed Orders: {orders}</div>}
+          {phone && <div className="fw-semibold text-primary">Phone Number : {phone}</div>}
+          {location && <div className="fw-semibold text-primary">Location : {location}</div>}
+          {order_date && <div>Date : {order_date}</div>}
+          {orders != null && <div>Confirmed Orders : {orders}</div>}
           {type && <div>Type: {type}</div>}
-          {balance != null && <div>Balance: {balance}</div>}
+          {balance != null && <div>Balance : {balance}</div>}
+          {numberOfActiveOrders != null && <div>Active Orders : {numberOfActiveOrders}</div>}
           {nationalIdFront && nationalIdBack && (
             <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between gap-5  p-2">
               {nationalIdFront && (

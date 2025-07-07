@@ -69,28 +69,24 @@ export default function Shops() {
         className="row align-items-center mb-4 gx-0 w-100 justify-content-between"
         style={{ maxWidth: '1200px' }}
       >
-        <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
-          <div className="fs-5" style={{ color: 'var(--mainColor)' }}>Filter by</div>
-          {['All', 'Online', 'Offline'].map((status) => (
-            <div key={status} className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="status"
-                id={status}
-                value={status}
-                onChange={(e) => {
-                  setStatusTerm(e.target.value);
-                  setPage(1);
-                }}
-                checked={statusTerm === status}
-              />
-              <label className="form-check-label" htmlFor={status} style={{ color: 'var(--mainColor)' }}>
-                {status}
-              </label>
-            </div>
-          ))}
-        </div>
+  <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
+    {/* <div className="fs-5" style={{ color: 'var(--mainColor)' }}>Filter by</div> */}
+    <select
+      className="border-1 rounded-2 px-2 py-1 w-50"
+      name="status"
+      id="status"
+      value={statusTerm}
+      onChange={(e) => {
+        setStatusTerm(e.target.value);
+        setPage(1);
+      }}
+    >
+      <option value="All" className="shadow-lg">All</option>
+      <option value="Online" className="shadow-lg text-success fw-bold"> Online</option>
+      <option value="Offline" className="shadow-lg text-danger fw-bold">Offline</option>
+    </select>
+  </div>
+
         <div className="col-lg-5 col-12">
           <div className="search-container d-flex align-items-center gap-2 border p-1 px-2 rounded bg-white position-relative">
             <FontAwesomeIcon icon={faSearch} style={{ color: 'var(--mainColor)', fontSize: '18px' }} />
@@ -119,6 +115,7 @@ export default function Shops() {
           </div>
         </div>
       </div>
+
 
       <div className="row align-items-center mb-4 gx-0 w-100" style={{ maxWidth: '1200px' }}>
         <div

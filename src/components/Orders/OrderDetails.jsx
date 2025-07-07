@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import Errors from "../Error/Errors";
 import logo from "../../images/ordder.webp";
 import { GoogleMap, useJsApiLoader,MarkerF } from '@react-google-maps/api';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPercent, faStore, faTag } from "@fortawesome/free-solid-svg-icons";
 
 export default function OrderDetails() {
   const { id } = useParams();
@@ -35,8 +37,12 @@ export default function OrderDetails() {
       const res = await axios.get(`https://wassally.onrender.com/api/orders/${id}`, {
         headers: { Authorization: "Token " + localStorage.getItem("token") },
       });
+      console.log(res?.data?.data);
+      
       return res?.data?.data;
     } catch (error) {
+      console.log(error);
+      
       throw error;
     }
   }
@@ -75,6 +81,8 @@ export default function OrderDetails() {
   // console.log("Latitude:", data?.location?.latitude);
   // console.log("Longitude:", data?.location?.longitude);
   // console.log("Using Center:", mapCenter);
+  console.log(" Order Items:",data?.order_items);
+  
 
   return (
     <>
@@ -94,6 +102,80 @@ export default function OrderDetails() {
         location={data?.location?.address}
         image={logo}
       />
+<div className="container">
+  <div className="orderItems bg-white shadow rounded-3 p-4">
+    <div className="fs-5 fw-bold text-primary border-bottom pb-2 mb-4">Order Items</div>
+
+    {data?.order_items?.length === 0 ? (
+      <div className="text-center text-primary fs-5">No Items</div>
+    ) : (
+      <div className="row gy-4">
+        {data?.order_items?.map((item, index) => (
+          <div className="col-md-6 col-lg-4" key={index}>
+            <div
+              className="h-100 p-3 border border-primary rounded bg-light text-muted position-relative d-flex flex-column justify-content-between"
+              style={{ backgroundColor: "#e7f1ff" }}
+            >
+              <FontAwesomeIcon
+                icon={faStore}
+                size="lg"
+                className="text-primary position-absolute"
+                style={{ top: "-16px", right: "-8px", zIndex: 1000 }}
+              />
+
+              {/* Shop Info */}
+              <div className="d-flex align-items-center gap-2 mb-3">
+                <img
+                  src={item?.shop?.image}
+                  className="rounded-circle"
+                  alt=""
+                  style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                />
+                <span className="fw-bold">{item?.shop?.name}</span>
+              </div>
+
+              {/* Items List */}
+              <div className="d-flex flex-column gap-2">
+                {item?.items?.map((item, index) => (
+                  <div className="bg-white p-2 shadow-sm rounded-2" key={index}>
+                    <div className="d-flex align-items-center gap-2 mb-1">
+                      <img
+                        src={item?.product?.image_url}
+                        className="rounded-circle"
+                        alt=""
+                        style={{ width: "30px", height: "30px", objectFit: "cover" }}
+                      />
+                      <span>
+                        {item?.quantity.toFixed(1)} {item?.product?.quantity_type==="Numerical" ? "" : "kg" } x {item?.product?.name}
+                      </span>
+                    </div>
+
+                    {item?.product?.has_offer && (
+                      <div className="text-danger small">
+                        {item?.product?.discount_percentage}% <FontAwesomeIcon icon={faTag} />
+                      </div>
+                    )}
+
+                    <div className="small">Price: {item?.product?.price} LE</div>
+
+                    {item?.product?.has_offer && (
+                      <div className="small fw-bold">
+                        Offer Price: {item?.product?.price_after_offer} LE
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className="fw-bold text-primary container mt-3">Shop Total Price : {item?.shop_items_price} LE</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+
 
       <div className="row gx-0">
         {isLoaded && !loadError  && (
