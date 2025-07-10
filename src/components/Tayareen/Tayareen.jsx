@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDollarSign, faSearch, faUserCircle, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import AccessCard from '../AccessCard/AccessCard';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import Loader from '../Loader/Loader';
@@ -119,14 +119,14 @@ export default function Tayareen() {
                 }}
               >
                 <div className="d-flex align-items-center gap-3">
-                  <Link
+                  <NavLink
                     className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                     style={{ width: '70px', height: '70px', backgroundColor: 'var(--mainColor)' }}
             
-                    to={`/tayaarDetails/${tayar.id}`}
+                    to={`/tayareen/tayaarDetails/${tayar.id}`}
                       >
                         <FontAwesomeIcon icon={faUserCircle} className="text-white fs-1 w-100" />
-                      </Link>
+                      </NavLink>
                   <div className="flex-grow-1 overflow-hidden d-flex flex-column gap-2">
                     <div className="fw-bold text-truncate text-dark">{tayar.username}</div>
                     <div className="text-muted small">{tayar.phone_number}</div>

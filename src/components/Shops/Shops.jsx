@@ -61,7 +61,7 @@ export default function Shops() {
     <div className="container d-flex flex-column align-items-center">
       <div className="row g-0  align-items-center w-100 " style={{ maxWidth: '1200px' }}>
         <div className="col-md-6 col-lg-3 col-sm-6 col-12 mb-4 ">
-          <AccessCard link="/AddShop" title="Add Shop" iconProp={faPlus} BGC="var(--mainColor)"  />
+          <AccessCard link="/shops/AddShop" title="Add Shop" iconProp={faPlus} BGC="var(--mainColor)"  />
         </div>
       </div>
 
