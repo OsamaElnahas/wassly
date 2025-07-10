@@ -30,11 +30,16 @@ export default function OrderDetails() {
     lat: 30.0444, // Default center (Cairo, Egypt)
     lng: 31.2357,
   });
+function cleanAddress(address) {
+  if (!address || typeof address !== 'string') return ''; // return empty string or fallback
+  address = address.split(',').slice(1).join(',').trim();
+  return address.replace(/\d+\s*,?\s*Egypt/i, 'Egypt').trim();
+}
 
   // Fetch order details
   async function getOrderDetails() {
     try {
-      const res = await axios.get(`https://wassally.onrender.com/api/orders/${id}`, {
+      const res = await axios.get(`https://wassally.onrender.com/api/wassally/orders/${id}`, {
         headers: { Authorization: "Token " + localStorage.getItem("token") },
       });
       console.log(res?.data?.data);
@@ -97,11 +102,18 @@ export default function OrderDetails() {
         coins={data?.coins}
         is_delivered={data?.is_delivered}
         is_picked={data?.is_picked}
-        delivery_crew={data?.delivery_crew}
         notes={data?.notes}
-        location={data?.location?.address}
+        location={cleanAddress(data?.location?.address) }
         image={logo}
+        TayarName={data?.delivery_crew?.username}
+        OrderType={data?.order_type=="DeliveryRequest"?"Delivery Request":"Order"}
+        ShopOrderdName={data?.request_shop?.shop_name}
+        TayarPhone={data?.delivery_crew?.phone_number}
+        ReciverPhone={data?.receiver_phone}
+        numberOfActiveOrders={data?.active_orders}
       />
+      {data?.order_type=="Order" && (
+        
 <div className="container">
   <div className="orderItems bg-white shadow rounded-3 p-4">
     <div className="fs-5 fw-bold text-primary border-bottom pb-2 mb-4">Order Items</div>
@@ -174,6 +186,8 @@ export default function OrderDetails() {
     )}
   </div>
 </div>
+      )}
+
 
 
 

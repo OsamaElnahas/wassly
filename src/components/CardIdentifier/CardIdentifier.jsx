@@ -29,7 +29,12 @@ export default function CardIdentifier({
   balance,
   type,
   TayarIsActive,
-  numberOfActiveOrders
+  numberOfActiveOrders,
+  TayarName,
+  OrderType,
+  ShopOrderdName,
+  TayarPhone,
+  ReciverPhone,
 }) {
 
   const optimizedImage = image ? `${image}?format=webp&quality=80` : imageFallback;
@@ -40,22 +45,23 @@ export default function CardIdentifier({
 const getStatusClass = (status) => {
   switch (status) {
     case 'قيد الانتظار':
-      return 'text-warning bg-warning bg-opacity-10'; // أصفر خفيف
+      return 'text-warning bg-warning bg-opacity-10';
     case 'قيد التنفيذ':
-      return 'text-primary bg-primary bg-opacity-10'; // أزرق خفيف
+      return 'text-primary bg-primary bg-opacity-10';
     case 'قيد العمل':
-      return 'text-info bg-info bg-opacity-10'; // سماوي خفيف
+      return 'text-info bg-info bg-opacity-10'; 
     case 'تم التوصيل':
-      return 'text-success bg-success bg-opacity-10'; // أخضر خفيف
+    case 'DELIVERED'  :
+      return 'text-success bg-success bg-opacity-10';
     case 'ملغي':
     case 'مغلق':
     case 'Offline':
-      return 'text-danger bg-danger bg-opacity-10'; // أحمر خفيف
+      return 'text-danger bg-danger bg-opacity-10';
     case 'مفتوح':
     case 'Online':
-      return 'text-success bg-success bg-opacity-10'; // أخضر خفيف
+      return 'text-success bg-success bg-opacity-10';
     default:
-      return 'text-muted bg-light'; // رمادي خفيف
+      return 'text-muted bg-light'; 
   }
 };
 
@@ -92,16 +98,16 @@ const getStatusClass = (status) => {
               <span>{title} </span>
             </div>
             {user && <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">user: {user}</div>}
+            {ReciverPhone && <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">{ReciverPhone}</div>}
             {/* {describtion && <div className="fs-6 text-muted bg-light px-4 text-center">{describtion}</div>} */}
           </div>
         </div>
-<div className="card-identifier-details d-flex flex-column align-items-start align-self-md-start justify-content-start   p-3 fs-6 gap-2 "
+<div className="card-identifier-details d-flex flex-column align-items-start align-self-md-start justify-content-start   p-3 fs-6 gap-3 "
           style={{
             height: '100%',
-          
-          }}
-
->          {status && (
+            
+          }}>     
+               {status && (
   <div className={`fw-bold rounded p-2 ${getStatusClass(status)}`}>
     {status}
   </div>
@@ -111,39 +117,52 @@ const getStatusClass = (status) => {
               {isTayarActive ? 'Currently Working' : 'Inactive'}
             </div>
           )}
-          {order_price && <div>Order Price: {order_price}</div>}
-          {delivery_fee && <div>Delivery Fee: {delivery_fee}</div>}
-          {total_price && <div>total Price: {total_price}</div>}
-          {from_multiple_shops?.toString() && <div>from multiple shops: {from_multiple_shops.toString()}</div>}
+          {ShopOrderdName && <div className="fw-semibold text-primary bg-primary bg-opacity-10 p-2 rounded">Shop Ordered Name: {ShopOrderdName}</div>}
+                    {OrderType && <div className="fw-semibold text-primary bg-primary bg-opacity-10 p-2">Order Type: {OrderType}</div>}
+
+          {TayarName && <div className="fw-semibold">Tayar Name: {TayarName}</div>}
+          {TayarPhone && <div className="fw-semibold">Tayar Phone: {TayarPhone}</div>}
+
+          {order_price && <div className='fw-semibold'>Order Price: {order_price}</div>}
+          {delivery_fee && <div className='fw-semibold'>Delivery Fee: {delivery_fee}</div>}
+          {total_price && <div className='fw-semibold'>total Price: {total_price}</div>}
+          {from_multiple_shops?.toString() && <div className='fw-semibold'>from multiple shops: {from_multiple_shops.toString()}</div>}
           {coins != null && <div>coins: {coins}</div>}
-          {is_picked?.toString() && <div>Picked : {is_picked.toString()}</div>}
-          {is_delivered?.toString() && <div>Delivered : {is_delivered.toString()}</div>}
+          {is_picked?.toString() && <div className='fw-semibold'>Picked : {is_picked.toString()}</div>}
+          {is_delivered?.toString() && <div className='fw-semibold'>Delivered : {is_delivered.toString()}</div>}
           {notes && <div>notes: {notes}</div>}
           {phone && <div className="fw-semibold text-primary">Phone Number : {phone}</div>}
-          {location && <div className="fw-semibold text-primary">Location : {location}</div>}
           {order_date && <div>Date : {order_date}</div>}
-          {orders != null && <div>Confirmed Orders : {orders}</div>}
-          {type && <div>Type: {type}</div>}
-          {balance != null && <div>Balance : {balance}</div>}
-          {numberOfActiveOrders != null && <div>Active Orders : {numberOfActiveOrders}</div>}
+          {orders != null && <div className='fw-semibold'>Confirmed Orders : {orders}</div>}
+                    {location && <div className="fw-semibold text-muted">Location : {location}</div>}
+
+          {type && <div className='fw-semibold'>Type: {type}</div>}
+          {balance != null && <div className='fw-semibold'>Balance : {balance} EGP</div>}
+          {numberOfActiveOrders != null && <div className='fw-semibold'>Active Orders : {numberOfActiveOrders}</div>}
           {nationalIdFront && nationalIdBack && (
-            <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between gap-5  p-2">
+            <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between gap-5  p-2 bg-light w-100">
               {nationalIdFront && (
-                <div className="m-2 d-flex  align-items-center justify-content-start "
+                <div className="m-2 d-flex  align-items-center justify-content-start w-100"
                 
                 style={{ width: '100%' }}>
                   <img src={nationalIdFront} alt="National ID Front" className=" rounded"
                   style={
-                    { width: '100%' }
+                    { width: '100%',
+                      minHeight: '250px',
+                      maxHeight: '250px'
+                     }
                   } />
                 </div>
               )}
               {nationalIdBack && (
-                <div className="m-2 d-flex  align-items-center justify-content-start"
+                <div className="m-2 d-flex  align-items-center justify-content-start w-100"
                 style={{ width: '100%' }}>
                   <img src={nationalIdBack} alt="National ID Back" className="  rounded"
                   style={
-                    { width: '100%' }
+                    { width: '100%',
+                      minHeight: '250px',
+                      maxHeight: '250px'
+                     }
                   } />
                 </div>
               )}

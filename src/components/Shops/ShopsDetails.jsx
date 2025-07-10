@@ -11,6 +11,13 @@ import { toast, ToastContainer } from "react-toastify";
 export default function ShopsDetails() {
   const { id } = useParams();
   const queryClient = useQueryClient();
+  function cleanAddress(address) {
+  address= address.split(',').slice(1).join(',').trim();
+    return address.replace(/\d+\s*,?\s*Egypt/i, 'Egypt').trim();
+
+  
+}
+
 
   // Fetch shop details
   async function getShopDetails() {
@@ -125,7 +132,7 @@ export default function ShopsDetails() {
         imageFallback={logo}
         phone={data?.data?.shop_phone_number}
         orders={data?.data?.confirmed_orders}
-        location={data?.data?.shop_location.address}
+location={cleanAddress(data?.data?.shop_location.address)}
         id={data?.data?.id}
       />
     </div>

@@ -1,20 +1,39 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import {  NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import Loader from '../Loader/Loader';
 import Errors from '../Error/Errors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faCartShopping, faBoxOpen, faClipboardList, faShoppingBag, faCartArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faCartArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useRef } from 'react';
+export function formatDate(dateString) {
+  const date = new Date(dateString);
+
+  const day = String(date.getDate()).padStart(2, '0');       // 10
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 07
+  const year = date.getFullYear();                            // 2025
+
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0'); // 18
+
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12; // convert 0 to 12 for midnight
+  hours = String(hours).padStart(2, '0'); // format as 2-digit
+
+  return `${day}-${month}-${year} | ${hours}:${minutes} ${ampm}`;
+}
+
+
 
 export default function Orders() {
-     // Track input for typing
     const [searchTerm, setSearchTerm] = useState('');
       const [inputValue, setInputValue] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [page, setPage] = useState(1);
-  const pageSize = 6;
+  const pageSize = 10;
+
 const getStatusClass = (status) => {
   switch (status) {
     case 'قيد الانتظار':
@@ -44,7 +63,7 @@ const getStatusClass = (status) => {
                   if (searchTerm) params.search = searchTerm;
 
 
-            const res = await axios.get('https://wassally.onrender.com/api/orders/', {
+            const res = await axios.get('https://wassally.onrender.com/api/wassally/orders/', {
                 headers: {
                     Authorization: 'Token ' + localStorage.getItem('token')
                 },
@@ -113,7 +132,7 @@ const getStatusClass = (status) => {
         <FontAwesomeIcon icon={faSearch} style={{ color: 'var(--mainColor)', fontSize: '18px' }} />
         <input
           className="w-100 border-0 p-1"
-          type="search"
+          type="input"
           placeholder="Search by Receiver name or Receiver Phone (press Enter)"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -122,7 +141,7 @@ const getStatusClass = (status) => {
         />
         {inputValue && (
           <button
-            className="btn btn-sm p-0 position-absolute end-0 me-2"
+                  className="btn btn-sm p-0 position-absolute end-0 me-2 d-flex fs-3 text-primary  "
             onClick={() => {
               setInputValue('');
               setSearchTerm('');
@@ -138,7 +157,7 @@ const getStatusClass = (status) => {
   </div>
 
 
-            <div className="fw-bold mb-3" style={{ color: 'var(--mainColor)' }}>
+            <div className="fw-bold my-4" style={{ color: 'var(--mainColor)' }}>
                 Orders ({data?.count || 0})
             </div>
 
@@ -162,12 +181,22 @@ const getStatusClass = (status) => {
                                     className="mb-2"
                                     style={{ fontSize: '24px', color: 'var(--mainColor)' }}
                                 />
+                                   <div className="d-flex align-items-center justify-content-between mb-2 ">
+                                    <div className="fw-bold">Order Type</div>
+                                    <div className="p-2 text-primary bg-primary bg-opacity-10 rounded-3">{item?.order_type=="DeliveryRequest"?"Delivery Request":"Order"}</div>
+                                </div>
                                 <div className="d-flex align-items-center justify-content-between">
   <div className="fw-bold">Status</div>
   <div className={`rounded p-2 ${getStatusClass(item.status)}`}>
     {item.status}
   </div>
-</div>
+                                </div>
+                                 <div className="d-flex align-items-center justify-content-between">
+                                    <div className="fw-bold">Created At</div>
+                                    <div className="p-2">{formatDate(item.created_at)}</div>
+                                </div>
+                              
+
 
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="fw-bold">Picked</div>
@@ -203,6 +232,7 @@ const getStatusClass = (status) => {
                         </p>
                     </div>
                 )}
+                {data?.data?.length > 0 && 
                   <div
         className="pagination-controls mt-4 d-flex justify-content-center align-items-center gap-3"
         style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}
@@ -250,7 +280,7 @@ const getStatusClass = (status) => {
         >
           Next
         </button>
-      </div>
+      </div>}
             </div>
         </div>
     );

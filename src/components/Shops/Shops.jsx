@@ -27,8 +27,8 @@ export default function Shops() {
         headers: { Authorization: 'Token ' + localStorage.getItem('token') },
         params,
       });
-      console.log('Fetched shops:', res?.data?.data);
-      return res?.data?.data || [];
+      console.log('Fetched shops:', res?.data);
+      return res?.data || [];
     } catch (error) {
       console.error('Error fetching shops:', error);
       throw error;
@@ -36,7 +36,7 @@ export default function Shops() {
   }
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['shops', page, searchTerm, statusTerm],
+    queryKey: ['shops', page, searchTerm, statusTerm, pageSize],
     queryFn: getShops,
     keepPreviousData: true,
     staleTime: 1000, // Prevent rapid refetches
@@ -46,7 +46,7 @@ export default function Shops() {
   if (isError)
     return <Errors message={error.response?.data?.message || error.message || 'No Internet Connection'} />;
 
-  const filteredData = data?.filter((shop) =>
+  const filteredData = data?.data.filter((shop) =>
     statusTerm === 'All' || shop.status.toLowerCase() === statusTerm.toLowerCase()
   ) || [];
 
@@ -59,14 +59,14 @@ export default function Shops() {
 
   return (
     <div className="container d-flex flex-column align-items-center">
-      <div className="row g-0 mb-4 align-items-center w-100" style={{ maxWidth: '1200px' }}>
-        <div className="col-md-6 col-lg-3 col-sm-6 col-12">
-          <AccessCard link="/AddShop" title="Add Shop" iconProp={faPlus} BGC="var(--mainColor)" />
+      <div className="row g-0  align-items-center w-100 " style={{ maxWidth: '1200px' }}>
+        <div className="col-md-6 col-lg-3 col-sm-6 col-12 mb-4 ">
+          <AccessCard link="/AddShop" title="Add Shop" iconProp={faPlus} BGC="var(--mainColor)"  />
         </div>
       </div>
 
       <div
-        className="row align-items-center mb-4 gx-0 w-100 justify-content-between"
+        className="row align-items-center  gx-0 w-100 justify-content-between"
         style={{ maxWidth: '1200px' }}
       >
   <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
@@ -92,7 +92,7 @@ export default function Shops() {
             <FontAwesomeIcon icon={faSearch} style={{ color: 'var(--mainColor)', fontSize: '18px' }} />
             <input
               className="w-100 border-0 p-1"
-              type="search"
+              type="input"
               placeholder="Search by shop name or Shop Phone (press Enter)"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
@@ -101,7 +101,7 @@ export default function Shops() {
             />
             {inputValue && (
               <button
-                className="btn btn-sm p-0 position-absolute end-0 me-2"
+                  className="btn btn-sm p-0 position-absolute end-0 me-2 d-flex fs-3 text-primary  "
                 onClick={() => {
                   setInputValue('');
                   setSearchTerm('');
@@ -117,16 +117,16 @@ export default function Shops() {
       </div>
 
 
-      <div className="row align-items-center mb-4 gx-0 w-100" style={{ maxWidth: '1200px' }}>
+      <div className="row align-items-center gx-0 w-100" style={{ maxWidth: '1200px' }}>
         <div
-          className="col-md-2 col-12"
-          style={{ fontWeight: '800', color: 'var(--mainColor)', marginBottom: '8px' }}
+          className="my-4"
+          style={{ fontWeight: '800', color: 'var(--mainColor)', }}
         >
-          Shops ({filteredData?.length || 0})
+          Shops ({data?.count || 0})
         </div>
       </div>
 
-      <div className="row g-3 w-100" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <div className="row  w-100" style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {filteredData?.length > 0 ? (
           filteredData.map((shop) => (
             <div className="col-lg-2 col-md-4 col-sm-6 col-12 px-1" key={shop.id}>
@@ -150,7 +150,8 @@ export default function Shops() {
         )}
       </div>
 
-      <div
+       {data?.data?.length > 0 && 
+                  <div
         className="pagination-controls mt-4 d-flex justify-content-center align-items-center gap-3"
         style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}
       >
@@ -193,11 +194,11 @@ export default function Shops() {
             transition: 'all 0.3s ease',
           }}
           onClick={() => setPage((prev) => prev + 1)}
-          disabled={!data?.next || filteredData?.length < pageSize}
+          disabled={!data?.next || data?.length < pageSize}
         >
           Next
         </button>
-      </div>
+      </div>}
     </div>
   );
 }
