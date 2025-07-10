@@ -78,7 +78,7 @@ const RechargeCoin = ({ id, username, onClose }) => {
           }}
         >
           <p>
-            Recharge {amount} <FontAwesomeIcon icon={faCoins} />
+            Recharge {amount} EGP 
           </p>
           <p>
             <FontAwesomeIcon icon={faArrowCircleRight} /> {username}

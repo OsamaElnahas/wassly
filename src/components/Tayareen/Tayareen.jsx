@@ -18,6 +18,8 @@ export default function Tayareen() {
   const pageSize = 8;
 
   async function getTayareen() {
+
+
     try {
       const params = {
         page,
@@ -37,13 +39,13 @@ export default function Tayareen() {
   }
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['Tayareen', page, searchTerm],
+    queryKey: ['Tayareen', page, searchTerm,pageSize],
     queryFn: getTayareen,
     keepPreviousData: true,
     staleTime: 1000, // Prevent rapid refetches
   });
 
-  const filteredData = data?.data || [];
+  // const data?.data = data?.data || [];
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -59,21 +61,22 @@ export default function Tayareen() {
           <div className="col-md-6 col-lg-3 col-sm-6 col-12">
             <AccessCard link="/addTayaar" title="Add Tayaar" iconProp={faUserPlus} />
           </div>
-          <div className="col-lg-5 col-md-6 col-12 mb-3 mb-lg-0">
+          <div className="col-lg-5 col-md-6 col-12  mb-lg-0">
             <div className="search-container d-flex align-items-center gap-2 border p-1 px-2 rounded bg-white position-relative w-100">
               <FontAwesomeIcon icon={faSearch} style={{ color: 'var(--mainColor)', fontSize: '18px' }} />
               <input
                 className="w-100 border-0 p-1"
-                type="search"
+                type="input"
                 placeholder="Search by username or phone (press Enter)"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
                 style={{ outline: 'none', paddingRight: '40px' }}
+                
               />
               {inputValue && (
                 <button
-                  className="btn btn-sm p-0 position-absolute end-0 me-2"
+                  className="btn btn-sm p-0 position-absolute end-0 me-2 d-flex fs-3 text-primary  "
                   onClick={() => {
                     setInputValue('');
                     setSearchTerm('');
@@ -88,14 +91,20 @@ export default function Tayareen() {
           </div>
         </div>
       </div>
+        <div
+          className="my-4"
+          style={{ fontWeight: '800', color: 'var(--mainColor)', }}
+        >
+          Tayareen ({data?.count || 0})
+        </div>
 
       <div className="row g-4">
         {isLoading && <Loader />}
         {isError && (
           <Errors message={error.response?.data?.message || error.message || 'No Internet Connection'} />
         )}
-        {filteredData.length > 0 ? (
-          filteredData.map((tayar) => (
+        {data?.data.length > 0 ? (
+          data?.data.map((tayar) => (
             <div className="col-sm-12 col-lg-6" key={tayar.id}>
               <div
                 className="bg-white rounded p-3 shadow-sm border position-relative overflow-hidden"
@@ -126,9 +135,9 @@ export default function Tayareen() {
                     {/* <div className="d-flex align-items-center gap-3 justify-content-between"> */}
                       <div className='d-flex justify-content-between align-items-center gap-5 '>
 
-                      <div className="text-muted small">Balance: {tayar.balance} LE</div>
+                      <div className="text-muted small">Balance: {tayar.balance} EGP</div>
                       <button
-                        className="btn px-4 py-1 rounded-3 shadow-sm d-block"
+                        className="btn px-4 py-1 rounded-3 shadow-sm  d-flex align-items-center"
                         onClick={() => {
                           setSelectedTayar({ id: tayar.id, username: tayar.username });
                           setChargePopUp(true);
@@ -173,7 +182,8 @@ export default function Tayareen() {
         />
       )}
 
-      <div
+      {data?.data?.length > 0 && 
+                  <div
         className="pagination-controls mt-4 d-flex justify-content-center align-items-center gap-3"
         style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}
       >
@@ -216,11 +226,11 @@ export default function Tayareen() {
             transition: 'all 0.3s ease',
           }}
           onClick={() => setPage((prev) => prev + 1)}
-          disabled={!data?.next || filteredData?.length < pageSize}
+          disabled={!data?.next || data?.length < pageSize}
         >
           Next
         </button>
-      </div>
+      </div>}
     </div>
   );
 }
