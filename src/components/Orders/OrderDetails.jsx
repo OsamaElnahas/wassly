@@ -91,6 +91,7 @@ function cleanAddress(address) {
 
   return (
     <>
+    <section>
       <CardIdentifier
         status={data?.status}
         title={data?.receiver_name}
@@ -112,10 +113,11 @@ function cleanAddress(address) {
         ReciverPhone={data?.receiver_phone}
         numberOfActiveOrders={data?.active_orders}
       />
+      </section>
       {data?.order_type=="Order" && (
-        
-<div className="container">
-  <div className="orderItems bg-white shadow rounded-3 p-4">
+        <section>
+  <div className="container">
+    <div className="orderItems bg-white shadow rounded-3 p-4">
     <div className="fs-5 fw-bold text-primary border-bottom pb-2 mb-4">Order Items</div>
 
     {data?.order_items?.length === 0 ? (
@@ -186,10 +188,10 @@ function cleanAddress(address) {
     )}
   </div>
 </div>
+      </section>
       )}
 
-
-
+<section>
 
       <div className="row gx-0">
         {isLoaded && !loadError  && (
@@ -207,6 +209,7 @@ function cleanAddress(address) {
           </div>
         )}
       </div>
+      </section>
     </>
   );
 }

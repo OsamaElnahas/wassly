@@ -136,6 +136,7 @@ async function getTayarProfs() {
 
   return (
     <>
+    <section>
       <CardIdentifier
         image={tayarData?.profile_image || img2}
         title={tayarData?.username || 'Tayar Name'}
@@ -147,6 +148,8 @@ async function getTayarProfs() {
         balance={tayarData?.balance || 0}
         numberOfActiveOrders={tayarData?.active_orders}
       />
+      </section>
+      <section>
       <div className='container 'style={{ maxWidth: '1400px' }}>
 
       <div className="bg-white px-3 py-4 rounded shadow-sm mt-4 mb-4 mb-md-0 ">
@@ -260,7 +263,9 @@ async function getTayarProfs() {
   )}
 </div>
         </div>
-      
+        </section>
+
+      <section>
       <div className="container mt-5" style={{ maxWidth: '1400px' }}>
         <div
           className="text-center fw-bold"
@@ -392,7 +397,7 @@ async function getTayarProfs() {
                           size="lg"
                         />
                         {transaction.transaction_type.replace('_', ' ') === 'order picked' ? (
-                          <Link to={`/orderDetails/${transaction.order_id}`} className="ms-2 text-capitalize">
+                          <Link to={`/tayareen/tayaarDetails/${transaction?.order_id}`} className="ms-2 text-capitalize">
                             {transaction.transaction_type.replace('_', ' ')}
                           </Link>
                         ) : (
@@ -547,6 +552,7 @@ async function getTayarProfs() {
         </div>
         
       </div>
+      </section>
     </>
   );
 }
