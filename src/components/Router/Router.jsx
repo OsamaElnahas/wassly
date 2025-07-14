@@ -25,14 +25,14 @@ const router = createBrowserRouter([
                 children: [
                     { index: true, element:<Home/> },
                     { path: "/shops", element: <Shops/> },
-                    { path: "/shopsDetails/:id", element: <ShopsDetails/> },
-                    { path: "/addShop", element:<AddShop/> },
+                    { path: "/shops/shopsDetails/:id", element: <ShopsDetails/> },
+                    { path: "/shops/AddShop", element:<AddShop/> },
                     { path: "/orders", element:<Orders/> },
-                    { path: "/orderDetails/:id", element:<OrderDetails/> },
+                    { path: "/orders/orderDetails/:id", element:<OrderDetails/> },
                     { path: "/tayareen", element:<Tayareen/> },
                     { path: "/transactions", element:<Transactions/> },
                     { path: "/addTayaar", element:<AddTayar/> },
-                    { path: "/tayaarDetails/:id", element:<TayarDetails/> },
+                    { path: "/tayareen/tayaarDetails/:id", element:<TayarDetails/> },
                 ],
             }
         ],

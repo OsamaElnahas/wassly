@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import styles from "./Card.module.css";
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import logo from '../../images/3998266.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -17,7 +17,7 @@ export default function Card({ title, image, description, offer, id, status }) {
   const isOpen = status === "Online" || status === "مفتوح";
 
   return <>
-    <Link to={`/shopsDetails/${id}`} className={`${styles.card}`}>
+    <NavLink to={`/shops/shopsDetails/${id}`} className={`${styles.card}`}>
       <div className={styles.imageDiv}>
         <img
           src={imgSrc}
@@ -48,7 +48,7 @@ export default function Card({ title, image, description, offer, id, status }) {
           </p>
         )}
       </div>
-    </Link>
+    </NavLink>
   </>
 }
 

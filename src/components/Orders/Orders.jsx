@@ -166,7 +166,7 @@ const getStatusClass = (status) => {
                     data?.data.map((item, idx) => (
                         <div key={idx} className="col-12 col-lg-6">
                             <NavLink
-                                to={`/orderDetails/${item.id}`}
+                                to={`/orders/orderDetails/${item.id}`}
                                 className="d-block order bg-white rounded p-2 h-100 text-muted"
                                 onMouseEnter={() => setHoveredIndex(idx)}
                                 onMouseLeave={() => setHoveredIndex(null)}
@@ -220,7 +220,7 @@ const getStatusClass = (status) => {
                                 </div>
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="fw-bold">Total Price</div>
-                                    <div className="p-2">{item.total_price} LE</div>
+                                    <div className="p-2">{item.total_price} EGP</div>
                                 </div>
                             </NavLink>
                         </div>
