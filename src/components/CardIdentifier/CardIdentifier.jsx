@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 export default function CardIdentifier({
   image,
@@ -39,6 +40,8 @@ export default function CardIdentifier({
   created_at,
   price,
   wassally_price,
+  TayarId,
+  ShopOrderdId
 }) {
 
   const optimizedImage = image ? `${image}?format=webp&quality=80` : imageFallback;
@@ -121,33 +124,63 @@ const getStatusClass = (status) => {
               {isTayarActive ? 'Currently Working' : 'Inactive'}
             </div>
           )}
-          {ShopOrderdName && <div className="fw-semibold text-primary bg-primary bg-opacity-10 p-2 rounded">Shop Ordered Name: {ShopOrderdName}</div>}
-                    {OrderType && <div className="fw-semibold text-primary bg-primary bg-opacity-10 p-2">Order Type: {OrderType}</div>}
+            {OrderCode && <div className="mb-1"><span className="fw-bold">Order Code: </span><span className="text-dark">{OrderCode}</span></div>} 
+            {created_at && <div className="mb-1"><span className="fw-bold">Created at : </span><span className="text-dark">{created_at}</span></div>}
+            {is_picked != null && <div className="mb-1"><span className="fw-bold">Picked: </span><span className="text-dark">{is_picked.toString()}</span></div>}
 
-          {TayarName && <div className="fw-semibold">Tayar Name: {TayarName}</div>}
-          {TayarPhone && <div className="fw-semibold">Tayar Phone: {TayarPhone}</div>}
-          {OrderCode && <div className="fw-semibold">Order Code: {OrderCode}</div>} 
-          {created_at && <div className="fw-semibold">Order Date: {created_at}</div>}
-          {price && <div className="fw-semibold">Price: {price} EGP</div>}
-          {wassally_price && <div className="fw-semibold">Wassally Price: {wassally_price} EGP</div>}
+  {/* Order Type and Shop Ordered Name together */}
+  {(OrderType || ShopOrderdName) && (
+            <div className="card p-3 mb-2 bg-light border border-primary-subtle shadow-sm">
+              <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-5">
+                {OrderType && <div><span className="fw-bold text-primary">Order Type: </span><span className="text-dark">{OrderType}</span></div>}
+                {ShopOrderdName && <div><span className="fw-bold text-dark">Shop Ordered Name: </span><Link to={`/shops/shopsDetails/${ShopOrderdId}`} className="text-primary text-decoration-underline fw-semibold">{ShopOrderdName}</Link></div>}
+              </div>
+            </div>
+          )}
 
+          {/* Tayar Name and Phone together */}
+          {(TayarName || TayarPhone) && (
+            <div className="card p-3 mb-2 bg-light border border-primary-subtle shadow-sm">
+              <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-5">
+                {TayarName && <div><span className="fw-bold">Tayar : </span> <Link 
+      to={`/tayareen/tayaarDetails/${TayarId}`} 
+      className="text-primary text-decoration-underline fw-semibold"
+    >
+      {TayarName}
+    </Link>
+</div>}
+                {TayarPhone && <div><span className="fw-bold">Tayar Phone: </span><span className="text-dark">{TayarPhone}</span></div>}
+              </div>
+            </div>
+          )}
 
-          {order_price && <div className='fw-semibold'>Order Price: {order_price} EGP</div>}
-          {delivery_fee && <div className='fw-semibold'>Delivery Fee: {delivery_fee} EGP</div>}
-          {total_price && <div className='fw-semibold'>total Price: {total_price} EGP</div>}
-          {from_multiple_shops?.toString() && <div className='fw-semibold'>from multiple shops: {from_multiple_shops.toString()}</div>}
-          {coins != null && <div>coins: {coins}</div>}
-          {is_picked?.toString() && <div className='fw-semibold'>Picked : {is_picked.toString()}</div>}
-          {is_delivered?.toString() && <div className='fw-semibold'>Delivered : {is_delivered.toString()}</div>}
-          {notes && <div>notes: {notes}</div>}
-          {phone && <div className="fw-semibold text-primary">Phone Number : {phone}</div>}
-          {order_date && <div>Date : {order_date}</div>}
-          {orders != null && <div className='fw-semibold'>Confirmed Orders : {orders}</div>}
-                    {location && <div className="fw-semibold text-muted">Location : {location}</div>}
+        
 
-          {type && <div className='fw-semibold'>Type: {type}</div>}
-          {balance != null && <div className='fw-semibold'>Balance : {balance} EGP</div>}
-          {numberOfActiveOrders != null && <div className='fw-semibold'>Active Orders : {numberOfActiveOrders}</div>}
+          {/* Prices together */}
+          {(order_price || delivery_fee || total_price || price || wassally_price) && (
+            <div className="card p-3 mb-2 bg-light border border-success-subtle shadow-sm">
+              <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-5 flex-wrap">
+                {/* {order_price && <div><span className="fw-bold">Order Price: </span><span className="text-success">{order_price} EGP</span></div>} */}
+                {price && <div><span className="fw-bold">Price: </span><span className="text-success">{price} EGP</span></div>}
+                {delivery_fee && <div><span className="fw-bold">Delivery Fee: </span><span className="text-success">{delivery_fee} EGP</span></div>}
+                {wassally_price && <div><span className="fw-bold">Wassally Service: </span><span className="text-success">{wassally_price} EGP</span></div>}
+                {total_price && <div><span className="fw-bold">Total Price: </span><span className="text-success">{total_price} EGP</span></div>}
+              </div>
+            </div>
+          )}
+
+        
+          {from_multiple_shops != null && <div className="mb-1"><span className="fw-bold">From Multiple Shops: </span><span className="text-dark">{from_multiple_shops.toString()}</span></div>}
+          {coins != null && <div className="mb-1"><span className="fw-bold">Coins: </span><span className="text-dark">{coins}</span></div>}
+          {notes && <div className="mb-1"><span className="fw-bold">Notes: </span><span className="text-dark">{notes}</span></div>}
+          {phone && <div className="mb-1"><span className="fw-bold text-primary">Phone Number: </span><span className="text-dark">{phone}</span></div>}
+          {order_date && <div className="mb-1"><span className="fw-bold">Date: </span><span className="text-dark">{order_date}</span></div>}
+          {orders != null && <div className="mb-1"><span className="fw-bold">Confirmed Orders: </span><span className="text-dark">{orders}</span></div>}
+                    {location && <div className="mb-1"><span className="fw-bold text-muted">Location: </span><span className="text-dark">{location}</span></div>}
+
+          {type && <div className="mb-1"><span className="fw-bold">Type: </span><span className="text-dark">{type}</span></div>}
+          {balance != null && <div className="mb-1"><span className="fw-bold">Balance: </span><span className="text-success">{balance} EGP</span></div>}
+          {numberOfActiveOrders != null && <div className="mb-1"><span className="fw-bold">Active Orders: </span><span className="text-dark">{numberOfActiveOrders}</span></div>}
           {nationalIdFront && nationalIdBack && (
             <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between gap-5  p-2 bg-light w-100">
               {nationalIdFront && (

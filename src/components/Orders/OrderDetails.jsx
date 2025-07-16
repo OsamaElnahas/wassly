@@ -130,13 +130,14 @@ function cleanAddress(address) {
         TayarName={data?.delivery_crew?.username}
         OrderType={data?.order_type=="DeliveryRequest"?"Delivery Request":"Order"}
         ShopOrderdName={data?.request_shop?.shop_name}
+        ShopOrderdId={data?.request_shop?.id}
         TayarPhone={data?.delivery_crew?.phone_number}
         ReciverPhone={data?.receiver_phone}
-        // numberOfActiveOrders={data?.active_orders}
         OrderCode={data?.code}
         created_at={formatDate(data?.created_at)}
         price={data?.price}
         wassally_price={data?.wassally_service}
+        TayarId={data?.delivery_crew?.id}
 
 
       />
