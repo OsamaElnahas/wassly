@@ -10,7 +10,27 @@ import { GoogleMap, useJsApiLoader,MarkerF } from '@react-google-maps/api';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPercent, faStore, faTag } from "@fortawesome/free-solid-svg-icons";
 
+export function formatDate(dateString) {
+  const date = new Date(dateString);
+
+  const day = String(date.getDate()).padStart(2, '0');       // 10
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 07
+  const year = date.getFullYear();                            // 2025
+
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0'); // 18
+
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12; // convert 0 to 12 for midnight
+  hours = String(hours).padStart(2, '0'); // format as 2-digit
+
+  return `${day}-${month}-${year} | ${hours}:${minutes} ${ampm}`;
+}
+
 export default function OrderDetails() {
+
+
+  
   const { id } = useParams();
 
   // Map configuration
@@ -88,6 +108,7 @@ function cleanAddress(address) {
   // console.log("Using Center:", mapCenter);
   console.log(" Order Items:",data?.order_items);
   
+  
 
   return (
     <>
@@ -111,7 +132,13 @@ function cleanAddress(address) {
         ShopOrderdName={data?.request_shop?.shop_name}
         TayarPhone={data?.delivery_crew?.phone_number}
         ReciverPhone={data?.receiver_phone}
-        numberOfActiveOrders={data?.active_orders}
+        // numberOfActiveOrders={data?.active_orders}
+        OrderCode={data?.code}
+        created_at={formatDate(data?.created_at)}
+        price={data?.price}
+        wassally_price={data?.wassally_service}
+
+
       />
       </section>
       {data?.order_type=="Order" && (
@@ -190,7 +217,7 @@ function cleanAddress(address) {
 </div>
       </section>
       )}
-
+{data?.location&&
 <section>
 
       <div className="row gx-0">
@@ -210,6 +237,7 @@ function cleanAddress(address) {
         )}
       </div>
       </section>
+}
     </>
   );
 }

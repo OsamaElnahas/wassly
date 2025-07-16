@@ -43,9 +43,15 @@ export default function Shops() {
   });
 
   if (isLoading) return <Loader />;
-  if (isError)
-    return <Errors message={error.response?.data?.message || error.message || 'No Internet Connection'} />;
-
+ 
+  if (isError) {
+    if (!error.response) return <Errors errorMessage="No Internet Connection" />;
+    const status = error.response.status;
+    if (status === 401 || status === 403) return <Errors errorMessage="Unauthorized Access" />;
+    if (status === 404) return <Errors errorMessage="Not Found" />;
+    if (status >= 500) return <Errors errorMessage="Server Error, Please Try Again;" />;
+    return <Errors errorMessage={`Error: ${error.message}`} />;
+} 
   const filteredData = data?.data.filter((shop) =>
     statusTerm === 'All' || shop.status.toLowerCase() === statusTerm.toLowerCase()
   ) || [];
@@ -129,7 +135,7 @@ export default function Shops() {
       <div className="row  w-100" style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {filteredData?.length > 0 ? (
           filteredData.map((shop) => (
-            <div className="col-lg-2 col-md-4 col-sm-6 col-12 px-1" key={shop.id}>
+            <div className="col-lg-2 col-md-4 col-sm-6 col-12 px-1 mb-2" key={shop.id}>
               <Card
                 image={shop.shop_image_url ? shop.shop_image_url : market}
                 title={shop.shop_name}

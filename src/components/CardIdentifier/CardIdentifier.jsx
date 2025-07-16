@@ -35,6 +35,10 @@ export default function CardIdentifier({
   ShopOrderdName,
   TayarPhone,
   ReciverPhone,
+  OrderCode,
+  created_at,
+  price,
+  wassally_price,
 }) {
 
   const optimizedImage = image ? `${image}?format=webp&quality=80` : imageFallback;
@@ -122,10 +126,15 @@ const getStatusClass = (status) => {
 
           {TayarName && <div className="fw-semibold">Tayar Name: {TayarName}</div>}
           {TayarPhone && <div className="fw-semibold">Tayar Phone: {TayarPhone}</div>}
+          {OrderCode && <div className="fw-semibold">Order Code: {OrderCode}</div>} 
+          {created_at && <div className="fw-semibold">Order Date: {created_at}</div>}
+          {price && <div className="fw-semibold">Price: {price} EGP</div>}
+          {wassally_price && <div className="fw-semibold">Wassally Price: {wassally_price} EGP</div>}
 
-          {order_price && <div className='fw-semibold'>Order Price: {order_price}</div>}
-          {delivery_fee && <div className='fw-semibold'>Delivery Fee: {delivery_fee}</div>}
-          {total_price && <div className='fw-semibold'>total Price: {total_price}</div>}
+
+          {order_price && <div className='fw-semibold'>Order Price: {order_price} EGP</div>}
+          {delivery_fee && <div className='fw-semibold'>Delivery Fee: {delivery_fee} EGP</div>}
+          {total_price && <div className='fw-semibold'>total Price: {total_price} EGP</div>}
           {from_multiple_shops?.toString() && <div className='fw-semibold'>from multiple shops: {from_multiple_shops.toString()}</div>}
           {coins != null && <div>coins: {coins}</div>}
           {is_picked?.toString() && <div className='fw-semibold'>Picked : {is_picked.toString()}</div>}
@@ -201,4 +210,15 @@ CardIdentifier.propTypes = {
   balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.string,
   TayarIsActive: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  TayarName: PropTypes.string,
+  TayarPhone: PropTypes.string,
+  ReciverPhone: PropTypes.string,
+  OrderCode: PropTypes.string,
+  created_at: PropTypes.string,
+  price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  wassally_price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  OrderType: PropTypes.string,
+  ShopOrderdName: PropTypes.string,
+  numberOfActiveOrders: PropTypes.number,
+
 };

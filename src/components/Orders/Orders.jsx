@@ -44,7 +44,7 @@ const getStatusClass = (status) => {
       return 'text-muted bg-info bg-opacity-10'; // سماوي خفيف
     case 'تم التوصيل':
       return 'text-success bg-success bg-opacity-10'; // أخضر خفيف
-    case 'ملغي':
+    case 'تم الالغاء':
       return 'text-danger bg-danger bg-opacity-10'; // أحمر خفيف
     default:
       return 'text-muted bg-light'; // افتراضي
@@ -108,7 +108,7 @@ const getStatusClass = (status) => {
     return (
 <div className="container">
   <div className="row align-items-center justify-content-between mb-4 gx-0">
-    <div className="col-lg-7 col-12 mb-3 mb-lg-0">
+    <div className="col-lg-6 col-12 mb-3 mb-lg-0">
       <div className="d-flex align-items-center gap-2 flex-wrap w-100">
         {/* <div style={{ color: 'var(--mainColor)' }}>Filter by</div> */}
         <select
@@ -127,13 +127,13 @@ const getStatusClass = (status) => {
       </div>
     </div>
 
-    <div className="col-lg-5 col-12 mb-1 mb-lg-0">
+    <div className="col-lg-6 col-12 mb-1 mb-lg-0">
       <div className="search-container d-flex align-items-center gap-2 border p-1 px-2 rounded bg-white position-relative w-100">
         <FontAwesomeIcon icon={faSearch} style={{ color: 'var(--mainColor)', fontSize: '18px' }} />
         <input
           className="w-100 border-0 p-1"
           type="input"
-          placeholder="Search by Receiver name or Receiver Phone (press Enter)"
+          placeholder="Search by Receiver name, Receiver Phone or Order Code (press Enter)"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -218,9 +218,24 @@ const getStatusClass = (status) => {
                                     <div className="fw-bold">Receiver Phone</div>
                                     <div className="p-2">{item.receiver_phone}</div>
                                 </div>
+                                {item?.is_picked &&
+                                <>
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div className="fw-bold">Tayaar Name</div>
+                                    <div className="p-2">{item.delivery_crew?.username}</div>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div className="fw-bold">Tayaar Phone</div>
+                                    <div className="p-2">{item.delivery_crew?.phone_number}</div>
+                                </div>
+                                </>}
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="fw-bold">Total Price</div>
                                     <div className="p-2">{item.total_price} EGP</div>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div className="fw-bold">Order Code</div>
+                                    <div className="p-2">{item.code}</div>
                                 </div>
                             </NavLink>
                         </div>

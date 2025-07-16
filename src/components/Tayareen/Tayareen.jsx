@@ -44,6 +44,15 @@ export default function Tayareen() {
     keepPreviousData: true,
     staleTime: 1000, // Prevent rapid refetches
   });
+  
+  if (isError) {
+    if (!error.response) return <Errors errorMessage="No Internet Connection" />;
+    const status = error.response.status;
+    if (status === 401 || status === 403) return <Errors errorMessage="Unauthorized Access" />;
+    if (status === 404) return <Errors errorMessage="Not Found" />;
+    if (status >= 500) return <Errors errorMessage="Server Error, Please Try Again;" />;
+    return <Errors errorMessage={`Error: ${error.message}`} />;
+}
 
   // const data?.data = data?.data || [];
 
