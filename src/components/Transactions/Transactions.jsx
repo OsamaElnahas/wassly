@@ -82,6 +82,15 @@ export default function Transactions() {
     setPage(1);
     setOpenFilter(false);
   };
+  
+  if (isError) {
+    if (!error.response) return <Errors errorMessage="No Internet Connection" />;
+    const status = error.response.status;
+    if (status === 401 || status === 403) return <Errors errorMessage="Unauthorized Access" />;
+    if (status === 404) return <Errors errorMessage="Not Found" />;
+    if (status >= 500) return <Errors errorMessage="Server Error, Please Try Again;" />;
+    return <Errors errorMessage={`Error: ${error.message}`} />;
+}
 
   return (
     <div className="container" style={{ maxWidth: '1400px' }}>
@@ -127,7 +136,7 @@ export default function Transactions() {
                   From:
                 </label>
                 <input
-                  type="date"
+                  type="datetime-local"
                   id="startDate"
                   className="form-control w-100"
                   value={tempStartDate}
@@ -140,7 +149,7 @@ export default function Transactions() {
                   To:
                 </label>
                 <input
-                  type="date"
+                  type="datetime-local"
                   id="endDate"
                   className="form-control w-100"
                   value={tempEndDate}
@@ -188,7 +197,7 @@ export default function Transactions() {
                         {transaction.transaction_type.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className="px-4 py-3">{transaction.amount} LE</td>
+                    <td className="px-4 py-3">{transaction.amount} EGP</td>
                     <td className="px-4 py-3">{transaction.details || 'N/A'}</td>
                     <td className="px-4 py-3">{formatDate(transaction.date)}</td>
                   </tr>

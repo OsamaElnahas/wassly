@@ -406,7 +406,7 @@ async function getTayarProfs() {
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3">{transaction.amount} LE</td>
+                      <td className="px-4 py-3">{transaction.amount} EGP</td>
                       <td className="px-4 py-3">{transaction.details || 'N/A'}</td>
                       <td className="px-4 py-3">{formatDate(transaction.date)}</td>
                     </tr>

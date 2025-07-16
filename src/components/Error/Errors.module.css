@@ -2,9 +2,12 @@
     /* position: fixed; */
     top: 12%;
     width: 100%;
-    background-color: red;
+    background-color: rgba(255, 53, 53, 0.773);
     color: white;
     text-align: center;
     padding: 10px;
     font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
