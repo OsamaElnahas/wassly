@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faHome,
@@ -8,25 +8,31 @@ import {
   faCartShopping,
   faUsers,
   faChain,
-} from '@fortawesome/free-solid-svg-icons';
-import styles from './SideBar.module.css';
+  faChartBar,
+  faChartDiagram,
+  faChartSimple,
+} from "@fortawesome/free-solid-svg-icons";
+import styles from "./SideBar.module.css";
 
 export default function SideBar({ isVisible, setVisible }) {
   const menuItems = [
-    { path: '/', icon: faHome, label: 'Home' },
-    { path: '/shops', icon: faStore, label: 'Shops' },
-    { path: '/orders', icon: faCartShopping, label: 'Orders' },
-    { path: '/tayareen', icon: faUsers, label: 'Tayareen' },
-    { path: '/transactions', icon: faChain, label: 'Transactions' },
+    { path: "/", icon: faHome, label: "Home" },
+    { path: "/shops", icon: faStore, label: "Shops" },
+    { path: "/orders", icon: faCartShopping, label: "Orders" },
+    { path: "/tayareen", icon: faUsers, label: "Tayareen" },
+    { path: "/analytics", icon: faChartSimple, label: "Analytics" },
+    { path: "/transactions", icon: faChain, label: "Transactions" },
   ];
 
   return (
     <div className={styles.parent}>
-      <div className={`${styles.sideBar} ${!isVisible ? styles.nonVisible : ''}`}>
+      <div
+        className={`${styles.sideBar} ${!isVisible ? styles.nonVisible : ""}`}
+      >
         <div className={styles.logo}>
           <FontAwesomeIcon
             icon={faBars}
-            style={{ width: '25px', height: '40px' }}
+            style={{ width: "25px", height: "40px" }}
             className={styles.burgerMenuRight}
             onClick={() => setVisible(!isVisible)}
           />
@@ -41,7 +47,7 @@ export default function SideBar({ isVisible, setVisible }) {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `${styles.item} ${isActive ? styles.active : ''}`
+                `${styles.item} ${isActive ? styles.active : ""}`
               }
             >
               <FontAwesomeIcon icon={item.icon} />
