@@ -63,10 +63,10 @@ export default function Orders() {
   }, []);
 
   // Invalidate query when baseUrl changes
-  useEffect(() => {
-    console.log("Base URL changed to:", baseUrl); // Debug log
-    queryClient.invalidateQueries(["orders"]);
-  }, [baseUrl, queryClient]);
+  // useEffect(() => {
+  //   console.log("Base URL changed to:", baseUrl); // Debug log
+  //   queryClient.invalidateQueries(["orders"]);
+  // }, [baseUrl, queryClient]);
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -117,6 +117,7 @@ export default function Orders() {
     queryFn: getOrders,
     keepPreviousData: true,
     staleTime: 10 * 60 * 1000,
+    cacheTime: 30 * 60 * 1000, // 30 minutes
   });
 
   // Real-time subscription for new orders and updates
