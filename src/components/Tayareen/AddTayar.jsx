@@ -6,10 +6,13 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { ColorRing } from "react-loader-spinner";
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 export default function AddTayar() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const baseUrl = useSelector(selectBaseUrl);
 
   const formik = useFormik({
     initialValues: {
@@ -29,20 +32,17 @@ export default function AddTayar() {
         crew_type: Yup.string().required("Type is required").oneOf(["طيار مستقل", "يعمل لدى وصلي"]),
     }),
     onSubmit: async (values) => {
-    //   console.log("data to be sent", values);
       setIsLoading(true);
-      console.log("Submitting form with values:", values);
       const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("username", values.username);
-    formData.append("phone_number", values.phone_number);
-    formData.append("crew_type", values.crew_type);
-    formData.append("national_id_image_front", values.national_id_image_front);
-    formData.append("national_id_image_back", values.national_id_image_back);
-      
+      formData.append("email", values.email);
+      formData.append("username", values.username);
+      formData.append("phone_number", values.phone_number);
+      formData.append("crew_type", values.crew_type);
+      formData.append("national_id_image_front", values.national_id_image_front);
+      formData.append("national_id_image_back", values.national_id_image_back);
       try {
         const response = await axios.post(
-          "https://wassally.onrender.com/api/crew/sign-up/",
+          `${baseUrl}api/crew/sign-up/`,
           formData,
           {
             headers: {
@@ -51,8 +51,6 @@ export default function AddTayar() {
             },
           }
         );
-        console.log("Response:", response);
-
         if (response.status === 201) {
           toast.success("Tayaar created successfully!", {
             position: "top-right",
@@ -63,7 +61,6 @@ export default function AddTayar() {
           }, 1000);
         }
       } catch (err) {
-        console.log(err);
         const errorMessage =
           err.response?.data?.message || "Failed to create Tayaar";
         toast.error(errorMessage, {

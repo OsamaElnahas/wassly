@@ -7,10 +7,11 @@ import Loader from '../Loader/Loader';
 import { useQuery } from '@tanstack/react-query';
 import img from '../../images/user2.png';
 import img2 from '../../images/user.png';
-
 import { faMoneyBillWave,faDollarSign, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RechargeCoin from './ChargeCoins';
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 export default function TayarDetails() {
   const { id } = useParams();
@@ -25,6 +26,7 @@ export default function TayarDetails() {
 const [month, setMonth] = useState(new Date().getMonth() + 1);
   
   const pageSize = 5;
+  const baseUrl = useSelector(selectBaseUrl);
 
 
   const fetchTransactions = async () => {
@@ -39,7 +41,7 @@ const [month, setMonth] = useState(new Date().getMonth() + 1);
       if (startDate) params.from = startDate;
       if (endDate) params.to = endDate;
 
-      const res = await axios.get(`https://wassally.onrender.com/api/transactions/`, {
+      const res = await axios.get(`${baseUrl}api/transactions/`, {
         headers: { Authorization: 'Token ' + localStorage.getItem('token') },
         params,
       });
@@ -86,7 +88,7 @@ const [month, setMonth] = useState(new Date().getMonth() + 1);
 
   async function getTayarDetails() {
     try {
-      const res = await axios.get(`https://wassally.onrender.com/api/crews/${id}/`, {
+      const res = await axios.get(`${baseUrl}api/crews/${id}/`, {
         headers: {
           Authorization: 'Token ' + localStorage.getItem('token'),
         },
@@ -105,7 +107,7 @@ const [month, setMonth] = useState(new Date().getMonth() + 1);
   });
 async function getTayarProfs() {
   try {
-    const res = await axios.get(`https://wassally.onrender.com/api/crew/profits/`, {
+    const res = await axios.get(`${baseUrl}api/crew/profits/`, {
       params: {
         crew_id: id,
         month:  month

@@ -3,7 +3,8 @@ import CheckStatus from "../Checker";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useQueryClient } from '@tanstack/react-query';
-
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 const Popup = ({ message, onClose, onConfirm, username, isLoading, link, status,charge=false,id},) => {
   const showUserInfo = username;
@@ -13,6 +14,7 @@ const Popup = ({ message, onClose, onConfirm, username, isLoading, link, status,
   const [submitStatus, setSubmitStatus] = useState(null); // success | error | null
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
+  const baseUrl = useSelector(selectBaseUrl);
 
 
 
@@ -34,7 +36,7 @@ const handleSubmit = async (e) => {
 
   try {
   const res = await axios.post(
-    `https://wassally.onrender.com/api/crews/recharge/${id}`,
+    `${baseUrl}api/crews/recharge/${id}`,
     { amount: amount },
     {
       headers: {

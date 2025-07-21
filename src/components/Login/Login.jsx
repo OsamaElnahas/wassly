@@ -7,11 +7,14 @@ import logo from "../../images/logoo.webp";
 import backImg from "../../images/ChatGPT Image Apr 14, 2025, 06_53_40 AM.png";
 import axios from "axios";
 import "animate.css";
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const baseUrl = useSelector(selectBaseUrl);
 
   const formik = useFormik({
     initialValues: {
@@ -26,7 +29,7 @@ export default function Login() {
       setIsLoading(true);
       try {
         const res = await axios.post(
-          "https://wassally.onrender.com/api/staff/login/",
+          `${baseUrl}api/staff/login/`,
           values
         );
         localStorage.setItem("token", res.data.token);

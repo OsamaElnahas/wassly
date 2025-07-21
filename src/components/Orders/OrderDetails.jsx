@@ -9,6 +9,8 @@ import logo from "../../images/ordder.webp";
 import { GoogleMap, useJsApiLoader,MarkerF } from '@react-google-maps/api';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPercent, faStore, faTag } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 export function formatDate(dateString) {
   const date = new Date(dateString);
@@ -32,6 +34,7 @@ export default function OrderDetails() {
 
   
   const { id } = useParams();
+  const baseUrl = useSelector(selectBaseUrl);
 
   // Map configuration
   const mapContainerStyle = {
@@ -59,7 +62,7 @@ function cleanAddress(address) {
   // Fetch order details
   async function getOrderDetails() {
     try {
-      const res = await axios.get(`https://wassally.onrender.com/api/wassally/orders/${id}`, {
+      const res = await axios.get(`${baseUrl}api/wassally/orders/${id}`, {
         headers: { Authorization: "Token " + localStorage.getItem("token") },
       });
       console.log(res?.data?.data);

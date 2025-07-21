@@ -8,6 +8,8 @@ import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import Errors from '../Error/Errors';
 import AccessCard from '../AccessCard/AccessCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 export default function Shops() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,6 +17,7 @@ export default function Shops() {
   const [statusTerm, setStatusTerm] = useState('All');
   const [page, setPage] = useState(1);
   const pageSize = 12;
+  const baseUrl = useSelector(selectBaseUrl);
 
   async function getShops() {
     try {
@@ -23,7 +26,7 @@ export default function Shops() {
         page_size: pageSize,
       };
       if (searchTerm) params.search = searchTerm;
-      const res = await axios.get('https://wassally.onrender.com/api/shops/', {
+      const res = await axios.get(`${baseUrl}api/shops/`, {
         headers: { Authorization: 'Token ' + localStorage.getItem('token') },
         params,
       });

@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    onProduction: true,
+    onProduction: false,
 };
 
 const apiSlice = createSlice({

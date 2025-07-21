@@ -7,6 +7,8 @@ import { ColorRing } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 export default function AddShop() {
   const [error, setError] = useState("");
@@ -16,6 +18,7 @@ export default function AddShop() {
   const [address, setAddress] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
+  const baseUrl = useSelector(selectBaseUrl);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -204,7 +207,7 @@ export default function AddShop() {
       console.log("data to be sent", values);
       setIsLoading(true);
       try {
-        const response = await axios.post("https://wassally.onrender.com/api/business-owner/sign-up/", values, {
+        const response = await axios.post(`${baseUrl}api/business-owner/sign-up/`, values, {
           headers: {
             Authorization: "Token " + localStorage.getItem("token"),
           },
@@ -251,7 +254,7 @@ export default function AddShop() {
   });
   async function getCategories(){
     try {
-      const res = await axios.get("https://wassally.onrender.com/api/shop-categories/", {
+      const res = await axios.get(`${baseUrl}api/shop-categories/`, {
         headers: {
           Authorization: "Token " + localStorage.getItem("token"),
         },

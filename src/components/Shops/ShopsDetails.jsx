@@ -7,22 +7,22 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 export default function ShopsDetails() {
   const { id } = useParams();
   const queryClient = useQueryClient();
+  const baseUrl = useSelector(selectBaseUrl);
   function cleanAddress(address) {
-  address= address.split(',').slice(1).join(',').trim();
+    address= address.split(',').slice(1).join(',').trim();
     return address.replace(/\d+\s*,?\s*Egypt/i, 'Egypt').trim();
-
-  
-}
-
+  }
 
   // Fetch shop details
   async function getShopDetails() {
     try {
-      const res = await axios.get(`https://wassally.onrender.com/api/shops/${id}`, {
+      const res = await axios.get(`${baseUrl}api/shops/${id}`, {
         headers: {
           Authorization: "Token " + localStorage.getItem("token"),
         },
@@ -39,7 +39,7 @@ export default function ShopsDetails() {
   async function updateShopStatus(newStatus) {
     try {
       const res = await axios.patch(
-        `https://wassally.onrender.com/api/shops/${id}`,
+        `${baseUrl}api/shops/${id}`,
         { status: newStatus },
         {
           headers: {

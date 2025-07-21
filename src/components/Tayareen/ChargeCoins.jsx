@@ -4,11 +4,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import CheckStatus from '../Checker';
 import { faArrowCircleRight, faCoins, faMoneyBill, faMoneyBill1Wave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
+import { selectBaseUrl } from '../../features/api/apiSlice';
 
 const RechargeCoin = ({ id, username, onClose }) => {
   const [amount, setAmount] = useState('');
   const [error, setError] = useState('');
   const queryClient = useQueryClient();
+  const baseUrl = useSelector(selectBaseUrl);
 
   const validateAmount = (value) => {
     const amountValue = parseFloat(value);
@@ -29,7 +32,7 @@ const RechargeCoin = ({ id, username, onClose }) => {
     mutationFn: async () => {
       const amountValue = parseFloat(amount);
       const res = await axios.post(
-        `https://wassally.onrender.com/api/crews/recharge/${id}/`,
+        `${baseUrl}api/crews/recharge/${id}/`,
         { amount: amountValue },
         {
           headers: {
@@ -37,16 +40,13 @@ const RechargeCoin = ({ id, username, onClose }) => {
           },
         }
       );
-      console.log("recharge res", res);
       return res?.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['tayareen']);
-      // setTimeout(onClose, 4000);
     },
     onError: (err) => {
       setError(err.message || 'An error occurred during recharge');
-      console.log(err);
     },
   });
 
