@@ -34,7 +34,7 @@ const router = createBrowserRouter([
           { path: "/transactions", element: <Transactions /> },
           { path: "/addTayaar", element: <AddTayar /> },
           { path: "/tayareen/tayaarDetails/:id", element: <TayarDetails /> },
-          { path: "/analytics", element: <Analytics /> },
+          // { path: "/analytics", element: <Analytics /> },
         ],
       },
     ],

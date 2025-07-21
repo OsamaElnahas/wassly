@@ -57,13 +57,10 @@ export default function Transactions() {
       if (startDate) params.from = startDate;
       if (endDate) params.to = endDate;
 
-      const res = await axios.get(
-        `${baseUrl}api/transactions/`,
-        {
-          headers: { Authorization: "Token " + localStorage.getItem("token") },
-          params,
-        }
-      );
+      const res = await axios.get(`${baseUrl}api/transactions/`, {
+        headers: { Authorization: "Token " + localStorage.getItem("token") },
+        params,
+      });
       console.log("Transactions:", {
         page,
         params,
@@ -151,7 +148,7 @@ export default function Transactions() {
       {isLoading && <Loader />}
 
       {/* Filter UI */}
-      <div className="mb-4">
+      <div className="">
         <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
           <select
             className="border-1 rounded-2 px-2 py-1"
@@ -224,6 +221,17 @@ export default function Transactions() {
             </button>
           </div>
         )}
+      </div>
+      <div
+        className="row align-items-center gx-0 w-100"
+        style={{ maxWidth: "1200px" }}
+      >
+        <div
+          className="my-2"
+          style={{ fontWeight: "800", color: "var(--mainColor)" }}
+        >
+          Transactions ({data?.count || 0})
+        </div>
       </div>
 
       {/* Transactions Table (Visible on md and larger screens) */}

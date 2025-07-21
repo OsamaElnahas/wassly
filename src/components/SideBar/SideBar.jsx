@@ -20,7 +20,7 @@ export default function SideBar({ isVisible, setVisible }) {
     { path: "/shops", icon: faStore, label: "Shops" },
     { path: "/orders", icon: faCartShopping, label: "Orders" },
     { path: "/tayareen", icon: faUsers, label: "Tayareen" },
-    { path: "/analytics", icon: faChartSimple, label: "Analytics" },
+    // { path: "/analytics", icon: faChartSimple, label: "Analytics" },
     { path: "/transactions", icon: faChain, label: "Transactions" },
   ];
 

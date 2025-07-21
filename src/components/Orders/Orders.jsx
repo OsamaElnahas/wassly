@@ -388,8 +388,14 @@ export default function Orders() {
                     {statusDisplay[item.status] || item.status}
                   </div>
                 </div>
+                {item?.is_delivered && (
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div className="fw-bold">Delivered at</div>
+                    <div className="p-2">{formatDate(item.delivered_at)}</div>
+                  </div>
+                )}
                 <div className="d-flex align-items-center justify-content-between">
-                  <div className="fw-bold">Created At</div>
+                  <div className="fw-bold">Created at</div>
                   <div className="p-2">{formatDate(item.created_at)}</div>
                 </div>
                 <div className="d-flex align-items-center justify-content-between">

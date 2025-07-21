@@ -42,6 +42,7 @@ export default function CardIdentifier({
   wassally_price,
   TayarId,
   ShopOrderdId,
+  delivered_at,
 }) {
   const optimizedImage = image
     ? `${image}?format=webp&quality=80`
@@ -158,6 +159,12 @@ export default function CardIdentifier({
             <div className="mb-1">
               <span className="fw-bold">Created at : </span>
               <span className="text-dark">{created_at}</span>
+            </div>
+          )}
+          {delivered_at && (
+            <div className="mb-1">
+              <span className="fw-bold">Delivered at: </span>
+              <span className="text-dark">{delivered_at}</span>
             </div>
           )}
           {is_picked != null && (
