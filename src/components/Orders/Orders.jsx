@@ -16,7 +16,7 @@ import {
   faCheck,
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
-// import { supabase } from "../../supabaseClient";
+import { supabase } from "../../supabaseClient";
 
 export function formatDate(dateString) {
   const date = new Date(dateString);
@@ -120,118 +120,118 @@ export default function Orders() {
   });
 
   // Real-time subscription for new orders and updates
-  // useEffect(() => {
-  //   const subscription = supabase
-  //     .channel("wassally_wassallyorder_changes")
-  //     .on(
-  //       "postgres_changes",
-  //       {
-  //         event: "INSERT",
-  //         schema: "public",
-  //         table: "wassally_wassallyorder",
-  //       },
-  //       (payload) => {
-  //         const newOrder = payload.new;
-  //         audioRef.current
-  //           .play()
-  //           .catch((err) => console.error("Error playing sound:", err));
+  useEffect(() => {
+    const subscription = supabase
+      .channel("wassally_wassallyorder_changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "wassally_wassallyorder",
+        },
+        (payload) => {
+          const newOrder = payload.new;
+          audioRef.current
+            .play()
+            .catch((err) => console.error("Error playing sound:", err));
 
-  //         setNewOrderIds((prev) => new Set([...prev, newOrder.id]));
-  //         setTimeout(() => {
-  //           setNewOrderIds((prev) => {
-  //             const updated = new Set(prev);
-  //             updated.delete(newOrder.id);
-  //             return updated;
-  //           });
-  //         }, 30 * 1000);
+          setNewOrderIds((prev) => new Set([...prev, newOrder.id]));
+          setTimeout(() => {
+            setNewOrderIds((prev) => {
+              const updated = new Set(prev);
+              updated.delete(newOrder.id);
+              return updated;
+            });
+          }, 30 * 1000);
 
-  //         queryClient.setQueryData(
-  //           ["orders", statusFilter, page, pageSize, searchTerm],
-  //           (oldData) => {
-  //             if (!oldData) return { data: [newOrder], count: 1 };
+          queryClient.setQueryData(
+            ["orders", statusFilter, page, pageSize, searchTerm],
+            (oldData) => {
+              if (!oldData) return { data: [newOrder], count: 1 };
 
-  //             const matchesStatus =
-  //               statusFilter === "All" || newOrder.status === statusFilter;
-  //             const matchesSearch =
-  //               !searchTerm ||
-  //               newOrder.receiver_name
-  //                 .toLowerCase()
-  //                 .includes(searchTerm.toLowerCase()) ||
-  //               newOrder.receiver_phone
-  //                 .toLowerCase()
-  //                 .includes(searchTerm.toLowerCase()) ||
-  //               newOrder.code.toLowerCase().includes(searchTerm.toLowerCase());
+              const matchesStatus =
+                statusFilter === "All" || newOrder.status === statusFilter;
+              const matchesSearch =
+                !searchTerm ||
+                newOrder.receiver_name
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                newOrder.receiver_phone
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                newOrder.code.toLowerCase().includes(searchTerm.toLowerCase());
 
-  //             if (matchesStatus && matchesSearch && page === 1) {
-  //               const newData = [newOrder, ...oldData.data].slice(0, pageSize);
-  //               return {
-  //                 ...oldData,
-  //                 data: newData,
-  //                 count: oldData.count + 1,
-  //               };
-  //             }
-  //             return oldData;
-  //           }
-  //         );
-  //       }
-  //     )
-  //     .on(
-  //       "postgres_changes",
-  //       {
-  //         event: "UPDATE",
-  //         schema: "public",
-  //         table: "wassally_wassallyorder",
-  //       },
-  //       (payload) => {
-  //         const updatedOrder = payload.new;
-  //         queryClient.setQueryData(
-  //           ["orders", statusFilter, page, pageSize, searchTerm],
-  //           (oldData) => {
-  //             if (!oldData) return oldData;
+              if (matchesStatus && matchesSearch && page === 1) {
+                const newData = [newOrder, ...oldData.data].slice(0, pageSize);
+                return {
+                  ...oldData,
+                  data: newData,
+                  count: oldData.count + 1,
+                };
+              }
+              return oldData;
+            }
+          );
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "wassally_wassallyorder",
+        },
+        (payload) => {
+          const updatedOrder = payload.new;
+          queryClient.setQueryData(
+            ["orders", statusFilter, page, pageSize, searchTerm],
+            (oldData) => {
+              if (!oldData) return oldData;
 
-  //             const matchesStatus =
-  //               statusFilter === "All" || updatedOrder.status === statusFilter;
-  //             const matchesSearch =
-  //               !searchTerm ||
-  //               updatedOrder.receiver_name
-  //                 .toLowerCase()
-  //                 .includes(searchTerm.toLowerCase()) ||
-  //               updatedOrder.receiver_phone
-  //                 .toLowerCase()
-  //                 .includes(searchTerm.toLowerCase()) ||
-  //               updatedOrder.code
-  //                 .toLowerCase()
-  //                 .includes(searchTerm.toLowerCase());
+              const matchesStatus =
+                statusFilter === "All" || updatedOrder.status === statusFilter;
+              const matchesSearch =
+                !searchTerm ||
+                updatedOrder.receiver_name
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                updatedOrder.receiver_phone
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                updatedOrder.code
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase());
 
-  //             if (matchesStatus && matchesSearch) {
-  //               const updatedData = oldData.data.map((order) =>
-  //                 order.id === updatedOrder.id ? updatedOrder : order
-  //               );
-  //               return {
-  //                 ...oldData,
-  //                 data: updatedData,
-  //               };
-  //             }
-  //             return oldData;
-  //           }
-  //         );
-  //       }
-  //     )
-  //     .subscribe();
+              if (matchesStatus && matchesSearch) {
+                const updatedData = oldData.data.map((order) =>
+                  order.id === updatedOrder.id ? updatedOrder : order
+                );
+                return {
+                  ...oldData,
+                  data: updatedData,
+                };
+              }
+              return oldData;
+            }
+          );
+        }
+      )
+      .subscribe();
 
-  //   return () => {
-  //     supabase.removeChannel(subscription);
-  //   };
-  // }, [queryClient, statusFilter, page, pageSize, searchTerm]);
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  }, [queryClient, statusFilter, page, pageSize, searchTerm]);
 
-  // useEffect(() => {
-  //   if (debounceRef.current) clearTimeout(debounceRef.current);
-  //   debounceRef.current = setTimeout(() => {
-  //     setSearchTerm(inputValue.trim());
-  //     setPage(1);
-  //   }, 500);
-  //   return () => clearTimeout(debounceRef.current);
-  // }, [inputValue]);
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setSearchTerm(inputValue.trim());
+      setPage(1);
+    }, 500);
+    return () => clearTimeout(debounceRef.current);
+  }, [inputValue]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
