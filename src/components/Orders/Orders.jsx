@@ -1,3 +1,4 @@
+// src/components/Orders.js
 import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -5,6 +6,8 @@ import axios from "axios";
 import Loader from "../Loader/Loader";
 import Errors from "../Error/Errors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
+import { selectBaseUrl } from "../../features/api/apiSlice";
 import {
   faSearch,
   faCartArrowDown,
@@ -52,10 +55,18 @@ export default function Orders() {
   const queryClient = useQueryClient();
   const audioRef = useRef(new Audio("/src/assets/new_order.wav"));
 
+  const baseUrl = useSelector(selectBaseUrl);
+
   // Preload audio
   useEffect(() => {
     audioRef.current.preload = "auto";
   }, []);
+
+  // Invalidate query when baseUrl changes
+  useEffect(() => {
+    console.log("Base URL changed to:", baseUrl); // Debug log
+    queryClient.invalidateQueries(["orders"]);
+  }, [baseUrl, queryClient]);
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -84,16 +95,15 @@ export default function Orders() {
       params.page = page;
       params.page_size = pageSize;
       console.log("Fetching orders with params:", params);
-      const response = await axios.get(
-        "https://wassally.onrender.com/api/wassally/orders/",
-        {
-          params: params,
-          headers: {
-            Authorization: `Token ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      console.log("API Response:", response.data); // Debug the response
+      console.log("Base URL:", baseUrl);
+
+      const response = await axios.get(`${baseUrl}api/wassally/orders/`, {
+        params: params,
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log("API Response:", response.data);
       const { data, count } = response.data;
       return { data, count };
     } catch (error) {
@@ -122,7 +132,6 @@ export default function Orders() {
         },
         (payload) => {
           const newOrder = payload.new;
-          // Play sound and apply animation only for new orders
           audioRef.current
             .play()
             .catch((err) => console.error("Error playing sound:", err));

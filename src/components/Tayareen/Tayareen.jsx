@@ -13,6 +13,8 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "../Loader/Loader";
 import Errors from "../Error/Errors";
 import RechargeCoin from "./ChargeCoins";
+import { useSelector } from "react-redux";
+import { selectBaseUrl } from "../../features/api/apiSlice";
 
 export default function Tayareen() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,6 +23,7 @@ export default function Tayareen() {
   const [selectedTayar, setSelectedTayar] = useState(null);
   const [page, setPage] = useState(1);
   const pageSize = 8;
+  const baseUrl = useSelector(selectBaseUrl);
 
   async function getTayareen() {
     try {
@@ -29,7 +32,7 @@ export default function Tayareen() {
         page_size: pageSize,
       };
       if (searchTerm) params.search = searchTerm;
-      const res = await axios.get("https://wassally.onrender.com/api/crews/", {
+      const res = await axios.get(`${baseUrl}api/crews/`, {
         headers: { Authorization: "Token " + localStorage.getItem("token") },
         params,
       });

@@ -11,6 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Loader from "../Loader/Loader";
 import Errors from "../Error/Errors";
 import PasswordPrompt from "../../PasswordPrompet/PasswordPrompet";
+import { useSelector } from "react-redux";
+import { selectBaseUrl } from "../../features/api/apiSlice";
 
 export default function Transactions() {
   const [page, setPage] = useState(1);
@@ -22,6 +24,7 @@ export default function Transactions() {
   const [endDate, setEndDate] = useState("");
   const [openFilter, setOpenFilter] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
+  const baseUrl = useSelector(selectBaseUrl);
 
   useEffect(() => {
     const sessionAccess = sessionStorage.getItem("transactionAccess");
@@ -55,7 +58,7 @@ export default function Transactions() {
       if (endDate) params.to = endDate;
 
       const res = await axios.get(
-        "https://wassally.onrender.com/api/transactions/",
+        `${baseUrl}api/transactions/`,
         {
           headers: { Authorization: "Token " + localStorage.getItem("token") },
           params,
