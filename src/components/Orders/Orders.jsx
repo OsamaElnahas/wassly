@@ -53,7 +53,8 @@ export default function Orders() {
   const pageSize = 10;
   const debounceRef = useRef(null);
   const queryClient = useQueryClient();
-  const audioRef = useRef(new Audio("/src/assets/new_order.wav"));
+  const audioRef = useRef(new Audio("/assets/new_order.wav"));
+  console.log("audioRef:", audioRef.current);
 
   const baseUrl = useSelector(selectBaseUrl);
 
@@ -144,7 +145,7 @@ export default function Orders() {
               updated.delete(newOrder.id);
               return updated;
             });
-          }, 30 * 1000);
+          }, 80 * 1000);
 
           queryClient.setQueryData(
             ["orders", statusFilter, page, pageSize, searchTerm],
@@ -284,6 +285,7 @@ export default function Orders() {
           }
         `}
       </style>
+
       <div className="row align-items-center justify-content-between mb-4 gx-0">
         <div className="col-lg-6 col-12 mb-3 mb-lg-0">
           <div className="d-flex align-items-center gap-2 flex-wrap w-100">

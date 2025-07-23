@@ -56,27 +56,25 @@ export default function CardIdentifier({
       : !!TayarIsActive;
   const getStatusClass = (status) => {
     switch (status) {
-      case "قيد الانتظار":
+      case "PENDING":
         return "text-warning bg-warning bg-opacity-10";
-      case "قيد التنفيذ":
+      case "IN_PROGRESS":
         return "text-primary bg-primary bg-opacity-10";
-      case "قيد العمل":
-        return "text-info bg-info bg-opacity-10";
-      case "تم التوصيل":
       case "DELIVERED":
         return "text-success bg-success bg-opacity-10";
-      case "ملغي":
-      case "مغلق":
-      case "Offline":
+      case "CANCELED":
         return "text-danger bg-danger bg-opacity-10";
-      case "مفتوح":
-      case "Online":
-        return "text-success bg-success bg-opacity-10";
       default:
         return "text-muted bg-light";
     }
   };
 
+  const statusDisplay = {
+    PENDING: "قيد الانتظار",
+    IN_PROGRESS: "قيد التنفيذ",
+    DELIVERED: "تم التوصيل",
+    CANCELED: "تم الالغاء",
+  };
   return (
     <div className="container my-3" style={{ maxWidth: "1400px" }}>
       <div
@@ -136,8 +134,11 @@ export default function CardIdentifier({
           }}
         >
           {status && (
-            <div className={`fw-bold rounded p-2 ${getStatusClass(status)}`}>
-              {status}
+            <div className="d-flex align-items-center justify-content-between gap-2 ">
+              <div className="fw-bold">Status</div>
+              <div className={`rounded p-2 ${getStatusClass(status)}`}>
+                {statusDisplay[status] || status}
+              </div>
             </div>
           )}
           {typeof TayarIsActive !== "undefined" && (
@@ -170,7 +171,9 @@ export default function CardIdentifier({
           {is_picked != null && (
             <div className="mb-1">
               <span className="fw-bold">Picked: </span>
-              <span className="text-dark">{is_picked.toString()}</span>
+              <span className={`${is_picked ? "text-success" : "text-danger"}`}>
+                {is_picked ? "نعم" : "لا"}
+              </span>
             </div>
           )}
 
