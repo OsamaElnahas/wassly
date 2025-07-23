@@ -54,7 +54,6 @@ export default function Orders() {
   const debounceRef = useRef(null);
   const queryClient = useQueryClient();
   const audioRef = useRef(new Audio("/assets/new_order.wav"));
-  console.log("audioRef:", audioRef.current);
 
   const baseUrl = useSelector(selectBaseUrl);
 
