@@ -117,7 +117,7 @@ export default function Orders() {
     queryFn: getOrders,
     keepPreviousData: true,
     staleTime: 10 * 60 * 1000,
-    cacheTime: 30 * 60 * 1000, // 30 minutes
+    // cacheTime: 30 * 60 * 1000, // 30 minutes
   });
 
   // Real-time subscription for new orders and updates
@@ -144,7 +144,7 @@ export default function Orders() {
               updated.delete(newOrder.id);
               return updated;
             });
-          }, 80 * 1000);
+          }, 100 * 1000);
 
           queryClient.setQueryData(
             ["orders", statusFilter, page, pageSize, searchTerm],
@@ -184,6 +184,7 @@ export default function Orders() {
           table: "wassally_wassallyorder",
         },
         (payload) => {
+          console.log("Supabase INSERT payload:", payload.new); // Debug log
           const updatedOrder = payload.new;
           queryClient.setQueryData(
             ["orders", statusFilter, page, pageSize, searchTerm],
@@ -379,7 +380,8 @@ export default function Orders() {
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <div className="fw-bold">Order Type</div>
                   <div className="p-2 text-primary bg-primary bg-opacity-10 rounded-3">
-                    {item?.order_type === "DeliveryRequest"
+                    {item?.order_type == "DeliveryRequest" ||
+                    item?.order_type == "Delivery Request"
                       ? "Delivery Request"
                       : "Order"}
                   </div>

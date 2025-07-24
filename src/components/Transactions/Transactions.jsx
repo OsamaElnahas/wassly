@@ -223,75 +223,74 @@ export default function Transactions() {
         )}
       </div>
       <div
-        className="row align-items-center gx-0 w-100"
-        style={{ maxWidth: "1200px" }}
+        className="my-2"
+        style={{ fontWeight: "800", color: "var(--mainColor)" }}
       >
-        <div
-          className="my-2"
-          style={{ fontWeight: "800", color: "var(--mainColor)" }}
-        >
-          Transactions ({data?.count || 0})
-        </div>
+        Transactions ({data?.count || 0})
       </div>
-
-      {/* Transactions Table (Visible on md and larger screens) */}
-      <div className="d-none d-md-block card shadow-sm mb-4">
-        <div className="card-body p-0">
-          <table className="table table-hover mb-0">
-            <thead className="table-light">
-              <tr>
-                <th scope="col" className="px-4 py-3">
-                  Type
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Amount
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Details
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Date
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.data?.length > 0 ? (
-                data?.data?.map((transaction, index) => (
-                  <tr key={index} className="align-middle">
-                    <td className="px-4 py-3">
-                      <FontAwesomeIcon
-                        icon={
-                          transactionStyles[transaction?.transaction_type]
-                            ?.icon || faMoneyBillWave
-                        }
-                        className={
-                          transactionStyles[transaction?.transaction_type]
-                            ?.color || "text-secondary"
-                        }
-                        size="lg"
-                      />
-                      <span className="ms-2 text-capitalize">
-                        {transaction.transaction_type.replace("_", " ")}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">{transaction.amount} EGP</td>
-                    <td className="px-4 py-3">
-                      {transaction.details || "N/A"}
-                    </td>
-                    <td className="px-4 py-3">
-                      {formatDate(transaction.date)}
+      <div
+        className="row align-items-center gx-0 w-100"
+        style={{ maxWidth: "1400px" }}
+      >
+        {/* Transactions Table (Visible on md and larger screens) */}
+        <div className="d-none d-md-block card shadow-sm mb-4 border-0 w-100 rounded-3">
+          <div className="card-body p-0">
+            <table className="table table-hover mb-0">
+              <thead className="table-light">
+                <tr>
+                  <th scope="col" className="px-4 py-3">
+                    Type
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Amount
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Details
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Date
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.data?.length > 0 ? (
+                  data?.data?.map((transaction, index) => (
+                    <tr key={index} className="align-middle">
+                      <td className="px-4 py-3">
+                        <FontAwesomeIcon
+                          icon={
+                            transactionStyles[transaction?.transaction_type]
+                              ?.icon || faMoneyBillWave
+                          }
+                          className={
+                            transactionStyles[transaction?.transaction_type]
+                              ?.color || "text-secondary"
+                          }
+                          size="lg"
+                        />
+                        <span className="ms-2 text-capitalize">
+                          {transaction.transaction_type.replace("_", " ")}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">{transaction.amount} EGP</td>
+                      <td className="px-4 py-3">
+                        {transaction.details || "N/A"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {formatDate(transaction.date)}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center py-4 text-muted">
+                      {isLoading ? <Loader /> : "No transactions found"}
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" className="text-center py-4 text-muted">
-                    {isLoading ? <Loader /> : "No transactions found"}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
