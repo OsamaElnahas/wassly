@@ -406,10 +406,20 @@ export default function Orders() {
                   <div className="fw-bold">Picked</div>
                   <div
                     className={`p-2 ${
-                      item.is_picked ? "text-success" : "text-danger"
+                      item.is_picked || item.picked_at != null
+                        ? "text-success"
+                        : "text-danger"
                     }`}
                   >
-                    {item.is_picked ? translations.yes : translations.no}
+                    {item.is_picked || item.picked_at != null
+                      ? translations.yes
+                      : translations.no}
+                  </div>
+                </div>
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="fw-bold">Picked at</div>
+                  <div className={`p-2`}>
+                    {item.picked_at != null && formatDate(item.picked_at)}
                   </div>
                 </div>
                 <div className="d-flex align-items-center justify-content-between">

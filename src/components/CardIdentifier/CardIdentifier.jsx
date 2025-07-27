@@ -43,7 +43,11 @@ export default function CardIdentifier({
   TayarId,
   ShopOrderdId,
   delivered_at,
+  picked_at,
+  email,
 }) {
+  const [showModal, setShowModal] = useState(false);
+
   const optimizedImage = image
     ? `${image}?format=webp&quality=80`
     : imageFallback;
@@ -57,12 +61,16 @@ export default function CardIdentifier({
   const getStatusClass = (status) => {
     switch (status) {
       case "PENDING":
+      case "قيد الانتظار":
         return "text-warning bg-warning bg-opacity-10";
       case "IN_PROGRESS":
+      case "قيد التنفيذ":
         return "text-primary bg-primary bg-opacity-10";
       case "DELIVERED":
+      case "تم التوصيل":
         return "text-success bg-success bg-opacity-10";
       case "CANCELED":
+      case "تم الالغاء":
         return "text-danger bg-danger bg-opacity-10";
       default:
         return "text-muted bg-light";
@@ -93,6 +101,7 @@ export default function CardIdentifier({
               loading="lazy"
               src={imgSrc}
               alt="shop"
+              onClick={() => setShowModal(true)}
               onError={() => setImgSrc(imageFallback)}
               className="card-identifier-image rounded-circle border p-1 shadow-sm bg-light"
               style={{
@@ -109,6 +118,35 @@ export default function CardIdentifier({
                 (e.currentTarget.style.transform = "scale(1)")
               }
             />
+            {showModal && (
+              <div
+                onClick={() => setShowModal(false)}
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 9999,
+                  cursor: "pointer",
+                }}
+              >
+                <img
+                  src={imgSrc}
+                  alt="Full Size"
+                  style={{
+                    maxWidth: "70%",
+                    maxHeight: "70%",
+                    borderRadius: "10px",
+                    boxShadow: "0 0 10px #fff",
+                  }}
+                />
+              </div>
+            )}
           </div>
           <div className="w-100 d-flex flex-column align-items-start gap-2">
             <div className="fs-md-5  fw-semibold mb-2 p-2 rounded bg-light w-100 text-lg-center white-space-nowrap">
@@ -117,6 +155,12 @@ export default function CardIdentifier({
             {user && (
               <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">
                 user: {user}
+              </div>
+            )}
+            {email && (
+              <div className="mb-1">
+                <span className="fw-bold">Email: </span>
+                <span className="text-dark">{email}</span>
               </div>
             )}
             {ReciverPhone && (
@@ -160,6 +204,12 @@ export default function CardIdentifier({
             <div className="mb-1">
               <span className="fw-bold">Created at : </span>
               <span className="text-dark">{created_at}</span>
+            </div>
+          )}
+          {picked_at && (
+            <div className="mb-1">
+              <span className="fw-bold">Picked at: </span>
+              <span className="text-dark">{picked_at}</span>
             </div>
           )}
           {delivered_at && (
@@ -267,8 +317,10 @@ export default function CardIdentifier({
           {from_multiple_shops != null && (
             <div className="mb-1">
               <span className="fw-bold">From Multiple Shops: </span>
-              <span className="text-dark">
-                {from_multiple_shops.toString()}
+              <span
+                className={`text-${from_multiple_shops ? "success" : "danger"}`}
+              >
+                {from_multiple_shops.toString() === "true" ? "نعم" : "لا"}
               </span>
             </div>
           )}
@@ -327,6 +379,7 @@ export default function CardIdentifier({
               <span className="text-dark">{numberOfActiveOrders}</span>
             </div>
           )}
+
           {nationalIdFront && nationalIdBack && (
             <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between gap-5  p-2 bg-light w-100">
               {nationalIdFront && (

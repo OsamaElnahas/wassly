@@ -157,7 +157,7 @@ export default function TayarDetails() {
     <>
       <section>
         <CardIdentifier
-          image={tayarData?.profile_image || img2}
+          image={tayarData?.profile_picture || img2}
           title={tayarData?.username || "Tayar Name"}
           phone={tayarData?.phone_number}
           type={tayarData?.crew_type}
@@ -166,6 +166,7 @@ export default function TayarDetails() {
           nationalIdBack={tayarData?.national_id?.back_image_url || null}
           balance={tayarData?.balance || 0}
           numberOfActiveOrders={tayarData?.active_orders}
+          email={tayarData?.email}
         />
       </section>
       {/* <section>
