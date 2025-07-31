@@ -7,16 +7,16 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
-import { useSelector } from 'react-redux';
-import { selectBaseUrl } from '../../features/api/apiSlice';
+import { useSelector } from "react-redux";
+import { selectBaseUrl } from "../../features/api/apiSlice";
 
 export default function ShopsDetails() {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const baseUrl = useSelector(selectBaseUrl);
   function cleanAddress(address) {
-    address= address.split(',').slice(1).join(',').trim();
-    return address.replace(/\d+\s*,?\s*Egypt/i, 'Egypt').trim();
+    address = address.split(",").slice(1).join(",").trim();
+    return address.replace(/\d+\s*,?\s*Egypt/i, "Egypt").trim();
   }
 
   // Fetch shop details
@@ -34,6 +34,19 @@ export default function ShopsDetails() {
       throw error;
     }
   }
+  function formatTime(timeStr) {
+    const [hours, minutes, seconds] = timeStr.split(":");
+    const date = new Date();
+    date.setHours(+hours);
+    date.setMinutes(+minutes);
+    date.setSeconds(+seconds);
+
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  }
 
   // Update shop status
   async function updateShopStatus(newStatus) {
@@ -48,7 +61,7 @@ export default function ShopsDetails() {
         }
       );
       console.log("Status Updated:", res.data);
-      
+
       return res.data;
     } catch (error) {
       console.error("Error updating status", error);
@@ -64,7 +77,6 @@ export default function ShopsDetails() {
   const mutation = useMutation({
     mutationFn: updateShopStatus,
     onSuccess: () => {
-      
       queryClient.invalidateQueries(["shopDetails", id]);
       toast.success("Shop status updated successfully!", {
         position: "top-center",
@@ -132,8 +144,10 @@ export default function ShopsDetails() {
         imageFallback={logo}
         phone={data?.data?.shop_phone_number}
         orders={data?.data?.confirmed_orders}
-location={cleanAddress(data?.data?.shop_location.address)}
+        location={cleanAddress(data?.data?.shop_location.address)}
         id={data?.data?.id}
+        working_start_time={formatTime(data?.data?.working_start_time)}
+        working_end_time={formatTime(data?.data?.working_end_time)}
       />
     </div>
   );

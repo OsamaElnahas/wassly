@@ -127,7 +127,7 @@ export default function OrderDetails() {
           is_picked={data?.is_picked}
           notes={data?.notes}
           location={cleanAddress(data?.location?.address)}
-          image={logo}
+          image={data?.order_image_url || logo}
           TayarName={data?.delivery_crew?.username}
           OrderType={
             data?.order_type == "DeliveryRequest" ? "Delivery Request" : "Order"
@@ -142,6 +142,7 @@ export default function OrderDetails() {
           wassally_price={data?.wassally_service}
           TayarId={data?.delivery_crew?.id}
           delivered_at={formatDate(data?.delivered_at)}
+          picked_at={formatDate(data?.picked_at)}
         />
       </section>
       {data?.order_type == "Order" && (

@@ -16,7 +16,7 @@ export default function Shops() {
   const [inputValue, setInputValue] = useState(""); // Track input for typing
   const [statusTerm, setStatusTerm] = useState("All");
   const [page, setPage] = useState(1);
-  const pageSize = 12;
+  const pageSize = 18;
   const baseUrl = useSelector(selectBaseUrl);
 
   async function getShops() {
@@ -73,10 +73,10 @@ export default function Shops() {
   };
 
   return (
-    <div className="container d-flex flex-column align-items-center">
+    <div className="px-3 px-sm-2 d-flex flex-column align-items-center justify-content-center gap-1 w-100">
       <div
         className="row g-0  align-items-center w-100 "
-        style={{ maxWidth: "1200px" }}
+        style={{ maxWidth: "1400px", margin: "0 auto" }}
       >
         <div className="col-md-6 col-lg-3 col-sm-6 col-12 mb-4 ">
           <AccessCard
@@ -90,7 +90,7 @@ export default function Shops() {
 
       <div
         className="row align-items-center  gx-0 w-100 justify-content-between"
-        style={{ maxWidth: "1200px" }}
+        style={{ maxWidth: "1400px" }}
       >
         <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
           {/* <div className="fs-5" style={{ color: 'var(--mainColor)' }}>Filter by</div> */}
@@ -151,7 +151,7 @@ export default function Shops() {
 
       <div
         className="row align-items-center gx-0 w-100"
-        style={{ maxWidth: "1200px" }}
+        style={{ maxWidth: "1400px" }}
       >
         <div
           className="my-4"
@@ -162,13 +162,13 @@ export default function Shops() {
       </div>
 
       <div
-        className="row  w-100"
-        style={{ maxWidth: "1200px", margin: "0 auto" }}
+        className="row g-2 w-100"
+        style={{ maxWidth: "1400px", margin: "0 auto" }}
       >
         {filteredData?.length > 0 ? (
           filteredData.map((shop) => (
             <div
-              className="col-lg-2 col-md-6 col-sm-6 col-12 px-1 mb-2"
+              className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 px-1 "
               key={shop.id}
             >
               <Card

@@ -253,7 +253,7 @@ export default function Orders() {
       return (
         <Errors errorMessage="Unauthorized Access - Check API or Supabase config" />
       );
-    } else if (!navigator.onLine) {
+    } else if (error.message == "Network Error") {
       return <Errors errorMessage="No Internet Connection" />;
     }
     return <Errors errorMessage={`Error: ${error.message}`} />;
@@ -262,7 +262,10 @@ export default function Orders() {
   if (isLoading) return <Loader />;
 
   return (
-    <div className="container">
+    <div
+      className="px-3 px-sm-2 d-flex flex-column  justify-content-center gap-1 w-100"
+      style={{ maxWidth: "1400px", margin: "0 auto" }}
+    >
       <style>
         {`
           @keyframes pulse {
@@ -406,12 +409,25 @@ export default function Orders() {
                   <div className="fw-bold">Picked</div>
                   <div
                     className={`p-2 ${
-                      item.is_picked ? "text-success" : "text-danger"
+                      item.is_picked || item.picked_at != null
+                        ? "text-success"
+                        : "text-danger"
                     }`}
                   >
-                    {item.is_picked ? translations.yes : translations.no}
+                    {item.is_picked || item.picked_at != null
+                      ? translations.yes
+                      : translations.no}
                   </div>
                 </div>
+                {(item.is_picked || item.picked_at != null) && (
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div className="fw-bold">Picked at</div>
+                    <div className={`p-2`}>
+                      {item.picked_at != null && formatDate(item.picked_at)}
+                    </div>
+                  </div>
+                )}
+
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="fw-bold">Delivered</div>
                   <div
@@ -446,7 +462,7 @@ export default function Orders() {
                 )}
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="fw-bold">Total Price</div>
-                  <div className="p-2">{item.total_price || 0} EGP</div>
+                  <div className="p-2">{item?.total_price} EGP</div>
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="fw-bold">Order Code</div>

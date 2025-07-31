@@ -2,11 +2,17 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faInfoCircle,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function CardIdentifier({
   image,
   title,
-  //   describtion,
+  describtion,
   status,
   phone,
   location,
@@ -43,7 +49,14 @@ export default function CardIdentifier({
   TayarId,
   ShopOrderdId,
   delivered_at,
+  picked_at,
+  email,
+  number_of_deliveries,
+  working_start_time,
+  working_end_time,
 }) {
+  const [showModal, setShowModal] = useState(false);
+
   const optimizedImage = image
     ? `${image}?format=webp&quality=80`
     : imageFallback;
@@ -57,12 +70,17 @@ export default function CardIdentifier({
   const getStatusClass = (status) => {
     switch (status) {
       case "PENDING":
+      case "قيد الانتظار":
         return "text-warning bg-warning bg-opacity-10";
       case "IN_PROGRESS":
+      case "قيد التنفيذ":
         return "text-primary bg-primary bg-opacity-10";
       case "DELIVERED":
+      case "تم التوصيل":
+      case "Online":
         return "text-success bg-success bg-opacity-10";
       case "CANCELED":
+      case "تم الالغاء":
         return "text-danger bg-danger bg-opacity-10";
       default:
         return "text-muted bg-light";
@@ -76,7 +94,7 @@ export default function CardIdentifier({
     CANCELED: "تم الالغاء",
   };
   return (
-    <div className="container my-3" style={{ maxWidth: "1400px" }}>
+    <div className="px-md-3 px-1 my-sm-3 my-1 " style={{ maxWidth: "1400px" }}>
       <div
         className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-md text-capitalize text-dark justify-content-start align-md-items-center align-items-start gap-md-3 gap-1 w-100"
         style={{ transition: "all 0.3s ease-in-out", overflow: "hidden" }}
@@ -87,12 +105,13 @@ export default function CardIdentifier({
           (e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.05)")
         }
       >
-        <div className="d-flex flex-column align-md-items-center gap-3 justify-content-center p-3 col-12 col-md-auto ">
+        <div className="d-flex flex-column align-md-items-center gap-1 justify-content-center p-3 col-12 col-md-auto ">
           <div>
             <img
               loading="lazy"
               src={imgSrc}
               alt="shop"
+              onClick={() => setShowModal(true)}
               onError={() => setImgSrc(imageFallback)}
               className="card-identifier-image rounded-circle border p-1 shadow-sm bg-light"
               style={{
@@ -109,22 +128,88 @@ export default function CardIdentifier({
                 (e.currentTarget.style.transform = "scale(1)")
               }
             />
+            {showModal && (
+              <div
+                onClick={() => setShowModal(false)}
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 9999,
+                  cursor: "pointer",
+                }}
+              >
+                <img
+                  src={imgSrc}
+                  alt="Full Size"
+                  style={{
+                    maxWidth: "70%",
+                    maxHeight: "70%",
+                    borderRadius: "10px",
+                    boxShadow: "0 0 10px #fff",
+                  }}
+                />
+              </div>
+            )}
           </div>
           <div className="w-100 d-flex flex-column align-items-start gap-2">
-            <div className="fs-md-5  fw-semibold mb-2 p-2 rounded bg-light w-100 text-lg-center white-space-nowrap">
+            <div className="fs-md-5  fw-semibold mb-1 p-2 rounded bg-light w-100 text-md-center white-space-nowrap">
               <span>{title} </span>
             </div>
+
             {user && (
               <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">
                 user: {user}
               </div>
             )}
-            {ReciverPhone && (
-              <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">
-                {ReciverPhone}
+            {email && (
+              <div className="mb-1">
+                <span className="fw-bold">
+                  <FontAwesomeIcon
+                    icon={faEnvelope}
+                    className="me-1  text-primary"
+                  />
+                  :{" "}
+                </span>
+                <span className="text-dark">{email}</span>
               </div>
             )}
-            {/* {describtion && <div className="fs-6 text-muted bg-light px-4 text-center">{describtion}</div>} */}
+            {}
+
+            {ReciverPhone && (
+              <div className="mb-1 d-flex align-items-center gap-1">
+                <div className="fw-bold text-primary d-flex align-items-center gap-1">
+                  <div>
+                    <FontAwesomeIcon icon={faPhone} />
+                  </div>
+                  <div>Receiver: </div>
+                </div>
+                <span className="text-dark">{ReciverPhone}</span>
+              </div>
+            )}
+            {phone && (
+              <div className="mb-1">
+                <span className="fw-bold text-primary">
+                  <FontAwesomeIcon icon={faPhone} className="me-1" />
+                </span>
+                {":"}
+                <span className="text-dark">{phone}</span>
+              </div>
+            )}
+            {describtion && (
+              <div className="fs-md-5  fw-semibold mb-2 p-2 rounded d-flex align-items-center justify-content-md-center gap-2 w-100 text-lg-center white-space-nowrap">
+                <span className="text-muted">{describtion} </span>
+                <span className="text-muted">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                </span>
+              </div>
+            )}
           </div>
         </div>
         <div
@@ -156,18 +241,7 @@ export default function CardIdentifier({
               <span className="text-dark">{OrderCode}</span>
             </div>
           )}
-          {created_at && (
-            <div className="mb-1">
-              <span className="fw-bold">Created at : </span>
-              <span className="text-dark">{created_at}</span>
-            </div>
-          )}
-          {delivered_at && (
-            <div className="mb-1">
-              <span className="fw-bold">Delivered at: </span>
-              <span className="text-dark">{delivered_at}</span>
-            </div>
-          )}
+
           {is_picked != null && (
             <div className="mb-1">
               <span className="fw-bold">Picked: </span>
@@ -178,6 +252,31 @@ export default function CardIdentifier({
           )}
 
           {/* Order Type and Shop Ordered Name together */}
+          {(created_at || picked_at || delivered_at) && (
+            <div className="card p-3 mb-2 bg-light border border-primary-subtle shadow-sm">
+              <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-5">
+                {created_at && (
+                  <div className="mb-1">
+                    <span className="fw-bold">Created at : </span>
+                    <span className="text-dark">{created_at}</span>
+                  </div>
+                )}
+                {picked_at && (
+                  <div className="mb-1">
+                    <span className="fw-bold">Picked at: </span>
+                    <span className="text-dark">{picked_at}</span>
+                  </div>
+                )}
+                {delivered_at && (
+                  <div className="mb-1">
+                    <span className="fw-bold">Delivered at: </span>
+                    <span className="text-dark">{delivered_at}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {(OrderType || ShopOrderdName) && (
             <div className="card p-3 mb-2 bg-light border border-primary-subtle shadow-sm">
               <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-5">
@@ -267,9 +366,23 @@ export default function CardIdentifier({
           {from_multiple_shops != null && (
             <div className="mb-1">
               <span className="fw-bold">From Multiple Shops: </span>
-              <span className="text-dark">
-                {from_multiple_shops.toString()}
+              <span
+                className={`text-${from_multiple_shops ? "success" : "danger"}`}
+              >
+                {from_multiple_shops.toString() === "true" ? "نعم" : "لا"}
               </span>
+            </div>
+          )}
+          {working_start_time && (
+            <div className="mb-1">
+              <span className="fw-bold">Working Start Time: </span>
+              <span className="text-dark">{working_start_time}</span>
+            </div>
+          )}
+          {working_end_time && (
+            <div className="mb-1">
+              <span className="fw-bold">Working End Time: </span>
+              <span className="text-dark">{working_end_time}</span>
             </div>
           )}
           {coins != null && (
@@ -284,12 +397,7 @@ export default function CardIdentifier({
               <span className="text-dark">{notes}</span>
             </div>
           )}
-          {phone && (
-            <div className="mb-1">
-              <span className="fw-bold text-primary">Phone Number: </span>
-              <span className="text-dark">{phone}</span>
-            </div>
-          )}
+
           {order_date && (
             <div className="mb-1">
               <span className="fw-bold">Date: </span>
@@ -315,6 +423,14 @@ export default function CardIdentifier({
               <span className="text-dark">{type}</span>
             </div>
           )}
+
+          {number_of_deliveries && (
+            <div className="mb-1">
+              <span className="fw-bold">Number of Deliveries : </span>
+              <span className="text-dark">{number_of_deliveries}</span>
+            </div>
+          )}
+
           {balance != null && (
             <div className="mb-1">
               <span className="fw-bold">Balance: </span>
@@ -327,6 +443,7 @@ export default function CardIdentifier({
               <span className="text-dark">{numberOfActiveOrders}</span>
             </div>
           )}
+
           {nationalIdFront && nationalIdBack && (
             <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between gap-5  p-2 bg-light w-100">
               {nationalIdFront && (

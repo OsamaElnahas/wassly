@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
-import Nav from '../Nav/Nav'
-import Footer from '../footer/Footer'
-import { Outlet } from 'react-router-dom'
-import SideBar from '../SideBar/SideBar'
-import styles from './Layout.module.css'
+import React, { useState } from "react";
+import Nav from "../Nav/Nav";
+import Footer from "../footer/Footer";
+import { Outlet } from "react-router-dom";
+import SideBar from "../SideBar/SideBar";
+import styles from "./Layout.module.css";
 
 export default function Layout() {
-  const [isVisible, setVisible] = useState(true)
-  
+  const [isVisible, setVisible] = useState(true);
+
   return (
     <div className={styles.layoutContainer}>
       <SideBar setVisible={setVisible} isVisible={isVisible} />
-      <div className={`${styles.mainContent} ${!isVisible ? styles.expanded : ''}`}>
+      <div
+        className={`${styles.mainContent} ${!isVisible ? styles.expanded : ""}`}
+      >
         <Nav isVisible={isVisible} />
         <div className={styles.pageContent}>
           <Outlet />
@@ -19,6 +21,5 @@ export default function Layout() {
         <Footer />
       </div>
     </div>
-  )
+  );
 }
-        

@@ -73,8 +73,11 @@ export default function Tayareen() {
   };
 
   return (
-    <div className="container" style={{ maxWidth: "1400px" }}>
-      <div className="d-flex justify-content-between align-items-center mb-3 gap-1 flex-wrap">
+    <div
+      className="px-2  d-flex flex-column  justify-content-center  w-100"
+      style={{ maxWidth: "1400px", margin: "0 auto" }}
+    >
+      <div className="d-flex justify-content-between align-items-center mb-2 gap-1 flex-wrap">
         <div
           className="row g-4 w-100 justify-content-between align-items-center"
           style={{ maxWidth: "1200px" }}
@@ -126,7 +129,7 @@ export default function Tayareen() {
         Tayareen ({data?.count || 0})
       </div>
 
-      <div className="row g-4">
+      <div className="row g-2 g-md-3">
         {isError && (
           <Errors
             message={
@@ -136,7 +139,7 @@ export default function Tayareen() {
             }
           />
         )}
-        {data?.data.length > 0 ? (
+        {data?.data.length > 0 && !isLoading ? (
           data?.data.map((tayar) => (
             <div className="col-sm-12 col-lg-6" key={tayar.id}>
               <div
@@ -216,17 +219,21 @@ export default function Tayareen() {
             </div>
             // </div>
           ))
+        ) : isLoading ? (
+          <Loader />
         ) : (
-          <div className="col-12">
-            <p
-              className="text-center text-muted"
-              style={{ fontSize: "16px", fontWeight: "600" }}
-            >
-              {searchTerm
-                ? `No Tayareen found for "${searchTerm}"`
-                : "No Tayareen found"}
-            </p>
-          </div>
+          data?.data.length == 0 && (
+            <div className="col-12">
+              <p
+                className="text-center text-muted"
+                style={{ fontSize: "16px", fontWeight: "600" }}
+              >
+                {searchTerm
+                  ? `No Tayareen found for "${searchTerm}"`
+                  : "No Tayareen found"}
+              </p>
+            </div>
+          )
         )}
       </div>
 
