@@ -263,7 +263,7 @@ export default function Orders() {
 
   return (
     <div
-      className="d-flex flex-column  justify-content-center gap-1 w-100"
+      className="px-3 px-sm-2 d-flex flex-column  justify-content-center gap-1 w-100"
       style={{ maxWidth: "1400px", margin: "0 auto" }}
     >
       <style>
@@ -419,12 +419,15 @@ export default function Orders() {
                       : translations.no}
                   </div>
                 </div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="fw-bold">Picked at</div>
-                  <div className={`p-2`}>
-                    {item.picked_at != null && formatDate(item.picked_at)}
+                {(item.is_picked || item.picked_at != null) && (
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div className="fw-bold">Picked at</div>
+                    <div className={`p-2`}>
+                      {item.picked_at != null && formatDate(item.picked_at)}
+                    </div>
                   </div>
-                </div>
+                )}
+
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="fw-bold">Delivered</div>
                   <div
@@ -459,7 +462,7 @@ export default function Orders() {
                 )}
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="fw-bold">Total Price</div>
-                  <div className="p-2">{item.total_price || 0} EGP</div>
+                  <div className="p-2">{item?.total_price} EGP</div>
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="fw-bold">Order Code</div>

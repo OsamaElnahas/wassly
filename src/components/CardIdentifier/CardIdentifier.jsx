@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faInfoCircle,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function CardIdentifier({
   image,
@@ -90,7 +94,7 @@ export default function CardIdentifier({
     CANCELED: "تم الالغاء",
   };
   return (
-    <div className="container my-3" style={{ maxWidth: "1400px" }}>
+    <div className="px-md-3 px-1 my-sm-3 my-1 " style={{ maxWidth: "1400px" }}>
       <div
         className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-md text-capitalize text-dark justify-content-start align-md-items-center align-items-start gap-md-3 gap-1 w-100"
         style={{ transition: "all 0.3s ease-in-out", overflow: "hidden" }}
@@ -166,14 +170,36 @@ export default function CardIdentifier({
             )}
             {email && (
               <div className="mb-1">
-                <span className="fw-bold">Email: </span>
+                <span className="fw-bold">
+                  <FontAwesomeIcon
+                    icon={faEnvelope}
+                    className="me-1  text-primary"
+                  />
+                  :{" "}
+                </span>
                 <span className="text-dark">{email}</span>
               </div>
             )}
             {}
+
             {ReciverPhone && (
-              <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">
-                {ReciverPhone}
+              <div className="mb-1 d-flex align-items-center gap-1">
+                <div className="fw-bold text-primary d-flex align-items-center gap-1">
+                  <div>
+                    <FontAwesomeIcon icon={faPhone} />
+                  </div>
+                  <div>Receiver: </div>
+                </div>
+                <span className="text-dark">{ReciverPhone}</span>
+              </div>
+            )}
+            {phone && (
+              <div className="mb-1">
+                <span className="fw-bold text-primary">
+                  <FontAwesomeIcon icon={faPhone} className="me-1" />
+                </span>
+                {":"}
+                <span className="text-dark">{phone}</span>
               </div>
             )}
             {describtion && (
@@ -215,24 +241,7 @@ export default function CardIdentifier({
               <span className="text-dark">{OrderCode}</span>
             </div>
           )}
-          {created_at && (
-            <div className="mb-1">
-              <span className="fw-bold">Created at : </span>
-              <span className="text-dark">{created_at}</span>
-            </div>
-          )}
-          {picked_at && (
-            <div className="mb-1">
-              <span className="fw-bold">Picked at: </span>
-              <span className="text-dark">{picked_at}</span>
-            </div>
-          )}
-          {delivered_at && (
-            <div className="mb-1">
-              <span className="fw-bold">Delivered at: </span>
-              <span className="text-dark">{delivered_at}</span>
-            </div>
-          )}
+
           {is_picked != null && (
             <div className="mb-1">
               <span className="fw-bold">Picked: </span>
@@ -243,6 +252,31 @@ export default function CardIdentifier({
           )}
 
           {/* Order Type and Shop Ordered Name together */}
+          {(created_at || picked_at || delivered_at) && (
+            <div className="card p-3 mb-2 bg-light border border-primary-subtle shadow-sm">
+              <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-5">
+                {created_at && (
+                  <div className="mb-1">
+                    <span className="fw-bold">Created at : </span>
+                    <span className="text-dark">{created_at}</span>
+                  </div>
+                )}
+                {picked_at && (
+                  <div className="mb-1">
+                    <span className="fw-bold">Picked at: </span>
+                    <span className="text-dark">{picked_at}</span>
+                  </div>
+                )}
+                {delivered_at && (
+                  <div className="mb-1">
+                    <span className="fw-bold">Delivered at: </span>
+                    <span className="text-dark">{delivered_at}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {(OrderType || ShopOrderdName) && (
             <div className="card p-3 mb-2 bg-light border border-primary-subtle shadow-sm">
               <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-5">
@@ -363,12 +397,7 @@ export default function CardIdentifier({
               <span className="text-dark">{notes}</span>
             </div>
           )}
-          {phone && (
-            <div className="mb-1">
-              <span className="fw-bold text-primary">Phone Number: </span>
-              <span className="text-dark">{phone}</span>
-            </div>
-          )}
+
           {order_date && (
             <div className="mb-1">
               <span className="fw-bold">Date: </span>

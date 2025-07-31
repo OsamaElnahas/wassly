@@ -73,10 +73,10 @@ export default function Shops() {
   };
 
   return (
-    <div className=" d-flex flex-column align-items-center justify-content-center gap-1 w-100">
+    <div className="px-3 px-sm-2 d-flex flex-column align-items-center justify-content-center gap-1 w-100">
       <div
         className="row g-0  align-items-center w-100 "
-        style={{ maxWidth: "1400px" }}
+        style={{ maxWidth: "1400px", margin: "0 auto" }}
       >
         <div className="col-md-6 col-lg-3 col-sm-6 col-12 mb-4 ">
           <AccessCard
@@ -162,13 +162,13 @@ export default function Shops() {
       </div>
 
       <div
-        className="row  w-100"
+        className="row g-2 w-100"
         style={{ maxWidth: "1400px", margin: "0 auto" }}
       >
         {filteredData?.length > 0 ? (
           filteredData.map((shop) => (
             <div
-              className="col-lg-2 col-md-6 col-sm-6 col-12 px-1 mb-2"
+              className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 px-1 "
               key={shop.id}
             >
               <Card
