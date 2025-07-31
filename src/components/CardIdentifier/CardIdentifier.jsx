@@ -162,25 +162,11 @@ export default function CardIdentifier({
             <div className="fs-md-5  fw-semibold mb-1 p-2 rounded bg-light w-100 text-md-center white-space-nowrap">
               <span>{title} </span>
             </div>
-
             {user && (
               <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">
                 user: {user}
               </div>
             )}
-            {email && (
-              <div className="mb-1">
-                <span className="fw-bold">
-                  <FontAwesomeIcon
-                    icon={faEnvelope}
-                    className="me-1  text-primary"
-                  />
-                  :{" "}
-                </span>
-                <span className="text-dark">{email}</span>
-              </div>
-            )}
-            {}
 
             {ReciverPhone && (
               <div className="mb-1 d-flex align-items-center gap-1">
@@ -193,21 +179,40 @@ export default function CardIdentifier({
                 <span className="text-dark">{ReciverPhone}</span>
               </div>
             )}
+            {describtion && (
+              <div className="fs-md-5  fw-semibold mb-1  rounded d-flex align-items-center justify-content-md-center gap-2 w-100 text-lg-center white-space-nowrap">
+                <span className="text-muted">{describtion} </span>
+                <span className="text-muted">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                </span>
+              </div>
+            )}
             {phone && (
               <div className="mb-1">
                 <span className="fw-bold text-primary">
                   <FontAwesomeIcon icon={faPhone} className="me-1" />
                 </span>
-                {":"}
-                <span className="text-dark">{phone}</span>
+                {": "}
+                <span className="text-primary">{phone}</span>
               </div>
             )}
-            {describtion && (
-              <div className="fs-md-5  fw-semibold mb-2 p-2 rounded d-flex align-items-center justify-content-md-center gap-2 w-100 text-lg-center white-space-nowrap">
-                <span className="text-muted">{describtion} </span>
-                <span className="text-muted">
-                  <FontAwesomeIcon icon={faInfoCircle} />
+            {email && (
+              <div className="mb-1">
+                <span className="fw-bold">
+                  <FontAwesomeIcon
+                    icon={faEnvelope}
+                    className="me-1  text-primary"
+                  />
+                  :{" "}
                 </span>
+                <a
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Support%20Request&body=Hello,%0A%0AThanks%20for%20reaching%20out.%0A%0A%0A--%0AFrom%20Wassally%20Team`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary text-decoration-underline"
+                >
+                  {email}
+                </a>
               </div>
             )}
           </div>
