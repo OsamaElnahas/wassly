@@ -136,7 +136,7 @@ export default function Tayareen() {
             }
           />
         )}
-        {data?.data.length > 0 ? (
+        {data?.data.length > 0 && !isLoading ? (
           data?.data.map((tayar) => (
             <div className="col-sm-12 col-lg-6" key={tayar.id}>
               <div
@@ -216,17 +216,21 @@ export default function Tayareen() {
             </div>
             // </div>
           ))
+        ) : isLoading ? (
+          <Loader />
         ) : (
-          <div className="col-12">
-            <p
-              className="text-center text-muted"
-              style={{ fontSize: "16px", fontWeight: "600" }}
-            >
-              {searchTerm
-                ? `No Tayareen found for "${searchTerm}"`
-                : "No Tayareen found"}
-            </p>
-          </div>
+          data?.data.length == 0 && (
+            <div className="col-12">
+              <p
+                className="text-center text-muted"
+                style={{ fontSize: "16px", fontWeight: "600" }}
+              >
+                {searchTerm
+                  ? `No Tayareen found for "${searchTerm}"`
+                  : "No Tayareen found"}
+              </p>
+            </div>
+          )
         )}
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CardIdentifier from "../CardIdentifier/CardIdentifier";
-import { Link, useParams } from "react-router-dom";
+import { data, Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Errors from "../Error/Errors";
 import Loader from "../Loader/Loader";
@@ -155,6 +155,28 @@ export default function TayarDetails() {
 
   return (
     <>
+      <div className="d-flex flex-column flex-md-row justify-content-end  mb-4">
+        <button
+          className="btn  rounded-3 shadow-sm mb-2 ml-auto"
+          onClick={() => {
+            setChargePopUp(true);
+          }}
+          style={{
+            backgroundColor: "var(--mainColor)",
+            color: "white",
+            border: "none",
+            transition: "background-color 0.3s ease, transform 0.3s ease",
+            cursor: "pointer",
+            fontSize: "16px",
+            width: "10rem",
+            padding: "4px",
+          }}
+        >
+          <FontAwesomeIcon icon={faDollarSign} className="me-2" />
+          Charge
+        </button>
+      </div>
+
       <section>
         <CardIdentifier
           image={tayarData?.profile_picture || img2}
@@ -167,6 +189,7 @@ export default function TayarDetails() {
           balance={tayarData?.balance || 0}
           numberOfActiveOrders={tayarData?.active_orders}
           email={tayarData?.email}
+          number_of_deliveries={tayarData?.number_of_deliveries}
         />
       </section>
       {/* <section>
@@ -318,34 +341,34 @@ export default function TayarDetails() {
           {isLoading && <Loader />}
 
           {/* Filter UI */}
-          <div className="mb-4 d-flex flex-column-reverse gap-2 flex-md-row-reverse justify-content-md-between align-items-md-start">
+          <div className="mb-2 d-flex flex-column flex-md-row justify-content-md-between align-items-md-start gap-3">
             <div>
-              <div className="d-flex flex-wrap  align-items-center gap-3 col-lg-7 col-12 mb-3">
-                <select
-                  className=" border-1 rounded-2 px-2 py-1 "
-                  name="transactionType"
-                  id="transactionType"
-                  value={filterTerm}
-                  onChange={(e) => setFilterTerm(e.target.value)}
-                >
-                  <option className="p1" value="All">
-                    All
-                  </option>
-                  <option className="p1" value="Order Picked">
-                    Order Picked
-                  </option>
-                  <option className="p1" value="Balance Recharged">
-                    Balance Recharged
-                  </option>
-                </select>
-              </div>
+              <select
+                className="border-1 rounded-2 px-2 py-1"
+                name="transactionType"
+                id="transactionType"
+                value={filterTerm}
+                onChange={(e) => setFilterTerm(e.target.value)}
+              >
+                <option className="p1" value="All">
+                  All
+                </option>
+                <option className="p1" value="Order Picked">
+                  Order Picked
+                </option>
+                <option className="p1" value="Balance Recharged">
+                  Balance Recharged
+                </option>
+              </select>
+            </div>
 
+            {/* Right Side: Date Filters */}
+            <div>
               {!openfilter && (
                 <button
                   className="btn btn-outline-secondary mb-2"
                   onClick={() => setOpenFilter(!openfilter)}
                 >
-                  {" "}
                   Filter By Date
                 </button>
               )}
@@ -353,29 +376,29 @@ export default function TayarDetails() {
                 <div>
                   <div className="d-flex flex-wrap align-items-start gap-3">
                     <div className="d-flex align-items-center gap-2">
-                      <label htmlFor="startDate" className="form-label ">
+                      <label htmlFor="startDate" className="form-label">
                         From:
                       </label>
                       <input
                         type="date"
                         id="startDate"
-                        className="form-control w-100"
+                        className="form-control"
                         value={tempStartDate}
                         onChange={(e) => setTempStartDate(e.target.value)}
-                        style={{ display: "inline-block", width: "auto" }}
+                        style={{ width: "auto" }}
                       />
                     </div>
-                    <div className="d-flex align-items-center gap-2 justify-content-between">
-                      <label htmlFor="endDate" className="form-label ">
+                    <div className="d-flex align-items-center gap-2">
+                      <label htmlFor="endDate" className="form-label">
                         To:
                       </label>
                       <input
                         type="date"
                         id="endDate"
-                        className="form-control w-100"
+                        className="form-control"
                         value={tempEndDate}
                         onChange={(e) => setTempEndDate(e.target.value)}
-                        style={{ display: "inline-block", width: "auto" }}
+                        style={{ width: "auto" }}
                       />
                     </div>
                     <button
@@ -385,35 +408,19 @@ export default function TayarDetails() {
                       Apply Filters
                     </button>
                   </div>
-                  <button
-                    className="btn btn-outline-secondary mt-3"
-                    onClick={handleClearFilters}
-                  >
-                    Clear Filters
-                  </button>
                 </div>
               )}
             </div>
-            <button
-              className="btn  rounded-3 shadow-sm mb-3"
-              onClick={() => {
-                setChargePopUp(true);
-              }}
-              style={{
-                backgroundColor: "var(--mainColor)",
-                color: "white",
-                border: "none",
-                transition: "background-color 0.3s ease, transform 0.3s ease",
-                cursor: "pointer",
-                fontSize: "16px",
-                width: "10rem",
-                padding: "4px",
-              }}
-            >
-              <FontAwesomeIcon icon={faDollarSign} className="me-2" />
-              Charge
-            </button>
           </div>
+          {(openfilter || filterTerm !== "All") && (
+            <button
+              className="btn btn-outline-secondary mb-3"
+              onClick={handleClearFilters}
+            >
+              Clear Filters
+            </button>
+          )}
+
           {/* Transactions Table (Large Screens) */}
           <div className="d-none d-md-block card shadow-sm mb-4 border-0">
             <div className="card-body p-0">

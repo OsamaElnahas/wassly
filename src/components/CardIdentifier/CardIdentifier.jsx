@@ -2,11 +2,13 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function CardIdentifier({
   image,
   title,
-  //   describtion,
+  describtion,
   status,
   phone,
   location,
@@ -45,6 +47,9 @@ export default function CardIdentifier({
   delivered_at,
   picked_at,
   email,
+  number_of_deliveries,
+  working_start_time,
+  working_end_time,
 }) {
   const [showModal, setShowModal] = useState(false);
 
@@ -68,6 +73,7 @@ export default function CardIdentifier({
         return "text-primary bg-primary bg-opacity-10";
       case "DELIVERED":
       case "تم التوصيل":
+      case "Online":
         return "text-success bg-success bg-opacity-10";
       case "CANCELED":
       case "تم الالغاء":
@@ -95,7 +101,7 @@ export default function CardIdentifier({
           (e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.05)")
         }
       >
-        <div className="d-flex flex-column align-md-items-center gap-3 justify-content-center p-3 col-12 col-md-auto ">
+        <div className="d-flex flex-column align-md-items-center gap-1 justify-content-center p-3 col-12 col-md-auto ">
           <div>
             <img
               loading="lazy"
@@ -149,9 +155,10 @@ export default function CardIdentifier({
             )}
           </div>
           <div className="w-100 d-flex flex-column align-items-start gap-2">
-            <div className="fs-md-5  fw-semibold mb-2 p-2 rounded bg-light w-100 text-lg-center white-space-nowrap">
+            <div className="fs-md-5  fw-semibold mb-1 p-2 rounded bg-light w-100 text-md-center white-space-nowrap">
               <span>{title} </span>
             </div>
+
             {user && (
               <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">
                 user: {user}
@@ -163,12 +170,20 @@ export default function CardIdentifier({
                 <span className="text-dark">{email}</span>
               </div>
             )}
+            {}
             {ReciverPhone && (
               <div className="fs-5 fw-semibold mb-2 p-2 rounded bg-light w-100 text-center">
                 {ReciverPhone}
               </div>
             )}
-            {/* {describtion && <div className="fs-6 text-muted bg-light px-4 text-center">{describtion}</div>} */}
+            {describtion && (
+              <div className="fs-md-5  fw-semibold mb-2 p-2 rounded d-flex align-items-center justify-content-md-center gap-2 w-100 text-lg-center white-space-nowrap">
+                <span className="text-muted">{describtion} </span>
+                <span className="text-muted">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                </span>
+              </div>
+            )}
           </div>
         </div>
         <div
@@ -324,6 +339,18 @@ export default function CardIdentifier({
               </span>
             </div>
           )}
+          {working_start_time && (
+            <div className="mb-1">
+              <span className="fw-bold">Working Start Time: </span>
+              <span className="text-dark">{working_start_time}</span>
+            </div>
+          )}
+          {working_end_time && (
+            <div className="mb-1">
+              <span className="fw-bold">Working End Time: </span>
+              <span className="text-dark">{working_end_time}</span>
+            </div>
+          )}
           {coins != null && (
             <div className="mb-1">
               <span className="fw-bold">Coins: </span>
@@ -367,6 +394,14 @@ export default function CardIdentifier({
               <span className="text-dark">{type}</span>
             </div>
           )}
+
+          {number_of_deliveries && (
+            <div className="mb-1">
+              <span className="fw-bold">Number of Deliveries : </span>
+              <span className="text-dark">{number_of_deliveries}</span>
+            </div>
+          )}
+
           {balance != null && (
             <div className="mb-1">
               <span className="fw-bold">Balance: </span>

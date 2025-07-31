@@ -253,7 +253,7 @@ export default function Orders() {
       return (
         <Errors errorMessage="Unauthorized Access - Check API or Supabase config" />
       );
-    } else if (!navigator.onLine) {
+    } else if (error.message == "Network Error") {
       return <Errors errorMessage="No Internet Connection" />;
     }
     return <Errors errorMessage={`Error: ${error.message}`} />;
@@ -262,7 +262,10 @@ export default function Orders() {
   if (isLoading) return <Loader />;
 
   return (
-    <div className="container">
+    <div
+      className="d-flex flex-column  justify-content-center gap-1 w-100"
+      style={{ maxWidth: "1400px", margin: "0 auto" }}
+    >
       <style>
         {`
           @keyframes pulse {
