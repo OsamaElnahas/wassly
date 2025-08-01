@@ -141,7 +141,7 @@ export default function OrderDetails() {
           price={data?.price}
           wassally_price={data?.wassally_service}
           TayarId={data?.delivery_crew?.id}
-          delivered_at={formatDate(data?.delivered_at)}
+          delivered_at={data?.delivered_at && formatDate(data?.delivered_at)}
           picked_at={formatDate(data?.picked_at)}
         />
       </section>

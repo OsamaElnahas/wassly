@@ -272,7 +272,7 @@ export default function CardIdentifier({
                     <span className="text-dark">{picked_at}</span>
                   </div>
                 )}
-                {delivered_at && (
+                {delivered_at && status === "DELIVERED" && (
                   <div className="mb-1">
                     <span className="fw-bold">Delivered at: </span>
                     <span className="text-dark">{delivered_at}</span>
@@ -429,7 +429,7 @@ export default function CardIdentifier({
             </div>
           )}
 
-          {number_of_deliveries && (
+          {number_of_deliveries != null && (
             <div className="mb-1">
               <span className="fw-bold">Number of Deliveries : </span>
               <span className="text-dark">{number_of_deliveries}</span>
