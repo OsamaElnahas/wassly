@@ -395,7 +395,7 @@ export default function Orders() {
                     {statusDisplay[item.status] || item.status}
                   </div>
                 </div>
-                {item?.is_delivered && (
+                {item?.is_delivered && item?.status == "DELIVERED" && (
                   <div className="d-flex align-items-center justify-content-between">
                     <div className="fw-bold">Delivered at</div>
                     <div className="p-2">{formatDate(item.delivered_at)}</div>
