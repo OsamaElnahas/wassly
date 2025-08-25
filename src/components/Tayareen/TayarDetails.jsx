@@ -420,7 +420,12 @@ export default function TayarDetails() {
               Clear Filters
             </button>
           )}
-
+          <div
+            className="my-2"
+            style={{ fontWeight: "800", color: "var(--mainColor)" }}
+          >
+            Transactions ({data?.data?.count || 0})
+          </div>
           {/* Transactions Table (Large Screens) */}
           <div className="d-none d-md-block card shadow-sm mb-4 border-0">
             <div className="card-body p-0">

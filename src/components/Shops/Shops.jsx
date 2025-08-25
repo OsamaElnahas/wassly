@@ -177,7 +177,13 @@ export default function Shops() {
                 description={shop.shop_description}
                 offer={shop.has_offer}
                 id={shop.id}
-                status={shop.status}
+                status={
+                  shop.is_open == false
+                    ? "Offline"
+                    : shop.is_busy == true
+                    ? "Busy"
+                    : "Online"
+                }
               />
             </div>
           ))

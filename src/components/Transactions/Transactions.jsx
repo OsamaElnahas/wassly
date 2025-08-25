@@ -3,8 +3,21 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faBarsProgress,
+  faCalculator,
+  faCashRegister,
+  faCheckCircle,
+  faCircleChevronUp,
+  faCircleDollarToSlot,
+  faCircleQuestion,
+  faDotCircle,
+  faKeyboard,
+  faMoneyBillTransfer,
   faMoneyBillWave,
+  faMoneyCheck,
+  faMoneyCheckDollar,
   faMotorcycle,
+  faUserCheck,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,6 +26,10 @@ import Errors from "../Error/Errors";
 import PasswordPrompt from "../../PasswordPrompet/PasswordPrompet";
 import { useSelector } from "react-redux";
 import { selectBaseUrl } from "../../features/api/apiSlice";
+import AddNewType from "./AddNewType";
+import AddTransactions from "./AddTransactions";
+import { ToastContainer } from "react-toastify";
+import { FaCheckDouble, FaMoneyCheck } from "react-icons/fa";
 
 export default function Transactions() {
   const [page, setPage] = useState(1);
@@ -24,6 +41,8 @@ export default function Transactions() {
   const [endDate, setEndDate] = useState("");
   const [openFilter, setOpenFilter] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
+  const [showAddTransaction, setShowAddTransaction] = useState(false);
+  const [showAddTypeTransaction, setShowAddTypeTransaction] = useState(false);
   const baseUrl = useSelector(selectBaseUrl);
 
   useEffect(() => {
@@ -47,7 +66,7 @@ export default function Transactions() {
   const fetchTransactions = async () => {
     try {
       const type =
-        filterTerm === "All" ? "" : filterTerm.toLowerCase().replace(" ", "_");
+        filterTerm === "All" || filterTerm === "add new" ? "" : filterTerm;
 
       const params = {
         page,
@@ -82,10 +101,34 @@ export default function Transactions() {
     keepPreviousData: true,
   });
 
+  async function fetchTransactionTypes() {
+    try {
+      const res = await axios.get(`${baseUrl}api/transaction-types/`, {
+        headers: { Authorization: "Token " + localStorage.getItem("token") },
+        params: {
+          page: 1,
+          page_size: 15,
+        },
+      });
+      console.log("Transaction Types:", res?.data);
+      return res?.data || [];
+    } catch (error) {
+      console.error("Error fetching transaction types:", error);
+      throw error;
+    }
+  }
+
+  const { data: transactionTypesList, isLoading: isLoadingTransactionTypes } =
+    useQuery({
+      queryKey: ["transactionTypesList"],
+      queryFn: fetchTransactionTypes,
+    });
+
   const transactionStyles = {
-    order_picked: { icon: faMotorcycle, color: "text-primary" },
-    balance_recharged: { icon: faMoneyBillWave, color: "text-success" },
+    "Order Picked": { icon: faMotorcycle, color: "text-primary" },
+    "Balance Recharged": { icon: faMoneyCheckDollar, color: "text-success" },
   };
+  const defaultStyle = { icon: faDotCircle, color: "text-secondary" };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString("en-US", {
@@ -132,7 +175,7 @@ export default function Transactions() {
       </h2> */}
       <div className="d-flex justify-content-end align-items-center">
         <button
-          className="btn btn-primary d-flex align-items-center gap-2 justify-content-center"
+          className="btn  text-capitalize bg-white text-primary border-primary outline-primary d-flex justify-content-center align-items-center gap-2"
           style={{
             width: "5rem",
           }}
@@ -149,28 +192,49 @@ export default function Transactions() {
 
       {/* Filter UI */}
       <div className="">
-        <div className="d-flex flex-wrap align-items-center gap-3 col-lg-7 col-12 mb-3">
+        <div className="d-flex flex-wrap align-items-center gap-3 col-xl-4 col-lg-5 col-md-8 col-12 my-2">
           <select
             className="border-1 rounded-2 px-2 py-1"
             name="transactionType"
             id="transactionType"
             value={filterTerm}
             onChange={(e) => {
-              setFilterTerm(e.target.value);
-              setPage(1);
+              if (e.target.value === "add new") {
+                setShowAddTypeTransaction(true);
+                e.target.value = "All";
+              } else {
+                setFilterTerm(e.target.value);
+                setPage(1);
+              }
+            }}
+            style={{
+              minHeight: "30px",
+              overflowY: "scroll",
+              width: "100%",
             }}
           >
             <option value="All" className="shadow-lg">
               All
             </option>
-            <option value="Order Picked" className="shadow-lg">
-              Order Picked
-            </option>
-            <option value="Balance Recharged" className="shadow-lg">
-              Balance Recharged
+            {isLoadingTransactionTypes ? (
+              <option value="" disabled className="shadow-lg">
+                Loading...
+              </option>
+            ) : (
+              transactionTypesList?.data?.data?.map((type) => (
+                <option key={type.id} value={type.id} className="shadow-lg">
+                  {type.name}
+                </option>
+              ))
+            )}
+            <option value="add new" className="shadow-lg">
+              + Add New Type
             </option>
           </select>
         </div>
+        {showAddTypeTransaction && (
+          <AddNewType onClose={() => setShowAddTypeTransaction(false)} />
+        )}
 
         {!openFilter && (
           <button
@@ -222,16 +286,28 @@ export default function Transactions() {
           </div>
         )}
       </div>
-      <div
-        className="my-2"
-        style={{ fontWeight: "800", color: "var(--mainColor)" }}
-      >
-        Transactions ({data?.count || 0})
+      <div className="d-flex justify-content-between align-items-center my-3">
+        <div
+          className="my-2"
+          style={{ fontWeight: "800", color: "var(--mainColor)" }}
+        >
+          Transactions ({data?.data?.count || 0})
+        </div>
+        <button
+          className=" btn  text-capitalize btn-primary d-flex align-items-center gap-2"
+          onClick={() => setShowAddTransaction(true)}
+        >
+          + new Record{" "}
+        </button>
       </div>
+      {showAddTransaction && (
+        <AddTransactions onClose={() => setShowAddTransaction(false)} />
+      )}
       <div
         className="row align-items-center gx-0 w-100"
         style={{ maxWidth: "1400px" }}
       >
+        <ToastContainer />
         {/* Transactions Table (Visible on md and larger screens) */}
         <div className="d-none d-md-block card shadow-sm mb-4 border-0 w-100 rounded-3">
           <div className="card-body p-0">
@@ -253,23 +329,25 @@ export default function Transactions() {
                 </tr>
               </thead>
               <tbody>
-                {data?.data?.length > 0 ? (
-                  data?.data?.map((transaction, index) => (
+                {data?.data?.data?.length > 0 ? (
+                  data?.data?.data?.map((transaction, index) => (
                     <tr key={index} className="align-middle">
                       <td className="px-4 py-3">
                         <FontAwesomeIcon
                           icon={
-                            transactionStyles[transaction?.transaction_type]
-                              ?.icon || faMoneyBillWave
+                            transactionStyles[
+                              transaction?.transaction_type?.name
+                            ]?.icon || defaultStyle.icon
                           }
                           className={
-                            transactionStyles[transaction?.transaction_type]
-                              ?.color || "text-secondary"
+                            transactionStyles[
+                              transaction?.transaction_type?.name
+                            ]?.color || defaultStyle.color
                           }
                           size="lg"
                         />
                         <span className="ms-2 text-capitalize">
-                          {transaction.transaction_type.replace("_", " ")}
+                          {transaction.transaction_type?.name.replace("_", " ")}
                         </span>
                       </td>
                       <td className="px-4 py-3">{transaction.amount} EGP</td>
@@ -296,25 +374,25 @@ export default function Transactions() {
 
       {/* Transactions Cards (Visible on sm and smaller screens) */}
       <div className="d-md-none row g-3">
-        {data?.data?.length > 0 ? (
-          data?.data?.map((transaction, index) => (
+        {data?.data?.data?.length > 0 ? (
+          data?.data?.data?.map((transaction, index) => (
             <div key={index} className="col-12">
               <div className="card shadow-sm border-0 h-100">
                 <div className="card-body d-flex flex-column gap-2">
                   <div className="d-flex align-items-center gap-2">
                     <FontAwesomeIcon
                       icon={
-                        transactionStyles[transaction.transaction_type]?.icon ||
-                        faMoneyBillWave
+                        transactionStyles[transaction.transaction_type?.name]
+                          ?.icon || faMoneyBillWave
                       }
                       className={
-                        transactionStyles[transaction.transaction_type]
+                        transactionStyles[transaction.transaction_type?.name]
                           ?.color || "text-secondary"
                       }
                       size="lg"
                     />
                     <h6 className="mb-0 text-capitalize">
-                      {transaction.transaction_type.replace("_", " ")}
+                      {transaction.transaction_type?.name.replace("_", " ")}
                     </h6>
                   </div>
                   <div className="text-muted small">
@@ -340,7 +418,7 @@ export default function Transactions() {
       </div>
 
       {/* Pagination */}
-      {data?.data?.length > 0 && (
+      {data?.data?.data?.length > 0 && (
         <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
           <button
             className="btn btn-outline-primary"
@@ -367,7 +445,7 @@ export default function Transactions() {
           <button
             className="btn btn-outline-primary"
             onClick={() => setPage((prev) => prev + 1)}
-            disabled={!data?.next}
+            disabled={!data?.data?.next}
             style={{
               width: "100px",
               padding: "8px 16px",
