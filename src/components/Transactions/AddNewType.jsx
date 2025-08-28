@@ -163,7 +163,6 @@ export default function AddNewType({ isOpen, onClose }) {
             </div>
           )}
         </div>
-        <ToastContainer />
 
         {/* Animation styles */}
       </div>

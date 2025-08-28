@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
 import { selectBaseUrl } from "../../features/api/apiSlice";
 import { supabase } from "../../supabaseClient";
 import Loader from "../Loader/Loader";
@@ -25,7 +25,7 @@ const statusDisplay = {
   CANCELED: "تم الالغاء",
 };
 
-export default function ActiveOrders({ searchTerm, setSearchTerm }) {
+export default function ActiveOrders() {
   const [inputValue, setInputValue] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -36,8 +36,9 @@ export default function ActiveOrders({ searchTerm, setSearchTerm }) {
   const queryClient = useQueryClient();
   const audioRef = useRef(new Audio("/assets/new_order.wav"));
   const navigate = useNavigate();
-
   const baseUrl = useSelector(selectBaseUrl);
+  const { searchTerm, setSearchTerm } = useOutletContext();
+
   useEffect(() => {
     audioRef.current.preload = "auto";
   }, []);
@@ -323,7 +324,7 @@ export default function ActiveOrders({ searchTerm, setSearchTerm }) {
                             : "Order"}
                         </div>
                         <div
-                          className={`py-1 px-lg-4 px-2 rounded-5  ${getStatusClass(
+                          className={`py-1 px-lg-2 px-1 rounded-5  ${getStatusClass(
                             item.status
                           )}`}
                           style={{

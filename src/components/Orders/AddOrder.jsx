@@ -1,20 +1,34 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { selectBaseUrl } from "../../features/api/apiSlice";
-import { useQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 export default function AddOrder({ onClose }) {
   const baseUrl = useSelector(selectBaseUrl);
+  const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
+  const pageSize = 500;
+
+  // const queryClient = new QueryClient();
 
   async function fetchShops() {
     try {
       const response = await axios.get(`${baseUrl}api/shops/`, {
         headers: {
           Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+        params: {
+          page: page,
+          page_size: pageSize,
         },
       });
       console.log("Shops fetched successfully:", response?.data);
@@ -26,7 +40,7 @@ export default function AddOrder({ onClose }) {
   }
 
   const { data: shops, isLoading: shopsIsloading } = useQuery({
-    queryKey: ["shops"],
+    queryKey: ["shops", page, pageSize],
     queryFn: fetchShops,
   });
 
@@ -42,37 +56,51 @@ export default function AddOrder({ onClose }) {
         }
       );
       console.log("Order created successfully:", response.data);
-      toast.success("Order created successfully!");
+      // toast.success("Order created successfully!");
     } catch (error) {
       console.error("Error creating order:", error);
-      toast.error("Error creating order.");
+      throw error;
     }
   }
+  const mutation = useMutation({
+    mutationFn: handleSubmit,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      toast.success("Order created successfully!");
+      onClose();
+    },
+    onError: (error) => {
+      toast.error("Error creating order.");
+      console.error("Error creating order:", error);
+    },
+  });
   const validationSchema = Yup.object({
-    shop_id: Yup.string().required("Shop name is required"),
-    // .oneOf(
-    //   shops?.data?.map((shop) => shop?.id),
-    //   "Invalid shop id"
-    // ),
+    request_shop: Yup.string()
+      .required("Shop name is required")
+      .oneOf(
+        shops?.data?.map((shop) => String(shop?.id)) || [],
+        "Invalid shop"
+      ),
+
+    receiver_name: Yup.string().required("Receiver name is required"),
+    receiver_phone: Yup.string().required("Reveiver Phone is required"),
+    price: Yup.number()
+      .typeError("Total price must be a number")
+      .positive("Total price must be positive")
+      .required("Total price is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      request_shop: {
-        shop_name: "",
-        shop_description: "",
-        shop_location: {
-          address: "",
-        },
-      },
-      location: {
-        address: "",
-      },
+      request_shop: "",
+      receiver_name: "",
+      receiver_phone: "",
+      price: "",
     },
     validationSchema,
     onSubmit: (values) => {
       console.log("values submitted", values);
-      handleSubmit(values);
+      mutation.mutate(values);
     },
   });
 
@@ -101,8 +129,9 @@ export default function AddOrder({ onClose }) {
           padding: "20px",
           borderRadius: "8px",
           width: "90%",
-          maxWidth: "600px",
-          minHeight: "300px",
+          maxWidth: "900px",
+          height: "auto",
+          minHeight: "700px",
           animation: "slideUp 0.3s ease-in-out",
         }}
       >
@@ -112,16 +141,20 @@ export default function AddOrder({ onClose }) {
         >
           Add New Order Request
         </div>
-        <form action="">
-          <div className="form-group mb-3">
-            <label htmlFor="shopName" className="text-muted mb-2">
+        <form
+          action=""
+          className="d-flex flex-column justify-content-around  gap-3"
+          onSubmit={formik.handleSubmit}
+        >
+          <div className="form-group mb-3 ">
+            <label htmlFor="request_shop" className="text-muted mb-2">
               Select Shop (Required)
             </label>
             <select
               className="form-control mb-2"
-              id="shopName"
-              name=""
-              value={formik.values.shop_name}
+              id="request_shop"
+              name="request_shop"
+              value={formik.values.request_shop}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
@@ -135,31 +168,25 @@ export default function AddOrder({ onClose }) {
                   </option>
                 ))}
             </select>
-            {formik.touched.request_shop?.shop_name &&
-              formik.errors.request_shop?.shop_name && (
-                <div className="text-danger">
-                  {formik.errors.request_shop.shop_name}
-                </div>
-              )}
+            {formik.touched.request_shop && formik.errors.request_shop && (
+              <div className="text-danger">{formik.errors.request_shop}</div>
+            )}
           </div>
           <div className="form-group mb-3">
             <label htmlFor="receiverName" className="text-muted mb-2">
-              Receiver Name (optional)
+              Receiver Name (Required)
             </label>
             <input
               className="form-control mb-2"
               id="receiverName"
-              name="request_shop.receiver_name"
-              value={formik.values.request_shop.receiver_name}
+              name="receiver_name"
+              value={formik.values.receiver_name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.request_shop?.receiver_name &&
-              formik.errors.request_shop?.receiver_name && (
-                <div className="text-danger">
-                  {formik.errors.request_shop.receiver_name}
-                </div>
-              )}
+            {formik.touched.receiver_name && formik.errors.receiver_name && (
+              <div className="text-danger">{formik.errors.receiver_name}</div>
+            )}
           </div>
           <div className="form-group mb-3">
             <label htmlFor="receiverPhone" className="text-muted mb-2">
@@ -179,24 +206,44 @@ export default function AddOrder({ onClose }) {
           </div>
           <div className="form-group mb-3">
             <label htmlFor="totalPrice" className="text-muted mb-2">
-              Total Price (optional)
+              Total Price (Required)
             </label>
             <input
               className="form-control mb-2"
-              id="totalPrice"
-              name="total_price"
-              value={formik.values.total_price}
+              id="price"
+              name="price"
+              value={formik.values.price}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.touched.total_price && formik.errors.total_price && (
-              <div className="text-danger">{formik.errors.total_price}</div>
+            {formik.touched.price && formik.errors.price && (
+              <div className="text-danger">{formik.errors.price}</div>
             )}
           </div>
 
-          <div className="btns d-flex justify-content-center align-items-center gap-3 mt-3 w-100">
-            <button className="btn btn-primary w-50">Confirm</button>
-            <button className="btn btn-secondary w-50" onClick={onClose}>
+          <div className="btns d-flex justify-content-center align-items-center gap-3 mt-3 justify-self-end w-100">
+            <button
+              className="btn btn-primary w-100"
+              type="submit"
+              style={{
+                cursor:
+                  !formik.isValid || !formik.dirty || formik.isSubmitting
+                    ? "not-allowed"
+                    : "pointer",
+                opacity:
+                  !formik.isValid || !formik.dirty || formik.isSubmitting
+                    ? 0.6
+                    : 1,
+              }}
+            >
+              {formik.isSubmitting ? "Loading..." : "Confirm"}
+            </button>
+
+            <button
+              className="btn btn-secondary w-50"
+              type="button"
+              onClick={onClose}
+            >
               Cancel
             </button>
           </div>

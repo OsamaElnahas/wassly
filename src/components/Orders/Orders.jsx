@@ -1,13 +1,9 @@
 // src/components/Orders.js
-import { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
-
+import { useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { faSearch, faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddOrder from "./AddOrder";
-import CancelationOrders from "./CancelationOrders";
-import ActiveOrders from "./ActiveOrders";
 
 export function formatDate(dateString) {
   const date = new Date(dateString);
@@ -25,21 +21,18 @@ export function formatDate(dateString) {
 export default function Orders() {
   const [searchTerm, setSearchTerm] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [tab, setTab] = useState("Active Orders");
   const [AddOrderPopUp, setAddOrderPopUp] = useState(false);
-  const [page, setPage] = useState(1);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       setSearchTerm(inputValue.trim());
-      setPage(1);
     }
   };
 
   return (
     <>
       <div
-        className="item px-3 py-2 fw-bold pointer rounded-3  align-items-center justify-content-center gap-2 d-md-flex my-3 d-md-none "
+        className="item px-3 py-2 fw-bold pointer rounded-3  align-items-center justify-content-center gap-2 d-md-flex my-3 d-lg-none "
         onClick={() => setAddOrderPopUp(true)}
         style={{
           fontSize: "0.9rem",
@@ -54,61 +47,46 @@ export default function Orders() {
         <FontAwesomeIcon icon={faPlus} />
         Add Order
       </div>
+
+      {/* Tabs + Search */}
       <div
-        className="row rounded-2 pt-5 gx-3 mb-4"
+        className="row rounded-2  gx-3 mb-4"
         style={{
           marginBottom: "1rem",
-          // padding: "1rem",
           backgroundColor: "white",
           color: "var(--sidebarBg)",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          // borderTop: "3px solid var(--mainColor)",
-          // maxWidth: "1435px",
+          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <div className="col-12">
-          <h3 className="text-center fw-bold">Orders Management</h3>
-          <p className="text-center" style={{ fontSize: "16px" }}>
-            Manage and track all your orders efficiently
-          </p>
-        </div>
         <div className="row align-items-center bg-light rounded-2 m-0">
-          {/* Left side (smaller width) */}
-          <div className="col-12 col-md-4 d-flex align-items-center gap-3">
-            <div
-              className="item p-4 fw-bold pointer"
-              style={{
-                fontSize: "0.9rem",
-                cursor: "pointer",
-                borderBottom:
-                  tab === "Active Orders"
-                    ? "4px solid var(--mainColor)"
-                    : "none",
-              }}
-              onClick={() => setTab("Active Orders")}
+          {/* Tabs */}
+          <div className="col-12 col-lg-4 d-flex align-items-center gap-3 ">
+            <NavLink
+              to="active"
+              className="item mb-3 mb-lg-0 p-lg-4 p-2 fw-bold pointer"
+              style={({ isActive }) => ({
+                borderBottom: isActive ? "4px solid var(--mainColor)" : "",
+                color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",
+              })}
             >
               Active Orders
-            </div>
-            <div
-              className="item p-4 fw-bold pointer"
-              style={{
-                fontSize: "0.9rem",
-                cursor: "pointer",
-                borderBottom:
-                  tab === "Cancelation Requests"
-                    ? "4px solid var(--mainColor)"
-                    : "none",
-              }}
-              onClick={() => setTab("Cancelation Requests")}
+            </NavLink>
+
+            <NavLink
+              to="cancelation"
+              className="item mb-3 mb-lg-0 p-lg-4 p-2 fw-bold pointer"
+              style={({ isActive }) => ({
+                borderBottom: isActive ? "4px solid var(--mainColor)" : "",
+                color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",
+              })}
             >
               Cancelation Requests
-            </div>
+            </NavLink>
           </div>
 
-          {/* Right side (larger width) */}
-          <div className="col-12 col-md-8 d-flex align-items-center justify-content-between gap-3">
-            {/* Search box takes most of right side */}
-            <div className="search-container d-flex align-items-center gap-2 border p-1 px-1 rounded bg-white position-relative flex-grow-1">
+          {/* Search + History + Add Order */}
+          <div className="col-12 col-lg-8 d-flex align-items-center justify-content-between gap-3 py-2 py-lg-0">
+            <div className="search-container d-flex align-items-center gap-2 shadow-sm p-1 px-2 rounded-pill bg-white position-relative flex-grow-1">
               <FontAwesomeIcon
                 icon={faSearch}
                 style={{ color: "var(--mainColor)", fontSize: "18px" }}
@@ -129,7 +107,6 @@ export default function Orders() {
                   onClick={() => {
                     setInputValue("");
                     setSearchTerm("");
-                    setPage(1);
                   }}
                   style={{ color: "var(--mainColor)", fontSize: "16px" }}
                   aria-label="Clear search"
@@ -139,22 +116,20 @@ export default function Orders() {
               )}
             </div>
 
-            {/* History + Add Order */}
             <div className="d-flex align-items-center gap-2 ">
-              <div
-                className="item p-4 fw-bold pointer "
-                style={{
-                  fontSize: "0.9rem",
-                  cursor: "pointer",
-                  borderBottom:
-                    tab === "History" ? "4px solid var(--mainColor)" : "none",
-                }}
-                onClick={() => setTab("History")}
+              {/* <NavLink
+                to="history"
+                className="item p-lg-4 p-2 fw-bold pointer"
+                style={({ isActive }) => ({
+                  borderBottom: isActive ? "4px solid var(--mainColor)" : "",
+                  color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",
+                })}
               >
                 History
-              </div>
+              </NavLink> */}
+
               <div
-                className="item px-3 py-2 fw-bold pointer rounded-3  align-items-center justify-content-center gap-2 d-none d-md-flex"
+                className="item px-3 py-2 fw-bold pointer rounded-pill  align-items-center justify-content-center gap-2 d-none d-lg-flex"
                 onClick={() => setAddOrderPopUp(true)}
                 style={{
                   fontSize: "0.9rem",
@@ -171,15 +146,11 @@ export default function Orders() {
           </div>
         </div>
       </div>
-      {AddOrderPopUp && (
-        <AddOrder onClose={() => setAddOrderPopUp(!AddOrderPopUp)} />
-      )}
 
-      {tab == "Active Orders" && (
-        <ActiveOrders searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      )}
+      {/* Popup */}
+      {AddOrderPopUp && <AddOrder onClose={() => setAddOrderPopUp(false)} />}
 
-      {tab == "Cancelation Requests" && <CancelationOrders />}
+      <Outlet context={{ searchTerm, setSearchTerm }} />
     </>
   );
 }

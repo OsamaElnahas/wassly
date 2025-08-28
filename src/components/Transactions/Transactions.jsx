@@ -291,7 +291,7 @@ export default function Transactions() {
           className="my-2"
           style={{ fontWeight: "800", color: "var(--mainColor)" }}
         >
-          Transactions ({data?.data?.count || 0})
+          Transactions ({data?.count || 0})
         </div>
         <button
           className=" btn  text-capitalize btn-primary d-flex align-items-center gap-2"
@@ -329,8 +329,8 @@ export default function Transactions() {
                 </tr>
               </thead>
               <tbody>
-                {data?.data?.data?.length > 0 ? (
-                  data?.data?.data?.map((transaction, index) => (
+                {data?.data?.length > 0 ? (
+                  data?.data?.map((transaction, index) => (
                     <tr key={index} className="align-middle">
                       <td className="px-4 py-3">
                         <FontAwesomeIcon
@@ -374,8 +374,8 @@ export default function Transactions() {
 
       {/* Transactions Cards (Visible on sm and smaller screens) */}
       <div className="d-md-none row g-3">
-        {data?.data?.data?.length > 0 ? (
-          data?.data?.data?.map((transaction, index) => (
+        {data?.data?.length > 0 ? (
+          data?.data?.map((transaction, index) => (
             <div key={index} className="col-12">
               <div className="card shadow-sm border-0 h-100">
                 <div className="card-body d-flex flex-column gap-2">
@@ -418,7 +418,7 @@ export default function Transactions() {
       </div>
 
       {/* Pagination */}
-      {data?.data?.data?.length > 0 && (
+      {data?.data?.length > 0 && (
         <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
           <button
             className="btn btn-outline-primary"

@@ -5,6 +5,8 @@ import router from "./components/Router/Router";
 import "./App.css";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient();
 
@@ -13,6 +15,16 @@ function App() {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+          draggable
+          // theme="colored"
+        />
       </QueryClientProvider>
     </Provider>
   );

@@ -191,11 +191,12 @@ export default function AddTransactions({ isOpen, onClose }) {
                     </option>
                   ))}
                 </select>
-                {formik.touched.type && formik.errors.type && (
-                  <div id="transactionType-error" className="text-danger">
-                    {formik.errors.type}
-                  </div>
-                )}
+                {formik.touched.transaction_type_id &&
+                  formik.errors.transaction_type_id && (
+                    <div id="transactionType-error" className="text-danger">
+                      {formik.errors.transaction_type_id}
+                    </div>
+                  )}
               </div>
 
               <div className="form-group mb-3 d-flex flex-column gap-2">
@@ -241,11 +242,20 @@ export default function AddTransactions({ isOpen, onClose }) {
                 }`}
               >
                 <button
-                  className="btn btn-primary w-50"
+                  className="btn btn-primary w-100"
                   type="submit"
-                  disabled={isLoading}
+                  style={{
+                    cursor:
+                      !formik.isValid || !formik.dirty || formik.isSubmitting
+                        ? "not-allowed"
+                        : "pointer",
+                    opacity:
+                      !formik.isValid || !formik.dirty || formik.isSubmitting
+                        ? 0.6
+                        : 1,
+                  }}
                 >
-                  Confirm
+                  {formik.isSubmitting ? "Loading..." : "Confirm"}
                 </button>
                 <button className="btn btn-secondary w-50" onClick={onClose}>
                   Cancel
@@ -279,7 +289,6 @@ export default function AddTransactions({ isOpen, onClose }) {
           </style>
         </div>
       </div>
-      <ToastContainer />
     </>
   );
 }

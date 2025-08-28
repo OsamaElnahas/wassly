@@ -15,6 +15,9 @@ import AddTayar from "../Tayareen/AddTayar";
 import TayarDetails from "../Tayareen/TayarDetails";
 import Analytics from "../../Analytics/Analytics";
 import AddOrder from "../Orders/AddOrder";
+import ActiveOrders from "../Orders/ActiveOrders";
+import CancelationOrders from "../Orders/CancelationOrders";
+import OrdersHistory from "../Orders/OrdersHistory";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +32,17 @@ const router = createBrowserRouter([
           { path: "/shops", element: <Shops /> },
           { path: "/shops/shopsDetails/:id", element: <ShopsDetails /> },
           { path: "/shops/AddShop", element: <AddShop /> },
-          { path: "/orders", element: <Orders /> },
+          // { path: "/orders", element: <Orders /> },
+          {
+            path: "/orders",
+            element: <Orders />,
+            children: [
+              { index: true, element: <ActiveOrders /> },
+              { path: "active", element: <ActiveOrders /> },
+              { path: "cancelation", element: <CancelationOrders /> },
+              { path: "history", element: <OrdersHistory /> },
+            ],
+          },
           { path: "/orders/orderDetails/:id", element: <OrderDetails /> },
           { path: "/tayareen", element: <Tayareen /> },
           { path: "/transactions", element: <Transactions /> },
