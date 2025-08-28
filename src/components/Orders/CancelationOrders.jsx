@@ -24,6 +24,8 @@ export default function CancelationOrders() {
   const [cardIndex, setCardIndex] = useState(null);
   const [id, setid] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [page, setPage] = useState(1);
+  const pageSize = 6;
 
   async function getCancelation() {
     try {
@@ -32,6 +34,10 @@ export default function CancelationOrders() {
         {
           headers: {
             Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+          params: {
+            page: page,
+            page_size: pageSize,
           },
         }
       );
@@ -46,7 +52,7 @@ export default function CancelationOrders() {
     }
   }
   const { data: cancelations, isLoading: cancelationsIsloading } = useQuery({
-    queryKey: ["cancelations"],
+    queryKey: ["cancelations", page, pageSize],
     queryFn: getCancelation,
   });
   const mutationReject = useMutation({
@@ -113,14 +119,15 @@ export default function CancelationOrders() {
       setAmount(null);
     },
   });
+  if (cancelationsIsloading) {
+    return <Loader />;
+  }
 
   return (
     <div
       className="px-3 px-sm-2 d-flex flex-column  justify-content-center gap-1 w-100"
       style={{ maxWidth: "1400px", margin: "0 auto" }}
     >
-      {cancelationsIsloading && <Loader />}
-
       {/* Cancellation Requests Section */}
       <div
         className="fw-bold mb-4"
@@ -339,6 +346,64 @@ export default function CancelationOrders() {
         />
         <p className="text-muted">No pending cancellation requests</p>
       </div> */}
+      <div className="mt-4">
+        {cancelations?.data?.length > 0 && (
+          <div
+            className="pagination-controls d-flex justify-content-center align-items-center gap-3"
+            style={{
+              width: "100%",
+              maxWidth: "1200px",
+              margin: "0 auto",
+            }}
+          >
+            <button
+              className="btn btn-outline-primary"
+              style={{
+                width: "120px",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                border: "2px solid var(--mainColor)",
+                color: "var(--mainColor)",
+                fontWeight: "600",
+                transition: "all 0.3s ease",
+              }}
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+              aria-label="Previous page"
+            >
+              Previous
+            </button>
+            <span
+              style={{
+                fontSize: "18px",
+                fontWeight: "600",
+                color: "var(--mainColor)",
+                minWidth: "100px",
+                textAlign: "center",
+              }}
+            >
+              Page {page}
+            </span>
+            <button
+              className="btn btn-outline-primary"
+              style={{
+                width: "120px",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                border: "2px solid var(--mainColor)",
+                color: "var(--mainColor)",
+                fontWeight: "600",
+                transition: "all 0.3s ease",
+              }}
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={page * pageSize >= cancelations?.count}
+              aria-label="Next page"
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
