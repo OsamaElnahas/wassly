@@ -11,6 +11,8 @@ import {
   faMoneyBillWave,
   faDollarSign,
   faMotorcycle,
+  faMoneyCheckDollar,
+  faDotCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RechargeCoin from "./ChargeCoins";
@@ -26,10 +28,11 @@ export default function TayarDetails() {
   const [tempEndDate, setTempEndDate] = useState("");
   const [chargePopUp, setChargePopUp] = useState(false);
   const [page, setPage] = useState(1);
+
   const [openfilter, setOpenFilter] = useState(false);
   const [month, setMonth] = useState(new Date().getMonth() + 1);
 
-  const pageSize = 5;
+  const pageSize = 8;
   const baseUrl = useSelector(selectBaseUrl);
 
   const fetchTransactions = async () => {
@@ -49,7 +52,7 @@ export default function TayarDetails() {
         headers: { Authorization: "Token " + localStorage.getItem("token") },
         params,
       });
-      console.log("Fetched transactions:", res.data.data);
+      console.log("Fetched transactions:", res?.data);
       return res?.data || { data: [] };
     } catch (error) {
       console.error("Error fetching transactions:", error);
@@ -59,7 +62,7 @@ export default function TayarDetails() {
 
   const {
     data: transactionData,
-    isLoading,
+    isLoading: transactionIsLoading,
     isError,
     error,
   } = useQuery({
@@ -67,6 +70,28 @@ export default function TayarDetails() {
     queryFn: fetchTransactions,
     keepPreviousData: true,
   });
+  async function fetchTransactionTypes() {
+    try {
+      const res = await axios.get(`${baseUrl}api/transaction-types/`, {
+        headers: { Authorization: "Token " + localStorage.getItem("token") },
+        params: {
+          page: 1,
+          page_size: 15,
+        },
+      });
+      console.log("Transaction Types:", res?.data);
+      return res?.data || [];
+    } catch (error) {
+      console.error("Error fetching transaction types:", error);
+      throw error;
+    }
+  }
+
+  const { data: transactionTypesList, isLoading: isLoadingTransactionTypes } =
+    useQuery({
+      queryKey: ["transactionTypesList"],
+      queryFn: fetchTransactionTypes,
+    });
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString("en-US", {
@@ -149,10 +174,10 @@ export default function TayarDetails() {
     );
 
   const transactionStyles = {
-    order_picked: { icon: faMotorcycle, color: "text-primary" },
-    balance_recharged: { icon: faMoneyBillWave, color: "text-success" },
+    "Order Picked": { icon: faMotorcycle, color: "text-primary" },
+    "Balance Recharged": { icon: faMoneyCheckDollar, color: "text-success" },
   };
-
+  const defaultStyle = { icon: faDotCircle, color: "text-secondary" };
   return (
     <>
       <div className="d-flex flex-column flex-md-row justify-content-end  mb-4">
@@ -338,7 +363,7 @@ export default function TayarDetails() {
           {isError && (
             <Errors message={error.message || "Failed to load transactions"} />
           )}
-          {isLoading && <Loader />}
+          {transactionIsLoading && <Loader />}
 
           {/* Filter UI */}
           <div className="mb-2 d-flex flex-column flex-md-row justify-content-md-between align-items-md-start gap-3">
@@ -348,16 +373,36 @@ export default function TayarDetails() {
                 name="transactionType"
                 id="transactionType"
                 value={filterTerm}
-                onChange={(e) => setFilterTerm(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value === "add new") {
+                    e.target.value = "All";
+                  } else {
+                    setFilterTerm(e.target.value);
+                    setPage(1);
+                  }
+                }}
+                style={{
+                  minHeight: "30px",
+                  overflowY: "scroll",
+                  width: "100%",
+                }}
               >
-                <option className="p1" value="All">
+                <option value="All" className="shadow-lg">
                   All
                 </option>
-                <option className="p1" value="Order Picked">
-                  Order Picked
-                </option>
-                <option className="p1" value="Balance Recharged">
-                  Balance Recharged
+                {isLoadingTransactionTypes ? (
+                  <option value="" disabled className="shadow-lg">
+                    Loading...
+                  </option>
+                ) : (
+                  transactionTypesList?.data?.data?.map((type) => (
+                    <option key={type.id} value={type.id} className="shadow-lg">
+                      {type.name}
+                    </option>
+                  ))
+                )}
+                <option value="add new" className="shadow-lg">
+                  + Add New Type
                 </option>
               </select>
             </div>
@@ -420,7 +465,12 @@ export default function TayarDetails() {
               Clear Filters
             </button>
           )}
-
+          <div
+            className="my-2"
+            style={{ fontWeight: "800", color: "var(--mainColor)" }}
+          >
+            Transactions ({transactionData?.count || 0})
+          </div>
           {/* Transactions Table (Large Screens) */}
           <div className="d-none d-md-block card shadow-sm mb-4 border-0">
             <div className="card-body p-0">
@@ -448,26 +498,36 @@ export default function TayarDetails() {
                         <td className="px-4 py-3">
                           <FontAwesomeIcon
                             icon={
-                              transactionStyles[transaction?.transaction_type]
-                                ?.icon || faMoneyBillWave
+                              transactionStyles[
+                                transaction?.transaction_type?.name
+                              ]?.icon || faDotCircle
                             }
                             className={
-                              transactionStyles[transaction?.transaction_type]
-                                ?.color || "text-secondary"
+                              transactionStyles[
+                                transaction?.transaction_type?.name
+                              ]?.color || "text-secondary"
                             }
                             size="lg"
                           />
-                          {transaction.transaction_type.replace("_", " ") ===
-                          "order picked" ? (
+                          {transaction?.transaction_type?.name.replace(
+                            "_",
+                            " "
+                          ) === "order picked" ? (
                             <Link
                               to={`/tayareen/tayaarDetails/${transaction?.order_id}`}
                               className="ms-2 text-capitalize"
                             >
-                              {transaction.transaction_type.replace("_", " ")}
+                              {transaction.transaction_type?.name.replace(
+                                "_",
+                                " "
+                              )}
                             </Link>
                           ) : (
                             <span className="ms-2 text-capitalize">
-                              {transaction.transaction_type.replace("_", " ")}
+                              {transaction.transaction_type?.name.replace(
+                                "_",
+                                " "
+                              )}
                             </span>
                           )}
                         </td>
@@ -483,7 +543,11 @@ export default function TayarDetails() {
                   ) : (
                     <tr>
                       <td colSpan="4" className="text-center py-4 text-muted">
-                        {isLoading ? <Loader /> : "No transactions found"}
+                        {transactionIsLoading ? (
+                          <Loader />
+                        ) : (
+                          "No transactions found"
+                        )}
                       </td>
                     </tr>
                   )}
@@ -552,17 +616,19 @@ export default function TayarDetails() {
                       <div className="d-flex align-items-center gap-2">
                         <FontAwesomeIcon
                           icon={
-                            transactionStyles[transaction?.transaction_type]
-                              ?.icon || faMoneyBillWave
+                            transactionStyles[
+                              transaction?.transaction_type?.name
+                            ]?.icon || faMoneyBillWave
                           }
                           className={
-                            transactionStyles[transaction?.transaction_type]
-                              ?.color || "text-secondary"
+                            transactionStyles[
+                              transaction?.transaction_type?.name
+                            ]?.color || "text-secondary"
                           }
                           size="lg"
                         />
                         <h6 className="mb-0 text-capitalize">
-                          {transaction.transaction_type.replace("_", " ")}
+                          {transaction.transaction_type?.name.replace("_", " ")}
                         </h6>
                       </div>
                       <div className="text-muted small">
@@ -581,7 +647,7 @@ export default function TayarDetails() {
             ) : (
               <div className="col-12">
                 <div className="text-center text-muted py-4">
-                  {isLoading ? <Loader /> : "No transactions found"}
+                  {transactionIsLoading ? <Loader /> : "No transactions found"}
                 </div>
               </div>
             )}
