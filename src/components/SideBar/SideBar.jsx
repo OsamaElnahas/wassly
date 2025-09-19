@@ -11,6 +11,20 @@ import {
   faChartBar,
   faChartDiagram,
   faChartSimple,
+  faReceipt,
+  faBank,
+  faMoneyBillTransfer,
+  faMoneyCheck,
+  faMoneyCheckAlt,
+  faMoneyCheckDollar,
+  faHandHoldingDollar,
+  faHandsHelping,
+  faHandshake,
+  faHandsHoldingCircle,
+  faHandshakeAltSlash,
+  faHandshakeAngle,
+  faHandHoldingUsd,
+  faHandBackFist,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./SideBar.module.css";
 
@@ -19,9 +33,14 @@ export default function SideBar({ isVisible, setVisible }) {
     { path: "/", icon: faHome, label: "Home" },
     { path: "/shops", icon: faStore, label: "Shops" },
     { path: "/orders", icon: faCartShopping, label: "Orders" },
-    { path: "/tayareen", icon: faUsers, label: "Tayareen" },
-    // { path: "/analytics", icon: faChartSimple, label: "Analytics" },
+    { path: "/tayareen", icon: faUsers, label: "Drivers" },
+    { path: "/analytics", icon: faChartSimple, label: "Analytics" },
     { path: "/transactions", icon: faChain, label: "Transactions" },
+    {
+      path: "/RevenuesHandover",
+      icon: faHandshake,
+      label: "Revenue & Handover",
+    },
   ];
 
   return (
@@ -46,6 +65,7 @@ export default function SideBar({ isVisible, setVisible }) {
             <NavLink
               key={item.path}
               to={item.path}
+              end={false}
               className={({ isActive }) =>
                 `${styles.item} ${isActive ? styles.active : ""}`
               }

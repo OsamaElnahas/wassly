@@ -53,7 +53,7 @@ export default function ShopsDetails() {
     try {
       const res = await axios.patch(
         `${baseUrl}api/shops/${id}`,
-        { status: newStatus },
+        { is_busy: newStatus },
         {
           headers: {
             Authorization: "Token " + localStorage.getItem("token"),
@@ -92,7 +92,7 @@ export default function ShopsDetails() {
   });
 
   const handleToggle = () => {
-    const newStatus = data?.data?.status === "Online" ? "Offline" : "Online";
+    const newStatus = data?.data?.is_busy === true ? false : true;
     mutation.mutate(newStatus);
   };
 
@@ -127,19 +127,19 @@ export default function ShopsDetails() {
           fontSize: "12px",
           borderRadius: "50%",
           padding: "4px",
-          backgroundColor: data?.data?.status === "Online" ? "gray" : "green",
+          backgroundColor: data?.data?.is_busy === false ? "gray" : "green",
           color: "white",
           border: "none",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         }}
         onClick={handleToggle}
       >
-        {data?.data?.status === "Online" ? " Switch Off" : "Switch On"}
+        {data?.data?.is_busy === true ? " Switch on" : "Switch off"}
       </button>
       <CardIdentifier
         title={data?.data?.shop_name}
         describtion={data?.data?.shop_description}
-        status={data?.data?.status}
+        status={data?.data?.is_busy === true ? "Offline" : "Online"}
         image={data?.data?.shop_image_url ? data.data.shop_image_url : logo}
         imageFallback={logo}
         phone={data?.data?.shop_phone_number}

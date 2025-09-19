@@ -80,14 +80,16 @@ export default function Transactions() {
         headers: { Authorization: "Token " + localStorage.getItem("token") },
         params,
       });
-      console.log("Transactions:", {
-        page,
-        params,
-        data: res?.data?.data,
-        next: res?.data?.next,
-        count: res?.data?.count,
-        length: res?.data?.data?.length,
-      });
+      console.log(
+        "Transactions:",
+        res?.data
+
+        // page,
+        // params,
+        // next: res?.data?.next,
+        // count: res?.data?.count,
+        // length: res?.data?.data?.length,
+      );
       return res?.data || { data: [] };
     } catch (error) {
       console.error("Error fetching transactions:", error);
@@ -169,7 +171,7 @@ export default function Transactions() {
   }
 
   return (
-    <div className="container" style={{ maxWidth: "1400px" }}>
+    <div className="" style={{ maxWidth: "1550px" }}>
       {/* <h2 className="mb-4 text-center fw-bold" style={{ color: 'var(--mainColor, #007bff)' }}>
         Transactions
       </h2> */}
@@ -294,7 +296,7 @@ export default function Transactions() {
           Transactions ({data?.count || 0})
         </div>
         <button
-          className=" btn  text-capitalize btn-primary d-flex align-items-center gap-2"
+          className=" btn  text-capitalize btn-primary d-flex align-items-center gap-2 rounded-pill"
           onClick={() => setShowAddTransaction(true)}
         >
           + new Record{" "}
@@ -304,14 +306,13 @@ export default function Transactions() {
         <AddTransactions onClose={() => setShowAddTransaction(false)} />
       )}
       <div
-        className="row align-items-center gx-0 w-100"
-        style={{ maxWidth: "1400px" }}
+        className="row align-items-center gx-0 w-100 "
+        style={{ maxWidth: "1550px" }}
       >
-        <ToastContainer />
         {/* Transactions Table (Visible on md and larger screens) */}
-        <div className="d-none d-md-block card shadow-sm mb-4 border-0 w-100 rounded-3">
+        <div className="d-none d-md-block card shadow-sm mb-4 border-0 w-100 ">
           <div className="card-body p-0">
-            <table className="table table-hover mb-0">
+            <table className="table table-hover mb-0 rounded-pill ">
               <thead className="table-light">
                 <tr>
                   <th scope="col" className="px-4 py-3">
@@ -445,7 +446,7 @@ export default function Transactions() {
           <button
             className="btn btn-outline-primary"
             onClick={() => setPage((prev) => prev + 1)}
-            disabled={!data?.data?.next}
+            disabled={!data?.next}
             style={{
               width: "100px",
               padding: "8px 16px",

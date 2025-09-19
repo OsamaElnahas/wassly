@@ -33,8 +33,10 @@
 }
 
 .imageDiv img {
-    width: 140px;
-    height: 140px;
+    width: 155px;
+    height: 155px;
+    min-height: 155px;
+    min-width: 155px;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid var(--borderColor);

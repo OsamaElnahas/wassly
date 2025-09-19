@@ -75,49 +75,69 @@ export default function Tayareen() {
   return (
     <div
       className="px-2  d-flex flex-column  justify-content-center  w-100"
-      style={{ maxWidth: "1400px", margin: "0 auto" }}
+      style={{ maxWidth: "1500px", margin: "0 auto" }}
     >
-      <div className="d-flex justify-content-between align-items-center mb-2 gap-1 flex-wrap">
-        <div
-          className="row g-4 w-100 justify-content-between align-items-center"
-          style={{ maxWidth: "1200px" }}
-        >
-          <div className="col-md-6 col-lg-3 col-sm-6 col-12">
-            <AccessCard
-              link="/addTayaar"
-              title="Add Tayaar"
-              iconProp={faUserPlus}
+      <div
+        className="row g-0  align-items-center w-100 justify-content-between "
+        style={{ margin: "0 auto" }}
+      >
+        <div className="col-md-6 col-lg-2 col-sm-6 col-7 mb-4 ">
+          <NavLink
+            to={"/tayareen/addTayar"}
+            className="item px-3 py-2 fw-bold pointer rounded-pill  align-items-center justify-content-center gap-2  d-flex"
+            // onClick={() => setAddOrderPopUp(true)}
+            style={{
+              fontSize: "0.9rem",
+              // backgroundColor: "var(--mainColor)",
+              backgroundColor: "white",
+              border: "1px solid var(--mainColor)",
+              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+
+              color: "var(--mainColor)",
+              opacity: 0.8,
+              cursor: "pointer",
+            }}
+          >
+            <FontAwesomeIcon icon={faUserPlus} className="fs-5" />
+            <span>Add Tayar</span>
+          </NavLink>
+        </div>
+
+        <div className="col-md-6 col-lg-5 col-sm-6 col-12 mb-4 ">
+          <div
+            className="search-container d-flex align-items-center gap-2  p-1 px-2 rounded-pill bg-white position-relative flex-grow-1"
+            style={{ boxShadow: "0 1px 5px rgba(0, 0, 0, 0.099)" }}
+          >
+            <FontAwesomeIcon
+              icon={faSearch}
+              style={{
+                color: "var(--mainColor)",
+                fontSize: "18px",
+              }}
             />
-          </div>
-          <div className="col-lg-5 col-md-6 col-12  mb-lg-0">
-            <div className="search-container d-flex align-items-center gap-2 border p-1 px-2 rounded bg-white position-relative w-100">
-              <FontAwesomeIcon
-                icon={faSearch}
-                style={{ color: "var(--mainColor)", fontSize: "18px" }}
-              />
-              <input
-                className="w-100 border-0 p-1"
-                type="input"
-                placeholder="Search by username or phone (press Enter)"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyDown}
-                style={{ outline: "none", paddingRight: "40px" }}
-              />
-              {inputValue && (
-                <button
-                  className="btn btn-sm p-0 position-absolute end-0 me-2 d-flex fs-3 text-primary  "
-                  onClick={() => {
-                    setInputValue("");
-                    setSearchTerm("");
-                    setPage(1);
-                  }}
-                  style={{ color: "var(--mainColor)", fontSize: "16px" }}
-                >
-                  ×
-                </button>
-              )}
-            </div>
+            <input
+              className="w-100 border-0 p-1"
+              type="text"
+              placeholder="Search by Tayar name, Tayar Phone  (Press Enter)"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{ outline: "none", paddingRight: "40px" }}
+              aria-label="Search orders"
+            />
+            {inputValue && (
+              <button
+                className="btn btn-sm p-0 position-absolute end-0 me-2 d-flex fs-3 text-primary"
+                onClick={() => {
+                  setInputValue("");
+                  setSearchTerm("");
+                }}
+                style={{ color: "var(--mainColor)", fontSize: "16px" }}
+                aria-label="Clear search"
+              >
+                ×
+              </button>
+            )}
           </div>
         </div>
       </div>

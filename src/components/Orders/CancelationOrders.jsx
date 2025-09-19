@@ -25,7 +25,7 @@ export default function CancelationOrders() {
   const [id, setid] = useState(null);
   const [amount, setAmount] = useState(null);
   const [page, setPage] = useState(1);
-  const pageSize = 6;
+  const pageSize = 12;
 
   async function getCancelation() {
     try {
@@ -126,14 +126,14 @@ export default function CancelationOrders() {
   return (
     <div
       className="px-3 px-sm-2 d-flex flex-column  justify-content-center gap-1 w-100"
-      style={{ maxWidth: "1400px", margin: "0 auto" }}
+      style={{ maxWidth: "1500px", margin: "0 auto" }}
     >
       {/* Cancellation Requests Section */}
       <div
         className="fw-bold mb-4"
         style={{ color: "var(--mainColor)", fontSize: "1rem" }}
       >
-        Cancellation Requests ({cancelations?.count} )
+        Cancellation Requests ({cancelations?.count})
       </div>
 
       <div className="row g-3">

@@ -1,11 +1,11 @@
 @import "@fontsource/open-sans/index.css";
 :root {
     --mainColor: #1a237e;
-    --secondaryColor: #CCD7FA;
+    --secondaryColor: #f1f3f8;
     --thirdColor: #2D64BC;
     --borderColor: rgba(156, 156, 156, 0.39);
     --backgroundColor: #f0f2f5;
-    --sidebarBg: #1a237e;
+    --sidebarBg: #080e57;
     --textLight: #ffffff;
     --textGray: #64748b;
     --cardBg: #ffffff;

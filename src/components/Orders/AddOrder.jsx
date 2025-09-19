@@ -93,9 +93,9 @@ export default function AddOrder({ onClose }) {
   const formik = useFormik({
     initialValues: {
       request_shop: "",
-      receiver_name: "",
-      receiver_phone: "",
-      price: "",
+      receiver_name: " غير معروف",
+      receiver_phone: "غير معروف",
+      price: "غير معروف",
     },
     validationSchema,
     onSubmit: (values) => {
