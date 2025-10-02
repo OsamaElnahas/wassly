@@ -34,13 +34,13 @@ export default function SideBar({ isVisible, setVisible }) {
     { path: "/shops", icon: faStore, label: "Shops" },
     { path: "/orders", icon: faCartShopping, label: "Orders" },
     { path: "/tayareen", icon: faUsers, label: "Drivers" },
-    { path: "/analytics", icon: faChartSimple, label: "Analytics" },
+    // { path: "/analytics", icon: faChartSimple, label: "Analytics" },
     { path: "/transactions", icon: faChain, label: "Transactions" },
-    {
-      path: "/RevenuesHandover",
-      icon: faHandshake,
-      label: "Revenue & Handover",
-    },
+    // {
+    //   path: "/RevenuesHandover",
+    //   icon: faHandshake,
+    //   label: "Revenue & Handover",
+    // },
   ];
 
   return (

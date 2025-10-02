@@ -21,6 +21,7 @@
 .pageContent {
     padding: 4.5rem 1.2rem 1rem 1.2rem;
     min-height: calc(100vh - 60px);
+    background-color: var(--backgroundColor);
 }
 
 @media (max-width: 768px) {

@@ -6,6 +6,8 @@ import {
   faSearch,
   faPlus,
   faPlusCircle,
+  faBan,
+  faCartArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
 import AddOrder from "./AddOrder";
 
@@ -57,7 +59,7 @@ export default function Orders() {
 
       {/* Tabs + Search */}
       <div
-        className="row rounded-4  gx-3 mb-4"
+        className="row rounded-4  p-0 "
         style={{
           marginBottom: "1rem",
           backgroundColor: "white",
@@ -65,34 +67,68 @@ export default function Orders() {
           boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <div className="row align-items-center bg-white rounded-pill m-0">
+        <div className="row align-items-center bg-white rounded-pill m-0 px-3 pt-2">
           {/* Tabs */}
-          <div className="col-12 col-lg-4 d-flex align-items-center gap-3 ">
+          <div className="col-12 col-lg-5 d-flex align-items-center justify-content-around gap-3 p-0">
+            {" "}
             <NavLink
               to="/orders/active"
-              className="item mb-3 mb-lg-0 p-lg-4 p-2 fw-bold pointer"
+              className="item p-2 mb-lg-0 fw-bold pointer d-flex justify-content-center align-items-center gap-2 w-100"
               style={({ isActive }) => ({
                 borderBottom: isActive ? "4px solid var(--mainColor)" : "",
-                color: isActive ? "var(--mainColor)" : "var(--thirdColor)",
+                color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",
+                transition: "border 0.2s ease",
               })}
             >
-              Active Orders
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "30px",
+                  height: "30px",
+                  backgroundColor: "var(--secondaryColor)",
+                  borderRadius: "50%",
+                  color: "var(--mainColor)",
+                  fontSize: "14px",
+                  padding: "5px 6px",
+                }}
+              >
+                <FontAwesomeIcon icon={faCartArrowDown} className="fs-5" />
+              </span>
+              <span>Active Orders</span>
             </NavLink>
-
             <NavLink
               to="/orders/cancelation"
-              className="item mb-3 mb-lg-0 p-lg-4 p-2 fw-bold pointer"
+              className="item p-2 mb-lg-0 fw-bold pointer  d-flex justify-content-center align-items-center gap-2 w-100"
               style={({ isActive }) => ({
                 borderBottom: isActive ? "4px solid var(--mainColor)" : "",
-                color: isActive ? "var(--mainColor)" : "var(--thirdColor)",
+                color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",
+                transition: "border 0.2s ease",
               })}
             >
-              Cancelation Requests
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "30px",
+                  height: "30px",
+                  backgroundColor: "var(--secondaryColor)",
+                  borderRadius: "50%",
+                  color: "var(--mainColor)",
+                  fontSize: "14px",
+                  padding: "5px 6px",
+                }}
+              >
+                <FontAwesomeIcon icon={faBan} className="fs-5" />
+              </span>
+              <span>Cancelation Requests</span>
             </NavLink>
           </div>
 
           {/* Search + History + Add Order */}
-          <div className="col-12 col-lg-8 d-flex align-items-center justify-content-between gap-3 py-2 py-lg-0">
+          <div className="col-12 col-lg-7 d-flex align-items-center justify-content-between gap-3 py-2 py-lg-0 mb-1">
             <div
               className="search-container d-flex align-items-center gap-2  p-1 px-2 rounded-pill bg-white position-relative flex-grow-1"
               style={{ boxShadow: "0 1px 5px rgba(0, 0, 0, 0.099)" }}
@@ -132,7 +168,7 @@ export default function Orders() {
             <div className="d-flex align-items-center gap-2 ">
               {/* <NavLink
                 to="history"
-                className="item p-lg-4 p-2 fw-bold pointer"
+                className="item px-3 fw-bold pointer"
                 style={({ isActive }) => ({
                   borderBottom: isActive ? "4px solid var(--mainColor)" : "",
                   color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",

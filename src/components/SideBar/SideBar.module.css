@@ -17,8 +17,9 @@
 }
 
 .nonVisible {
-    transform: translateX(-250px);
+    transform: translateX(-270px);
     box-shadow: none;
+    width: 0px;
 }
 
 .logo {

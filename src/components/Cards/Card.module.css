@@ -65,7 +65,7 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    background-color: var(--cardBg);
+    /* background-color: var(--cardBg); */
     border-top: 1px solid var(--borderColor);
     gap: 0.5rem;
 }
@@ -101,16 +101,39 @@
 }
 
 .title {
-    font-weight: 600;
-    font-size: 1.1rem;
+    /* font-size: 1.1rem; */
     color: var(--mainColor);
     margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.titleIconSpan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    min-width: 30px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .titleIcon {
-    color: var(--mainColor);
-    font-size: 1.1rem;
-    flex-shrink: 0;
+    color: white;
+    width: 100%;
+}
+
+.titleText {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    flex: 1;
+    font-weight: 600;
 }
 
 .description {
@@ -124,7 +147,7 @@
     flex-shrink: 0;
 }
 
-.title span,
+.title .titleText,
 .description span {
     white-space: nowrap;
     overflow: hidden;

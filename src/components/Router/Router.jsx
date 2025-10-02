@@ -46,16 +46,16 @@ const router = createBrowserRouter([
               { path: "history", element: <OrdersHistory /> },
             ],
           },
-          {
-            path: "/RevenuesHandover",
-            element: <RevenuesHandover />,
-            children: [
-              { index: true, element: <Navigate to="handOver" replace /> },
-              { path: "handOver", element: <HandOver /> },
-              { path: "revenue", element: <Revenue /> },
-              // {path:"/RevenuesHandover/history",element:<RevenuesHistory />},
-            ],
-          },
+          // {
+          //   path: "/RevenuesHandover",
+          //   element: <RevenuesHandover />,
+          //   children: [
+          //     { index: true, element: <Navigate to="handOver" replace /> },
+          //     { path: "handOver", element: <HandOver /> },
+          //     { path: "revenue", element: <Revenue /> },
+          //     // {path:"/RevenuesHandover/history",element:<RevenuesHistory />},
+          //   ],
+          // },
           {
             path: "/orders/active/orderDetails/:id",
             element: <OrderDetails />,
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
           { path: "/tayareen/addTayar", element: <AddTayar /> },
           { path: "/tayareen/tayaarDetails/:id", element: <TayarDetails /> },
           { path: "/orders/AddOrder", element: <AddOrder /> },
-          { path: "/analytics", element: <Analytics /> },
+          // { path: "/analytics", element: <Analytics /> },
         ],
       },
     ],

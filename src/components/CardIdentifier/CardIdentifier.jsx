@@ -4,10 +4,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCheckCircle,
   faEnvelope,
   faInfoCircle,
   faPhone,
+  faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import ConfirmationPopup from "../ConfirmationPopup/confirmationPopup.jsx";
 
 export default function CardIdentifier({
   image,
@@ -54,8 +57,14 @@ export default function CardIdentifier({
   number_of_deliveries,
   working_start_time,
   working_end_time,
+  shopImage,
+  verified,
+  verifyStatus,
+  verifyFn,
+  date_joined,
 }) {
   const [showModal, setShowModal] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const optimizedImage = image
     ? `${image}?format=webp&quality=80`
@@ -94,9 +103,12 @@ export default function CardIdentifier({
     CANCELED: "تم الالغاء",
   };
   return (
-    <div className="px-md-3 px-1 my-sm-3 my-1 " style={{ maxWidth: "1400px" }}>
+    <div
+      className="px-md-3 px-1 my-sm-3 my-1  position-relative "
+      style={{ maxWidth: "1400px" }}
+    >
       <div
-        className="d-flex flex-column flex-md-row bg-white border rounded-3 shadow-md text-capitalize text-dark justify-content-start align-md-items-center align-items-start gap-md-3 gap-1 w-100"
+        className="d-flex flex-column flex-lg-row bg-white border rounded-3 shadow-md text-capitalize text-dark justify-content-start align-md-items-center align-items-start gap-md-3 gap-1 w-100"
         style={{ transition: "all 0.3s ease-in-out", overflow: "hidden" }}
         onMouseEnter={(e) =>
           (e.currentTarget.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.1)")
@@ -218,7 +230,7 @@ export default function CardIdentifier({
           </div>
         </div>
         <div
-          className="card-identifier-details d-flex flex-column align-items-start align-self-md-start justify-content-start   p-3 fs-6 gap-3 "
+          className="card-identifier-details d-flex flex-column align-items-start align-self-md-start justify-content-start w-100   p-3 fs-6 gap-3 "
           style={{
             height: "100%",
           }}
@@ -231,6 +243,69 @@ export default function CardIdentifier({
               </div>
             </div>
           )}
+          {verified !== undefined && (
+            <div className="d-flex align-items-center justify-content-between gap-2 w-100">
+              <div
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  color: verified ? "green" : "red",
+                  backgroundColor: verified ? "lightgreen" : "lightcoral",
+                  padding: "2px 6px",
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  boxShadow: "0 1px 4px rgba(0, 0, 0, 0.1)",
+                  opacity: 0.7,
+                }}
+              >
+                {verified ? (
+                  <FontAwesomeIcon icon={faCheckCircle} />
+                ) : (
+                  <FontAwesomeIcon icon={faXmarkCircle} />
+                )}{" "}
+                {verified ? "Verified" : "Not Verified"}
+              </div>
+              {!verified && (
+                <div className="btns d-flex align-items-center gap-2 ">
+                  <button
+                    className="btn px-4 py-2 rounded-3 shadow-sm  d-flex align-items-center "
+                    onClick={() => setShowPopup(true)}
+                    style={{
+                      fontSize: "14px",
+                      borderRadius: "12px",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.1)",
+                      width: "fit-content",
+                      backgroundColor: "lightgreen",
+                      border: "none",
+                      color: "green",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    Verify
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {showPopup && (
+            <ConfirmationPopup
+              isOpen={showPopup}
+              onClose={() => setShowPopup(false)}
+              onConfirm={verifyFn}
+              title="Verify Driver"
+              description="Are you sure you want to verify this Driver? This action cannot be undone."
+              confirmText="Verify"
+              cancelText="Cancel"
+              status={verifyStatus}
+            />
+          )}
+
           {typeof TayarIsActive !== "undefined" && (
             <div
               className={`fw-bold ${
@@ -243,7 +318,7 @@ export default function CardIdentifier({
           {OrderCode && (
             <div className="mb-1">
               <span className="fw-bold">Order Code: </span>
-              <span className="text-dark">{OrderCode}</span>
+              <span className="text-dark">#{OrderCode}</span>
             </div>
           )}
 
@@ -292,8 +367,20 @@ export default function CardIdentifier({
                   </div>
                 )}
                 {ShopOrderdName && (
-                  <div>
+                  <div className="d-flex align-items-center gap-2">
                     <span className="fw-bold text-dark">Shop Ordered: </span>
+                    <img
+                      src={shopImage}
+                      alt="shop logo"
+                      loading="lazy"
+                      style={{
+                        width: "70px",
+                        height: "70px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                      }}
+                    />
+
                     <Link
                       to={`/shops/shopsDetails/${ShopOrderdId}`}
                       className="text-primary text-decoration-underline fw-semibold"
@@ -423,9 +510,12 @@ export default function CardIdentifier({
           )}
 
           {type && (
-            <div className="mb-1">
-              <span className="fw-bold">Type: </span>
-              <span className="text-dark">{type}</span>
+            <div className=" small fw-semibold d-flex flex-column flex-md-row align-items-md-center gap-1  justify-content-between w-100">
+              <span className="text-primary">{type}</span>
+              <span>
+                {" "}
+                joined at : <span className="text-muted">{date_joined}</span>
+              </span>
             </div>
           )}
 
@@ -450,7 +540,10 @@ export default function CardIdentifier({
           )}
 
           {nationalIdFront && nationalIdBack && (
-            <div className="d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-md-between gap-5  p-2 bg-light w-100">
+            <div
+              className="d-flex flex-column flex-xl-row align-items-center justify-content-center justify-content-md-between gap-5  p-2 bg-light w-100"
+              style={{ maxWidth: "900px" }}
+            >
               {nationalIdFront && (
                 <div
                   className="m-2 d-flex  align-items-center justify-content-start w-100"

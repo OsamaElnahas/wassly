@@ -77,15 +77,18 @@ export default function Shops() {
   };
 
   return (
-    <div className=" d-flex flex-column align-items-center justify-content-center gap-1 w-100">
+    <div
+      className=" d-flex flex-column align-items-center justify-content-center gap-1 w-100"
+      style={{ margin: "0 auto" }}
+    >
       <div
         className="row g-0  align-items-center w-100 justify-content-between "
         style={{ margin: "0 auto" }}
       >
-        <div className="col-md-6 col-lg-2 col-sm-6 col-7 mb-4 ">
+        <div className="col-md-6 col-lg-2 col-sm-6 col-7 mb-4  ">
           <NavLink
             to={"/shops/AddShop"}
-            className="item px-3 py-2 fw-bold pointer rounded-pill  align-items-center justify-content-center gap-2  d-flex"
+            className="item px-3 py-2 fw-bold pointer rounded-pill  align-items-center justify-content-center gap-2  d-flex "
             // onClick={() => setAddOrderPopUp(true)}
             style={{
               fontSize: "0.9rem",
@@ -158,9 +161,12 @@ export default function Shops() {
         <div className="d-flex flex-wrap align-items-center gap-3 col-lg-4 col-8  justify-content-end">
           {/* <div className="fs-5" style={{ color: 'var(--mainColor)' }}>Filter by</div> */}
           <select
-            className="border-1 rounded-2 px-2 py-1 w-50"
+            className=" rounded-2 px-2 py-1 w-50"
             name="status"
             id="status"
+            style={{
+              border: "1px solid #ced4da",
+            }}
             value={statusTerm}
             onChange={(e) => {
               setStatusTerm(e.target.value);

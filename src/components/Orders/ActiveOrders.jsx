@@ -18,6 +18,8 @@ import Loader from "../Loader/Loader";
 import Errors from "../Error/Errors";
 import { formatDate } from "./Orders";
 import axios from "axios";
+import market from "../../images/3998266.webp";
+
 const statusDisplay = {
   All: "الكل",
   PENDING: "قيد الانتظار",
@@ -349,7 +351,7 @@ export default function ActiveOrders() {
           <div className=" col-6 mb-1 mb-lg-0 ">
             <div className="d-flex align-items-center gap-2 flex-wrap w-100  justify-content-end">
               <select
-                className="form-select border-1 rounded-2 px-2 py-1 w-50 "
+                className="form-select border-1 rounded-2 px-2 py-2 w-50 "
                 name="status"
                 id="status"
                 value={statusFilter}
@@ -377,11 +379,9 @@ export default function ActiveOrders() {
               >
                 <NavLink
                   to={`/orders/active/orderDetails/${item.id}`}
-                  className={`orderCard mb-3 bg-white  rounded-3  d-block text-decoration-none text-dark w-100  ${
+                  className={`orderCard mb-3 bg-white  rounded-3  d-block text-decoration-none text-dark w-100   ${
                     newOrderIds.has(item.id) ? "new-order" : ""
-                  } ${
-                    item.is_delivered ? "bg-success bg-opacity-10 shadow " : ""
-                  }`}
+                  } `}
                   onMouseEnter={() => setHoveredIndex(idx)}
                   onMouseLeave={() => setHoveredIndex(null)}
                   style={{
@@ -389,16 +389,17 @@ export default function ActiveOrders() {
                     fontSize: "0.9rem",
                     transform:
                       hoveredIndex === idx ? "scale(1.04)" : "scale(1)",
-                    boxShadow:
-                      hoveredIndex === idx
-                        ? "0px 4px 8px rgba(0, 0, 0, 0.1)"
-                        : newOrderIds.has(item.id)
-                        ? "none"
-                        : "none",
+                    boxShadow: item.is_delivered
+                      ? "0 1px 3px rgba(0, 0, 0, 0.1)"
+                      : hoveredIndex === idx
+                      ? "0px 4px 8px rgba(0, 0, 0, 0.1)"
+                      : newOrderIds.has(item.id)
+                      ? "none"
+                      : "none",
                   }}
                 >
                   <div
-                    className="cardHeader rounded-3 px-3 py-4"
+                    className="cardHeader rounded-3 px-3 py-2"
                     style={{
                       background:
                         item?.status === "DELIVERED"
@@ -407,43 +408,69 @@ export default function ActiveOrders() {
                             "linear-gradient(to left, #2471a5 10%, #80a8ce 90%)",
                     }}
                   >
+                    <div className="headerFooter d-flex align-items-center justify-content-between mb-3">
+                      <div className="d-flex align-items-center gap-3">
+                        <img
+                          src={
+                            item?.request_shop?.shop_image_url
+                              ? item?.request_shop?.shop_image_url
+                              : market
+                          }
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = market;
+                          }}
+                          alt="shop logo"
+                          loading="lazy"
+                          style={{
+                            width: "75px",
+                            height: "75px",
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                      <span className="  rounded-3  fw-bold text-white">
+                        {" "}
+                        #{item.code}
+                      </span>
+                    </div>
                     <div className="items d-flex align-items-center justify-content-between">
-                      <div className="left d-flex align-items-center gap-4">
-                        <div
-                          className="py-1 px-2 rounded-4 bg-opacity-10"
-                          style={{
-                            backgroundColor:
-                              item?.order_type == "DeliveryRequest" ||
-                              item?.order_type == "Delivery Request"
-                                ? "#68859b"
-                                : "#e9d5ff",
-                            fontSize: "0.875rem",
+                      <div
+                        className="py-1 px-2 rounded-4 bg-opacity-10"
+                        style={{
+                          backgroundColor:
+                            item?.order_type == "DeliveryRequest" ||
+                            item?.order_type == "Delivery Request"
+                              ? "#68859b"
+                              : "#e9d5ff",
+                          fontSize: "0.875rem",
 
-                            color:
-                              item?.order_type == "DeliveryRequest" ||
-                              item?.order_type == "Delivery Request"
-                                ? "white"
-                                : "#8140b7",
-                            fontWeight: "semibold",
-                          }}
-                        >
-                          {item?.order_type == "DeliveryRequest" ||
-                          item?.order_type == "Delivery Request"
-                            ? "Delivery Request"
-                            : "Order"}
-                        </div>
-                        <div
-                          className={`py-1 px-lg-2 px-2 rounded-5  ${getStatusClass(
-                            item.status
-                          )}`}
-                          style={{
-                            fontWeight: "semibold",
-                            border: "1px solid #b3b3bf",
-                            fontSize: "0.9.3rem",
-                          }}
-                        >
-                          {statusDisplay[item.status] || item.status}
-                        </div>
+                          color:
+                            item?.order_type == "DeliveryRequest" ||
+                            item?.order_type == "Delivery Request"
+                              ? "white"
+                              : "#8140b7",
+                          fontWeight: "semibold",
+                        }}
+                      >
+                        {item?.order_type == "DeliveryRequest" ||
+                        item?.order_type == "Delivery Request"
+                          ? "Delivery Request"
+                          : "Order"}
+                      </div>
+                      <div
+                        className={`   rounded-5  ${getStatusClass(
+                          item.status
+                        )}`}
+                        style={{
+                          fontWeight: "semibold",
+                          border: "1px solid #b3b3bf",
+                          fontSize: "0.9.3rem",
+                          padding: "0.3rem 0.8rem",
+                        }}
+                      >
+                        {statusDisplay[item.status] || item.status}
                       </div>
                       <div
                         className="right py-1 rounded-3 px-md-4 px-2 fw-bold"
@@ -456,12 +483,6 @@ export default function ActiveOrders() {
                       >
                         {item?.total_price || "N/A"} EGP
                       </div>
-                    </div>
-                    <div className="headerFooter d-flex align-items-center justify-content-end mt-2">
-                      <span className=" py-1 rounded-3 px-4 fw-bold text-white">
-                        {" "}
-                        #{item.code}
-                      </span>
                     </div>
                   </div>
                   <div className="cardBody px-4 py-3">

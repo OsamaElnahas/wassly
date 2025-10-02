@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCheckCircle,
   faDollarSign,
+  faMoneyBills,
+  faMoneyBillTransfer,
+  faMoneyBillTrendUp,
+  faMoneyCheckDollar,
   faSearch,
   faUserCircle,
   faUserPlus,
+  faX,
+  faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import AccessCard from "../AccessCard/AccessCard";
 import { Link, NavLink } from "react-router-dom";
@@ -15,6 +22,7 @@ import Errors from "../Error/Errors";
 import RechargeCoin from "./ChargeCoins";
 import { useSelector } from "react-redux";
 import { selectBaseUrl } from "../../features/api/apiSlice";
+import { formatDate } from "../Orders/Orders";
 
 export default function Tayareen() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -163,9 +171,12 @@ export default function Tayareen() {
           data?.data.map((tayar) => (
             <div className="col-sm-12 col-lg-6" key={tayar.id}>
               <div
-                className="bg-white rounded p-3 shadow-sm border position-relative overflow-hidden"
+                className="bg-white rounded-4 px-3  shadow-sm border position-relative overflow-hidden mb-2 mb-md-0"
                 style={{
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  padding: "50px 0px",
+                  // opacity: tayar.verified ? 1 : 0.5,
+                  // WebkitBackdropFilter: "blur(10px)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-5px)";
@@ -178,40 +189,89 @@ export default function Tayareen() {
                     "0 2px 8px rgba(0, 0, 0, 0.1)";
                 }}
               >
-                <div className="d-flex align-items-center gap-3">
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    color: tayar.verified ? "green" : "red",
+                    backgroundColor: tayar.verified
+                      ? "lightgreen"
+                      : "lightcoral",
+                    padding: "2px 6px",
+                    borderRadius: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.1)",
+                    opacity: 0.7,
+                  }}
+                >
+                  {tayar.verified ? (
+                    <FontAwesomeIcon icon={faCheckCircle} />
+                  ) : (
+                    <FontAwesomeIcon icon={faXmarkCircle} />
+                  )}{" "}
+                  {tayar.verified ? "Verified" : "Not Verified"}
+                </div>
+                <div className="d-flex align-items-start gap-3">
                   <NavLink
                     className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                     style={{
-                      width: "70px",
-                      height: "70px",
                       backgroundColor: "var(--mainColor)",
                     }}
                     to={`/tayareen/tayaarDetails/${tayar.id}`}
                   >
-                    <FontAwesomeIcon
-                      icon={faUserCircle}
-                      className="text-white fs-1 w-100"
-                    />
+                    {tayar.profile_picture ? (
+                      <img
+                        src={tayar.profile_picture}
+                        alt="Tayar"
+                        className="rounded-circle"
+                        loading="lazy"
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          minWidth: "100px",
+                          minHeight: "100px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faUserCircle}
+                        className="text-white fs-1 w-100"
+                        style={{ width: "100px", height: "100px" }}
+                      />
+                    )}
                   </NavLink>
                   <div className="flex-grow-1 overflow-hidden d-flex flex-column gap-2">
                     <div className="fw-bold text-truncate text-dark">
                       {tayar.username}
                     </div>
                     <div className="text-muted small">{tayar.phone_number}</div>
-                    <div className="text-primary small fw-semibold">
-                      {" "}
-                      {tayar.crew_type}
+                    <div className=" small fw-semibold d-flex flex-column flex-md-row align-items-md-center gap-1  justify-content-between">
+                      <span className="text-primary">{tayar.crew_type}</span>
+                      <span>
+                        {" "}
+                        joined at :{" "}
+                        <span className="text-muted">
+                          {formatDate(tayar.date_joined)}
+                        </span>
+                      </span>
                     </div>
-                    <div className="text-muted small">
+                    <div className="text-muted small ">
                       {tayar.is_active ? "Active" : "Inactive"}
                     </div>
                     {/* <div className="d-flex align-items-center gap-3 justify-content-between"> */}
-                    <div className="d-flex justify-content-between align-items-center gap-5 ">
+                    <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 ">
                       <div className="text-muted small">
                         Balance: {tayar.balance} EGP
                       </div>
                       <button
-                        className="btn px-4 py-1 rounded-3 shadow-sm  d-flex align-items-center"
+                        className="btn px-md-4 px-2 py-1 rounded-3 shadow-sm  d-flex align-items-center justify-content-center"
+                        disabled={!tayar.verified}
                         onClick={() => {
                           setSelectedTayar({
                             id: tayar.id,
@@ -225,11 +285,14 @@ export default function Tayareen() {
                           border: "none",
                           transition:
                             "background-color 0.3s ease, transform 0.3s ease",
-                          cursor: "pointer",
+                          cursor: tayar.verified ? "pointer" : "not-allowed",
                           fontSize: "14px",
                         }}
                       >
-                        <FontAwesomeIcon icon={faDollarSign} className="me-2" />
+                        <FontAwesomeIcon
+                          icon={faMoneyBillTrendUp}
+                          className="me-2"
+                        />
                         Charge
                       </button>
                     </div>

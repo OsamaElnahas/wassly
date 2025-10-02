@@ -5,18 +5,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBarsProgress,
   faCalculator,
+  faCalendarAlt,
   faCashRegister,
   faCheckCircle,
   faCircleChevronUp,
   faCircleDollarToSlot,
   faCircleQuestion,
   faDotCircle,
+  faFilter,
   faKeyboard,
   faMoneyBillTransfer,
   faMoneyBillWave,
   faMoneyCheck,
   faMoneyCheckDollar,
   faMotorcycle,
+  faSearch,
   faUserCheck,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -171,22 +174,7 @@ export default function Transactions() {
   }
 
   return (
-    <div className="" style={{ maxWidth: "1550px" }}>
-      {/* <h2 className="mb-4 text-center fw-bold" style={{ color: 'var(--mainColor, #007bff)' }}>
-        Transactions
-      </h2> */}
-      <div className="d-flex justify-content-end align-items-center">
-        <button
-          className="btn  text-capitalize bg-white text-primary border-primary outline-primary d-flex justify-content-center align-items-center gap-2"
-          style={{
-            width: "5rem",
-          }}
-          onClick={handleLogout}
-        >
-          {/* <FontAwesomeIcon icon={faXmark} /> */}
-          Close
-        </button>
-      </div>
+    <div className=" container-fluid px-3 py-3">
       {isError && (
         <Errors message={error.message || "Failed to load transactions"} />
       )}
@@ -194,9 +182,107 @@ export default function Transactions() {
 
       {/* Filter UI */}
       <div className="">
-        <div className="d-flex flex-wrap align-items-center gap-3 col-xl-4 col-lg-5 col-md-8 col-12 my-2">
+        <div className="card mb-1 rounded-4 shadow-md">
+          <div className="card-body p-3">
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <h5 className="mb-0 fw-semibold" style={{ color: "#4a5568" }}>
+                <FontAwesomeIcon
+                  icon={faFilter}
+                  className="me-2 text-primary"
+                />
+                Date Filters
+              </h5>
+              <button
+                className="btn btn-link p-0 text-decoration-none"
+                onClick={() => setOpenFilter(!openFilter)}
+                style={{ color: "#718096" }}
+              >
+                {openFilter ? "Hide" : "Show"} Filters
+                <FontAwesomeIcon
+                  icon={faCalendarAlt}
+                  className={`ms-1 ${openFilter ? "rotate-180" : ""}`}
+                  style={{ transition: "transform 0.3s ease" }}
+                />
+              </button>
+            </div>
+
+            {/* Wrapper for smooth height/opacity transition */}
+            <div
+              className="filter-content"
+              style={{
+                maxHeight: openFilter ? "200px" : "0",
+                overflow: "hidden",
+                opacity: openFilter ? 1 : 0,
+                transition: "max-height 0.3s ease, opacity 0.3s ease",
+              }}
+            >
+              {openFilter && (
+                <form className="row g-3 align-items-end">
+                  <div className="col-md-4">
+                    <label htmlFor="startDate" className="form-label fw-medium">
+                      From
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <FontAwesomeIcon icon={faCalendarAlt} />
+                      </span>
+                      <input
+                        type="datetime-local"
+                        id="startDate"
+                        className="form-control"
+                        value={tempStartDate}
+                        onChange={(e) => setTempStartDate(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-4">
+                    <label htmlFor="endDate" className="form-label fw-medium">
+                      To
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <FontAwesomeIcon icon={faCalendarAlt} />
+                      </span>
+                      <input
+                        type="datetime-local"
+                        id="endDate"
+                        className="form-control"
+                        value={tempEndDate}
+                        onChange={(e) => setTempEndDate(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-4">
+                    <button
+                      type="button"
+                      className="btn btn-primary me-2"
+                      onClick={handleApplyFilters}
+                    >
+                      <FontAwesomeIcon icon={faSearch} className="me-1" />
+                      Apply
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={handleClearFilters}
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+
+            {startDate || endDate ? (
+              <div className="mt-2 text-muted small">
+                Applied: {startDate} to {endDate}
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <div className="d-flex flex-wrap align-items-center gap-3  col-lg-4 col-md-8 col-10  my-2">
           <select
-            className="border-1 rounded-2 px-2 py-1"
+            className=" rounded-2 px-2 py-1 w-50  "
             name="transactionType"
             id="transactionType"
             value={filterTerm}
@@ -213,6 +299,7 @@ export default function Transactions() {
               minHeight: "30px",
               overflowY: "scroll",
               width: "100%",
+              border: "1px solid #ced4da",
             }}
           >
             <option value="All" className="shadow-lg">
@@ -238,7 +325,7 @@ export default function Transactions() {
           <AddNewType onClose={() => setShowAddTypeTransaction(false)} />
         )}
 
-        {!openFilter && (
+        {/* {!openFilter && (
           <button
             className="btn btn-outline-secondary mb-2"
             onClick={() => setOpenFilter(!openFilter)}
@@ -286,7 +373,7 @@ export default function Transactions() {
               Clear Filters
             </button>
           </div>
-        )}
+        )} */}
       </div>
       <div className="d-flex justify-content-between align-items-center my-3">
         <div

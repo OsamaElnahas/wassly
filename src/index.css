@@ -4,8 +4,8 @@
     --secondaryColor: #f1f3f8;
     --thirdColor: #2D64BC;
     --borderColor: rgba(156, 156, 156, 0.39);
-    --backgroundColor: #f0f2f5;
-    --sidebarBg: #080e57;
+    --backgroundColor: #f8f8f8;
+    --sidebarBg: #070d4e;
     --textLight: #ffffff;
     --textGray: #64748b;
     --cardBg: #ffffff;
@@ -15,7 +15,8 @@
 }
 
 * {
-    font-family: 'Open Sans', sans-serif;
+    /* font-family: 'Open Sans', sans-serif; */
+    font-family: "Cairo", "Poppins", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
