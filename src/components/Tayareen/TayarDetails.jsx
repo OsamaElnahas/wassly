@@ -4,7 +4,7 @@ import { data, Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Errors from "../Error/Errors";
 import Loader from "../Loader/Loader";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import img from "../../images/user2.png";
 import img2 from "../../images/user.png";
 import {
@@ -13,11 +13,13 @@ import {
   faMotorcycle,
   faMoneyCheckDollar,
   faDotCircle,
+  faMoneyBillTrendUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RechargeCoin from "./ChargeCoins";
 import { useSelector } from "react-redux";
 import { selectBaseUrl } from "../../features/api/apiSlice";
+import toast from "react-hot-toast";
 
 export default function TayarDetails() {
   const { id } = useParams();
@@ -31,10 +33,12 @@ export default function TayarDetails() {
 
   const [openfilter, setOpenFilter] = useState(false);
   const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [verifyStatus, setVerifyStatus] = useState("null");
 
   const pageSize = 8;
   const baseUrl = useSelector(selectBaseUrl);
 
+  const queryClient = useQueryClient();
   const fetchTransactions = async () => {
     try {
       const type =
@@ -92,6 +96,41 @@ export default function TayarDetails() {
       queryKey: ["transactionTypesList"],
       queryFn: fetchTransactionTypes,
     });
+
+  async function VerifyDriver() {
+    try {
+      const res = await axios.post(
+        `${baseUrl}api/crew/verify/${id}/`,
+        {},
+        {
+          headers: { Authorization: "Token " + localStorage.getItem("token") },
+        }
+      );
+      console.log("Verify Driver Response:", res.data);
+      return res.data;
+    } catch (error) {
+      console.error("Error verifying driver:", error);
+      throw error;
+    }
+  }
+  const mutation = useMutation({
+    mutationFn: VerifyDriver,
+
+    onSuccess: (data) => {
+      console.log("✅ Driver verified:", data);
+      setVerifyStatus("success");
+      queryClient.invalidateQueries({
+        queryKey: ["tayarDetails", id],
+      });
+
+      toast.success("Driver verified successfully");
+    },
+    onError: (error) => {
+      setVerifyStatus("error");
+      console.error("❌ Verification failed:", error);
+      toast.error("Driver verification failed");
+    },
+  });
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString("en-US", {
@@ -183,6 +222,7 @@ export default function TayarDetails() {
       <div className="d-flex flex-column flex-md-row justify-content-end  mb-4">
         <button
           className="btn  rounded-3 shadow-sm mb-2 ml-auto"
+          disabled={!tayarData?.verified}
           onClick={() => {
             setChargePopUp(true);
           }}
@@ -197,7 +237,7 @@ export default function TayarDetails() {
             padding: "4px",
           }}
         >
-          <FontAwesomeIcon icon={faDollarSign} className="me-2" />
+          <FontAwesomeIcon icon={faMoneyBillTrendUp} className="me-2" />
           Charge
         </button>
       </div>
@@ -215,6 +255,18 @@ export default function TayarDetails() {
           numberOfActiveOrders={tayarData?.active_orders}
           email={tayarData?.email}
           number_of_deliveries={tayarData?.number_of_deliveries}
+          date_joined={formatDate(tayarData?.date_joined)}
+          verified={tayarData?.verified}
+          verifyStatus={
+            mutation.isPending
+              ? "loading"
+              : mutation.isSuccess
+              ? "success"
+              : mutation.isError
+              ? "error"
+              : "null"
+          }
+          verifyFn={() => mutation.mutate()}
         />
       </section>
       {/* <section>

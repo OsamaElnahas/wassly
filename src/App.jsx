@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,7 @@ function App() {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
+        <Toaster position="top-right" />
         <ToastContainer
           position="top-right"
           autoClose={3000}

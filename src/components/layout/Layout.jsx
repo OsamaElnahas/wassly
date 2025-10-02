@@ -15,8 +15,11 @@ export default function Layout() {
         className={`${styles.mainContent} ${!isVisible ? styles.expanded : ""}`}
       >
         <Nav isVisible={isVisible} />
+
         <div className={styles.pageContent}>
-          <Outlet />
+          <div className="container px-0" style={{ maxWidth: "1550px" }}>
+            <Outlet />
+          </div>
         </div>
         <Footer />
       </div>

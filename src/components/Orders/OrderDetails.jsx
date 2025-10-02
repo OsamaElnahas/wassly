@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPercent, faStore, faTag } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { selectBaseUrl } from "../../features/api/apiSlice";
+import market from "../../images/3998266.webp";
 
 export function formatDate(dateString) {
   const date = new Date(dateString);
@@ -134,6 +135,7 @@ export default function OrderDetails() {
           }
           ShopOrderdName={data?.request_shop?.shop_name}
           ShopOrderdId={data?.request_shop?.id}
+          shopImage={data?.request_shop?.shop_image_url || market}
           TayarPhone={data?.delivery_crew?.phone_number}
           ReciverPhone={data?.receiver_phone}
           OrderCode={data?.code}

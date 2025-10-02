@@ -8,7 +8,7 @@
 
 .sideBar {
     background-color: var(--sidebarBg);
-    width: 250px;
+    width: 235px;
     height: 100%;
     padding: 1.5rem 1rem;
     transition: var(--transition);
@@ -17,8 +17,9 @@
 }
 
 .nonVisible {
-    transform: translateX(-250px);
+    transform: translateX(-270px);
     box-shadow: none;
+    width: 0px;
 }
 
 .logo {
@@ -58,11 +59,12 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0.85rem;
     color: var(--textLight);
     text-decoration: none;
     border-radius: 8px;
     transition: var(--transition);
+    font-size: 0.89rem;
 }
 
 .item:hover {

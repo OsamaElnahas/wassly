@@ -18,7 +18,10 @@ import Loader from "../Loader/Loader";
 import Errors from "../Error/Errors";
 import { formatDate } from "./Orders";
 import axios from "axios";
+import market from "../../images/3998266.webp";
+
 const statusDisplay = {
+  All: "الكل",
   PENDING: "قيد الانتظار",
   IN_PROGRESS: "قيد التنفيذ",
   DELIVERED: "تم التوصيل",
@@ -114,31 +117,124 @@ export default function ActiveOrders() {
     keepPreviousData: true,
     staleTime: 10 * 60 * 1000,
   });
+  // useEffect(() => {
+  //   const subscription = supabase
+  //     .channel("wassally_wassallyorder_changes")
+  //     .on(
+  //       "postgres_changes",
+  //       {
+  //         event: "UPDATE",
+  //         schema: "public",
+  //         table: "wassally_wassallyorder",
+  //       },
+  //       async (payload) => {
+  //         console.log("UPDATE payload:", payload);
+  //         const updatedOrderPartial = payload.new;
+
+  //         const mergeOrderUpdate = (order) => {
+  //           const queries = queryClient.getQueriesData(["orders"]);
+  //           queries.forEach(([key, old]) => {
+  //             if (!old) return;
+
+  //             let newData = (old.data || []).map((o) =>
+  //               o.id === order.id ? { ...o, ...order } : o
+  //             );
+
+  //             const [_prefix, statusFilter, _page, _pageSize, searchTerm] = key;
+
+  //             const matchesStatus =
+  //               statusFilter === "All" || order.status === statusFilter;
+  //             const matchesSearch =
+  //               !searchTerm ||
+  //               order.receiver_name
+  //                 ?.toLowerCase()
+  //                 .includes(searchTerm.toLowerCase()) ||
+  //               order.receiver_phone
+  //                 ?.toLowerCase()
+  //                 .includes(searchTerm.toLowerCase()) ||
+  //               order.code?.toLowerCase().includes(searchTerm.toLowerCase());
+
+  //             if (!matchesStatus || !matchesSearch) {
+  //               newData = newData.filter((o) => o.id !== order.id);
+  //             }
+
+  //             queryClient.setQueryData(key, {
+  //               ...old,
+  //               data: newData,
+  //               count: newData.length,
+  //             });
+  //           });
+  //         };
+
+  //         // Optimistic update
+  //         mergeOrderUpdate(updatedOrderPartial);
+
+  //         try {
+  //           const updatedOrderFull = await getOrderById(updatedOrderPartial.id);
+  //           mergeOrderUpdate(updatedOrderFull);
+  //         } catch (err) {
+  //           console.error("Failed to fetch full order for update:", err);
+  //         }
+  //       }
+  //     )
+  //     .subscribe();
+
+  //   return () => {
+  //     supabase.removeChannel(subscription);
+  //   };
+  // }, [queryClient, getOrderById]);
   useEffect(() => {
-    const subscription = supabase
+    const channel = supabase
       .channel("wassally_wassallyorder_changes")
       .on(
         "postgres_changes",
         {
-          event: "UPDATE",
+          event: "*", // Listen to all events
           schema: "public",
           table: "wassally_wassallyorder",
         },
         async (payload) => {
-          console.log("UPDATE payload:", payload);
-          const updatedOrderPartial = payload.new;
+          console.log("Change payload:", payload);
+          const orderPartial = payload.new;
+          const eventType = payload.eventType;
 
+          // Play audio for new orders
+          if (eventType === "INSERT") {
+            try {
+              await audioRef.current.play();
+            } catch (err) {
+              console.error("Audio play failed:", err);
+              // Optional: Show a visual notification instead
+            }
+
+            setNewOrderIds((prev) => new Set([...prev, orderPartial.id]));
+            setTimeout(() => {
+              setNewOrderIds((prev) => {
+                const updated = new Set(prev);
+                updated.delete(orderPartial.id);
+                return updated;
+              });
+            }, 40000);
+          }
+
+          // Fetch full order details to ensure complete data
+          let orderFull;
+          try {
+            orderFull = await getOrderById(orderPartial.id);
+          } catch (err) {
+            console.error("Failed to fetch full order:", err);
+            return; // Skip update if fetch fails
+          }
+
+          // Update query cache
           const mergeOrderUpdate = (order) => {
             const queries = queryClient.getQueriesData(["orders"]);
             queries.forEach(([key, old]) => {
-              if (!old) return;
+              if (!old || !old.data) return;
 
-              let newData = (old.data || []).map((o) =>
-                o.id === order.id ? { ...o, ...order } : o
-              );
+              const [_prefix, statusFilter, page, pageSize, searchTerm] = key;
 
-              const [_prefix, statusFilter, _page, _pageSize, searchTerm] = key;
-
+              // Check if order matches status and search filters
               const matchesStatus =
                 statusFilter === "All" || order.status === statusFilter;
               const matchesSearch =
@@ -152,32 +248,48 @@ export default function ActiveOrders() {
                 order.code?.toLowerCase().includes(searchTerm.toLowerCase());
 
               if (!matchesStatus || !matchesSearch) {
-                newData = newData.filter((o) => o.id !== order.id);
+                // Remove order if it doesn't match filters
+                queryClient.setQueryData(key, {
+                  ...old,
+                  data: old.data.filter((o) => o.id !== order.id),
+                  count: old.data.filter((o) => o.id !== order.id).length,
+                });
+                return;
               }
 
-              queryClient.setQueryData(key, {
-                ...old,
-                data: newData,
-                count: newData.length, // ✅ أدق من -1
-              });
+              // Calculate target page for the order
+              const totalOrders = old.count || old.data.length;
+              const targetPage = Math.ceil(totalOrders / pageSize);
+
+              // Only update if the order belongs on the current page
+              if (parseInt(page) === targetPage || eventType === "UPDATE") {
+                let newData = old.data.map((o) =>
+                  o.id === order.id ? { ...o, ...order } : o
+                );
+
+                if (
+                  eventType === "INSERT" &&
+                  !newData.some((o) => o.id === order.id)
+                ) {
+                  newData = [order, ...newData].slice(0, pageSize); // Respect page size
+                }
+
+                queryClient.setQueryData(key, {
+                  ...old,
+                  data: newData,
+                  count: totalOrders + (eventType === "INSERT" ? 1 : 0),
+                });
+              }
             });
           };
 
-          // Optimistic update
-          mergeOrderUpdate(updatedOrderPartial);
-
-          try {
-            const updatedOrderFull = await getOrderById(updatedOrderPartial.id);
-            mergeOrderUpdate(updatedOrderFull);
-          } catch (err) {
-            console.error("Failed to fetch full order for update:", err);
-          }
+          mergeOrderUpdate(orderFull);
         }
       )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(subscription);
+      supabase.removeChannel(channel);
     };
   }, [queryClient, getOrderById]);
 
@@ -204,7 +316,7 @@ export default function ActiveOrders() {
     <>
       <div
         className="px-3 px-sm-2 d-flex flex-column  justify-content-center gap-1 w-100"
-        style={{ maxWidth: "1400px", margin: "0 auto" }}
+        style={{ maxWidth: "1500px", margin: "0 auto" }}
       >
         <style>
           {`
@@ -239,7 +351,7 @@ export default function ActiveOrders() {
           <div className=" col-6 mb-1 mb-lg-0 ">
             <div className="d-flex align-items-center gap-2 flex-wrap w-100  justify-content-end">
               <select
-                className="form-select border-1 rounded-2 px-2 py-1 w-50"
+                className="form-select border-1 rounded-2 px-2 py-2 w-50 "
                 name="status"
                 id="status"
                 value={statusFilter}
@@ -249,7 +361,7 @@ export default function ActiveOrders() {
                 {["All", "PENDING", "IN_PROGRESS", "DELIVERED", "CANCELED"].map(
                   (status) => (
                     <option key={status} value={status}>
-                      {status.toLowerCase().replace("_", " ")}
+                      {statusDisplay[status]}
                     </option>
                   )
                 )}
@@ -258,7 +370,7 @@ export default function ActiveOrders() {
           </div>
         </div>
 
-        <div className="row ">
+        <div className="row gx-3">
           {data?.data?.length > 0 ? (
             data.data.map((item, idx) => (
               <div
@@ -266,12 +378,10 @@ export default function ActiveOrders() {
                 className="col-12 col-lg-6 col-xl-4 d-flex justify-content-center"
               >
                 <NavLink
-                  to={`/orders/orderDetails/${item.id}`}
-                  className={`orderCard mb-5 bg-white  rounded-3  d-block text-decoration-none text-dark w-100  ${
+                  to={`/orders/active/orderDetails/${item.id}`}
+                  className={`orderCard mb-3 bg-white  rounded-3  d-block text-decoration-none text-dark w-100   ${
                     newOrderIds.has(item.id) ? "new-order" : ""
-                  } ${
-                    item.is_delivered ? "bg-success bg-opacity-10 shadow " : ""
-                  }`}
+                  } `}
                   onMouseEnter={() => setHoveredIndex(idx)}
                   onMouseLeave={() => setHoveredIndex(null)}
                   style={{
@@ -279,16 +389,17 @@ export default function ActiveOrders() {
                     fontSize: "0.9rem",
                     transform:
                       hoveredIndex === idx ? "scale(1.04)" : "scale(1)",
-                    boxShadow:
-                      hoveredIndex === idx
-                        ? "0px 4px 8px rgba(0, 0, 0, 0.1)"
-                        : newOrderIds.has(item.id)
-                        ? "none"
-                        : "none",
+                    boxShadow: item.is_delivered
+                      ? "0 1px 3px rgba(0, 0, 0, 0.1)"
+                      : hoveredIndex === idx
+                      ? "0px 4px 8px rgba(0, 0, 0, 0.1)"
+                      : newOrderIds.has(item.id)
+                      ? "none"
+                      : "none",
                   }}
                 >
                   <div
-                    className="cardHeader rounded-3 px-3 py-4"
+                    className="cardHeader rounded-3 px-3 py-2"
                     style={{
                       background:
                         item?.status === "DELIVERED"
@@ -297,44 +408,69 @@ export default function ActiveOrders() {
                             "linear-gradient(to left, #2471a5 10%, #80a8ce 90%)",
                     }}
                   >
+                    <div className="headerFooter d-flex align-items-center justify-content-between mb-3">
+                      <div className="d-flex align-items-center gap-3">
+                        <img
+                          src={
+                            item?.request_shop?.shop_image_url
+                              ? item?.request_shop?.shop_image_url
+                              : market
+                          }
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = market;
+                          }}
+                          alt="shop logo"
+                          loading="lazy"
+                          style={{
+                            width: "75px",
+                            height: "75px",
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                      <span className="  rounded-3  fw-bold text-white">
+                        {" "}
+                        #{item.code}
+                      </span>
+                    </div>
                     <div className="items d-flex align-items-center justify-content-between">
-                      <div className="left d-flex align-items-center gap-4">
-                        <div
-                          className="py-1 px-2 rounded-4 bg-opacity-10"
-                          style={{
-                            backgroundColor:
-                              item?.order_type == "DeliveryRequest" ||
-                              item?.order_type == "Delivery Request" ||
-                              item?.order_type == "DeliveryRequest"
-                                ? "#68859b"
-                                : "#e9d5ff",
-                            fontSize: "0.875rem",
+                      <div
+                        className="py-1 px-2 rounded-4 bg-opacity-10"
+                        style={{
+                          backgroundColor:
+                            item?.order_type == "DeliveryRequest" ||
+                            item?.order_type == "Delivery Request"
+                              ? "#68859b"
+                              : "#e9d5ff",
+                          fontSize: "0.875rem",
 
-                            color:
-                              item?.order_type == "DeliveryRequest" ||
-                              item?.order_type == "Delivery Request"
-                                ? "white"
-                                : "#8140b7",
-                            fontWeight: "semibold",
-                          }}
-                        >
-                          {item?.order_type == "DeliveryRequest" ||
-                          item?.order_type == "Delivery Request"
-                            ? "Delivery Request"
-                            : "Order"}
-                        </div>
-                        <div
-                          className={`py-1 px-lg-2 px-1 rounded-5  ${getStatusClass(
-                            item.status
-                          )}`}
-                          style={{
-                            fontWeight: "semibold",
-                            border: "1px solid #b3b3bf",
-                            fontSize: "0.9.3rem",
-                          }}
-                        >
-                          {statusDisplay[item.status] || item.status}
-                        </div>
+                          color:
+                            item?.order_type == "DeliveryRequest" ||
+                            item?.order_type == "Delivery Request"
+                              ? "white"
+                              : "#8140b7",
+                          fontWeight: "semibold",
+                        }}
+                      >
+                        {item?.order_type == "DeliveryRequest" ||
+                        item?.order_type == "Delivery Request"
+                          ? "Delivery Request"
+                          : "Order"}
+                      </div>
+                      <div
+                        className={`   rounded-5  ${getStatusClass(
+                          item.status
+                        )}`}
+                        style={{
+                          fontWeight: "semibold",
+                          border: "1px solid #b3b3bf",
+                          fontSize: "0.9.3rem",
+                          padding: "0.3rem 0.8rem",
+                        }}
+                      >
+                        {statusDisplay[item.status] || item.status}
                       </div>
                       <div
                         className="right py-1 rounded-3 px-md-4 px-2 fw-bold"
@@ -345,14 +481,8 @@ export default function ActiveOrders() {
                           border: "1px solid #557ac1",
                         }}
                       >
-                        {item?.total_price} EGP
+                        {item?.total_price || "N/A"} EGP
                       </div>
-                    </div>
-                    <div className="headerFooter d-flex align-items-center justify-content-end mt-2">
-                      <span className=" py-1 rounded-3 px-4 fw-bold text-white">
-                        {" "}
-                        #{item.code}
-                      </span>
                     </div>
                   </div>
                   <div className="cardBody px-4 py-3">
@@ -384,7 +514,7 @@ export default function ActiveOrders() {
                             {formatDate(item.created_at)}
                           </div>
                         </div>
-                        {(item.is_picked || item.picked_at != null) && (
+                        {item.is_picked && item.picked_at != null && (
                           <div className="item d-flex align-items-center  justify-content-between">
                             <div
                               className="title d-flex align-items-center gap-2 text-muted"
@@ -516,7 +646,7 @@ export default function ActiveOrders() {
                                 className="mb-1 fw-bold"
                                 style={{ color: "var(--mainColor)" }}
                               >
-                                {item.delivery_crew?.username || "Loading..."}
+                                {item.delivery_crew?.username}
                               </div>
                             </div>
                             <div className="d-flex align-items-center gap-2">
@@ -528,8 +658,7 @@ export default function ActiveOrders() {
                                 className="text-muted"
                                 style={{ color: "var(--mainColor)" }}
                               >
-                                {item.delivery_crew?.phone_number ||
-                                  "Loading..."}
+                                {item.delivery_crew?.phone_number}
                               </span>
                             </div>
                           </div>

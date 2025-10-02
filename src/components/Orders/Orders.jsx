@@ -2,7 +2,13 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faPlus,
+  faPlusCircle,
+  faBan,
+  faCartArrowDown,
+} from "@fortawesome/free-solid-svg-icons";
 import AddOrder from "./AddOrder";
 
 export function formatDate(dateString) {
@@ -32,25 +38,28 @@ export default function Orders() {
   return (
     <>
       <div
-        className="item px-3 py-2 fw-bold pointer rounded-3  align-items-center justify-content-center gap-2 d-md-flex my-3 d-lg-none "
+        className="item px-3 py-2 fw-bold pointer rounded-pill  align-items-center justify-content-center gap-2 d-flex my-3 d-lg-none "
         onClick={() => setAddOrderPopUp(true)}
         style={{
           fontSize: "0.9rem",
-          backgroundColor: "var(--mainColor)",
-          color: "white",
+
           opacity: 0.8,
           cursor: "pointer",
           width: "fit-content",
           marginLeft: "auto",
+          backgroundColor: "white",
+          border: "1px solid var(--mainColor)",
+          boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+          color: "var(--mainColor)",
         }}
       >
-        <FontAwesomeIcon icon={faPlus} />
-        Add Order
+        <FontAwesomeIcon icon={faPlusCircle} className="fs-5" />
+        <span className="">Add Order</span>
       </div>
 
       {/* Tabs + Search */}
       <div
-        className="row rounded-2  gx-3 mb-4"
+        className="row rounded-4  p-0 "
         style={{
           marginBottom: "1rem",
           backgroundColor: "white",
@@ -58,38 +67,78 @@ export default function Orders() {
           boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <div className="row align-items-center bg-light rounded-2 m-0">
+        <div className="row align-items-center bg-white rounded-pill m-0 px-3 pt-2">
           {/* Tabs */}
-          <div className="col-12 col-lg-4 d-flex align-items-center gap-3 ">
+          <div className="col-12 col-lg-5 d-flex align-items-center justify-content-around gap-3 p-0">
+            {" "}
             <NavLink
-              to="active"
-              className="item mb-3 mb-lg-0 p-lg-4 p-2 fw-bold pointer"
+              to="/orders/active"
+              className="item p-2 mb-lg-0 fw-bold pointer d-flex justify-content-center align-items-center gap-2 w-100"
               style={({ isActive }) => ({
                 borderBottom: isActive ? "4px solid var(--mainColor)" : "",
                 color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",
+                transition: "border 0.2s ease",
               })}
             >
-              Active Orders
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "30px",
+                  height: "30px",
+                  backgroundColor: "var(--secondaryColor)",
+                  borderRadius: "50%",
+                  color: "var(--mainColor)",
+                  fontSize: "14px",
+                  padding: "5px 6px",
+                }}
+              >
+                <FontAwesomeIcon icon={faCartArrowDown} className="fs-5" />
+              </span>
+              <span>Active Orders</span>
             </NavLink>
-
             <NavLink
-              to="cancelation"
-              className="item mb-3 mb-lg-0 p-lg-4 p-2 fw-bold pointer"
+              to="/orders/cancelation"
+              className="item p-2 mb-lg-0 fw-bold pointer  d-flex justify-content-center align-items-center gap-2 w-100"
               style={({ isActive }) => ({
                 borderBottom: isActive ? "4px solid var(--mainColor)" : "",
                 color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",
+                transition: "border 0.2s ease",
               })}
             >
-              Cancelation Requests
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "30px",
+                  height: "30px",
+                  backgroundColor: "var(--secondaryColor)",
+                  borderRadius: "50%",
+                  color: "var(--mainColor)",
+                  fontSize: "14px",
+                  padding: "5px 6px",
+                }}
+              >
+                <FontAwesomeIcon icon={faBan} className="fs-5" />
+              </span>
+              <span>Cancelation Requests</span>
             </NavLink>
           </div>
 
           {/* Search + History + Add Order */}
-          <div className="col-12 col-lg-8 d-flex align-items-center justify-content-between gap-3 py-2 py-lg-0">
-            <div className="search-container d-flex align-items-center gap-2 shadow-sm p-1 px-2 rounded-pill bg-white position-relative flex-grow-1">
+          <div className="col-12 col-lg-7 d-flex align-items-center justify-content-between gap-3 py-2 py-lg-0 mb-1">
+            <div
+              className="search-container d-flex align-items-center gap-2  p-1 px-2 rounded-pill bg-white position-relative flex-grow-1"
+              style={{ boxShadow: "0 1px 5px rgba(0, 0, 0, 0.099)" }}
+            >
               <FontAwesomeIcon
                 icon={faSearch}
-                style={{ color: "var(--mainColor)", fontSize: "18px" }}
+                style={{
+                  color: "var(--mainColor)",
+                  fontSize: "18px",
+                }}
               />
               <input
                 className="w-100 border-0 p-1"
@@ -119,7 +168,7 @@ export default function Orders() {
             <div className="d-flex align-items-center gap-2 ">
               {/* <NavLink
                 to="history"
-                className="item p-lg-4 p-2 fw-bold pointer"
+                className="item px-3 fw-bold pointer"
                 style={({ isActive }) => ({
                   borderBottom: isActive ? "4px solid var(--mainColor)" : "",
                   color: isActive ? "var(--mainColor)" : "var(--sidebarBg)",
@@ -133,13 +182,17 @@ export default function Orders() {
                 onClick={() => setAddOrderPopUp(true)}
                 style={{
                   fontSize: "0.9rem",
-                  backgroundColor: "var(--mainColor)",
-                  color: "white",
+                  // backgroundColor: "var(--mainColor)",
+                  backgroundColor: "white",
+                  border: "1px solid var(--mainColor)",
+                  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+
+                  color: "var(--mainColor)",
                   opacity: 0.8,
                   cursor: "pointer",
                 }}
               >
-                <FontAwesomeIcon icon={faPlus} />
+                <FontAwesomeIcon icon={faPlusCircle} className="fs-5" />
                 Add Order
               </div>
             </div>

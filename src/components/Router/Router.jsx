@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useNavigate } from "react-router-dom";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Layout from "../layout/Layout";
 import Home from "../Home/Home";
@@ -18,7 +18,10 @@ import AddOrder from "../Orders/AddOrder";
 import ActiveOrders from "../Orders/ActiveOrders";
 import CancelationOrders from "../Orders/CancelationOrders";
 import OrdersHistory from "../Orders/OrdersHistory";
-
+import RevenuesHandover from "../RevenuesHandover/RevenuesHandover";
+import Revenue from "../RevenuesHandover/Revenue";
+import HandOver from "../RevenuesHandover/handOver";
+import { Navigate } from "react-router-dom";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,16 +40,29 @@ const router = createBrowserRouter([
             path: "/orders",
             element: <Orders />,
             children: [
-              { index: true, element: <ActiveOrders /> },
+              { index: true, element: <Navigate to="active" replace /> },
               { path: "active", element: <ActiveOrders /> },
-              { path: "cancelation", element: <CancelationOrders /> },
+              { path: "/orders/cancelation", element: <CancelationOrders /> },
               { path: "history", element: <OrdersHistory /> },
             ],
           },
-          { path: "/orders/orderDetails/:id", element: <OrderDetails /> },
+          // {
+          //   path: "/RevenuesHandover",
+          //   element: <RevenuesHandover />,
+          //   children: [
+          //     { index: true, element: <Navigate to="handOver" replace /> },
+          //     { path: "handOver", element: <HandOver /> },
+          //     { path: "revenue", element: <Revenue /> },
+          //     // {path:"/RevenuesHandover/history",element:<RevenuesHistory />},
+          //   ],
+          // },
+          {
+            path: "/orders/active/orderDetails/:id",
+            element: <OrderDetails />,
+          },
           { path: "/tayareen", element: <Tayareen /> },
           { path: "/transactions", element: <Transactions /> },
-          { path: "/addTayaar", element: <AddTayar /> },
+          { path: "/tayareen/addTayar", element: <AddTayar /> },
           { path: "/tayareen/tayaarDetails/:id", element: <TayarDetails /> },
           { path: "/orders/AddOrder", element: <AddOrder /> },
           // { path: "/analytics", element: <Analytics /> },
