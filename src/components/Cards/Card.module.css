@@ -117,13 +117,13 @@
     min-width: 30px;
     width: 30px;
     height: 30px;
-    background-color: var(--mainColor);
+    background-color: #e7f3ff;
     border-radius: 50%;
     flex-shrink: 0;
 }
 
 .titleIcon {
-    color: white;
+    color: var(--mainColor);
     width: 100%;
 }
 
@@ -137,18 +137,36 @@
 }
 
 .description {
-    font-size: 0.9rem;
+    color: var(--mainColor);
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     color: var(--textGray);
+    font-size: 0.75rem;
 }
 
-.descIcon {
-    color: var(--textGray);
-    font-size: 1rem;
+.desIconSpan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    min-width: 30px;
+    width: 30px;
+    height: 30px;
+    background-color: #e7f3ff;
+    border-radius: 50%;
     flex-shrink: 0;
 }
 
+.descIcon {
+    color: var(--mainColor);
+    width: 100%;
+    font-size: 0.8rem;
+}
+
 .title .titleText,
-.description span {
+.description {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

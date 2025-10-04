@@ -66,6 +66,8 @@ export default function AddTayar() {
             },
           }
         );
+        console.log(response);
+
         if (response.status === 201) {
           toast.success("Tayaar created successfully!", {
             position: "top-right",
