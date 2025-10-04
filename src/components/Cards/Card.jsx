@@ -39,13 +39,17 @@ export default function Card({ title, image, description, offer, id, status }) {
         <div className={styles.cardBody}>
           <div className={styles.title}>
             <span className={styles.titleIconSpan}>
-
-            <FontAwesomeIcon icon={faStore} className={styles.titleIcon} />
+              <FontAwesomeIcon icon={faStore} className={styles.titleIcon} />
             </span>
             <span className={styles.titleText}>{title}</span>
           </div>
           <div className={styles.description}>
-            <FontAwesomeIcon icon={faInfoCircle} className={styles.descIcon} />
+            <span className={styles.desIconSpan}>
+              <FontAwesomeIcon
+                icon={faInfoCircle}
+                className={styles.descIcon}
+              />
+            </span>
             <span>{description}</span>
           </div>
           {offer && (

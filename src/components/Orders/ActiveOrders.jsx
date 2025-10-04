@@ -496,7 +496,12 @@ export default function ActiveOrders() {
                           Order Timeline
                         </div>
                       </div>
-                      <div className="sectionBody  mt-2 d-flex flex-column gap-2 pb-3 border-bottom border-muted">
+                      <div
+                        className="sectionBody  mt-2 d-flex flex-column gap-2 pb-3 "
+                        style={{
+                          borderBottom: "1px solid var(--borderColor)",
+                        }}
+                      >
                         <div className="item d-flex align-items-center  justify-content-between">
                           <div
                             className="title d-flex align-items-center gap-2 text-muted"
@@ -567,7 +572,12 @@ export default function ActiveOrders() {
                           Reciever Information
                         </div>
                       </div>
-                      <div className="sectionBody  mt-2 d-flex flex-column gap-2 pb-3 border-bottom border-muted">
+                      <div
+                        className="sectionBody  mt-2 d-flex flex-column gap-2 pb-3 "
+                        style={{
+                          borderBottom: "1px solid var(--borderColor)",
+                        }}
+                      >
                         <div className="item d-flex align-items-center  justify-content-between">
                           <div
                             className="title d-flex align-items-center gap-2 text-muted"
@@ -615,10 +625,7 @@ export default function ActiveOrders() {
                             Delivery Crew
                           </div>
                         </div>
-                        <div
-                          className="sectionBody mt-3 d-flex align-items-center mb-3 pb-3"
-                          style={{ borderBottom: "1px solid #eee" }}
-                        >
+                        <div className="sectionBody mt-3 d-flex align-items-center mb-3 pb-3">
                           <div
                             onClick={(e) => {
                               e.stopPropagation();
