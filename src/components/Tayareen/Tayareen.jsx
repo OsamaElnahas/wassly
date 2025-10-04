@@ -107,7 +107,7 @@ export default function Tayareen() {
             }}
           >
             <FontAwesomeIcon icon={faUserPlus} className="fs-5" />
-            <span>Add Tayar</span>
+            <span>Add Driver</span>
           </NavLink>
         </div>
 
@@ -154,7 +154,7 @@ export default function Tayareen() {
         className="my-4"
         style={{ fontWeight: "800", color: "var(--mainColor)" }}
       >
-        Tayareen ({data?.count || 0})
+        Drivers ({data?.count || 0})
       </div>
 
       <div className="row g-2 g-md-3">

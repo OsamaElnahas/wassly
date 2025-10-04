@@ -66,7 +66,7 @@ export default function AddTayar() {
             },
           }
         );
-        if (response.status === 201 ) {
+        if (response.status === 201) {
           toast.success("Tayaar created successfully!", {
             position: "top-right",
             autoClose: 3000,
@@ -97,7 +97,7 @@ export default function AddTayar() {
             color: "var(--mainColor)",
           }}
         >
-          Add Tayar
+          Add Driver
         </h2>
         <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
           <div className="mb-3">
