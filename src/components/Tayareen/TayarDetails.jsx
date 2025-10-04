@@ -244,7 +244,7 @@ export default function TayarDetails() {
 
       <section>
         <CardIdentifier
-          image={tayarData?.profile_picture || img2}
+          image={tayarData?.profile_picture_url || img2}
           title={tayarData?.username || "Tayar Name"}
           phone={tayarData?.phone_number}
           type={tayarData?.crew_type}

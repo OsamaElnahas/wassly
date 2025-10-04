@@ -30,7 +30,7 @@ export default function Tayareen() {
   const [showChargePopUp, setChargePopUp] = useState(false);
   const [selectedTayar, setSelectedTayar] = useState(null);
   const [page, setPage] = useState(1);
-  const pageSize = 8;
+  const pageSize = 12;
   const baseUrl = useSelector(selectBaseUrl);
 
   async function getTayareen() {
@@ -224,9 +224,9 @@ export default function Tayareen() {
                     }}
                     to={`/tayareen/tayaarDetails/${tayar.id}`}
                   >
-                    {tayar.profile_picture ? (
+                    {tayar.profile_picture_url ? (
                       <img
-                        src={tayar.profile_picture}
+                        src={tayar.profile_picture_url}
                         alt="Tayar"
                         className="rounded-circle"
                         loading="lazy"
