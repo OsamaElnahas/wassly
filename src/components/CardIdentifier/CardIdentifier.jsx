@@ -117,8 +117,8 @@ export default function CardIdentifier({
           (e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.05)")
         }
       >
-        <div className="d-flex flex-column align-md-items-center gap-1 justify-content-center p-3 col-12 col-md-auto ">
-          <div>
+        <div className="d-flex flex-column align-items-center gap-1 justify-content-center p-3 col-12 col-md-auto  ">
+          <div className="d-flex flex-column align-items-center  align-items-md-start justify-content-center ">
             <img
               loading="lazy"
               src={imgSrc}
@@ -127,8 +127,8 @@ export default function CardIdentifier({
               onError={() => setImgSrc(imageFallback)}
               className="card-identifier-image rounded-circle border p-1 shadow-sm bg-light"
               style={{
-                width: "130px",
-                height: "130px",
+                width: "145px",
+                height: "145px",
                 objectFit: "cover",
                 transition: "transform 0.3s ease",
                 marginBottom: "16px",
@@ -170,8 +170,8 @@ export default function CardIdentifier({
               </div>
             )}
           </div>
-          <div className="w-100 d-flex flex-column align-items-start gap-2">
-            <div className="fs-md-5  fw-semibold mb-1 p-2 rounded bg-light w-100 text-md-center white-space-nowrap">
+          <div className="w-100 d-flex flex-column align-items-start gap-2 ">
+            <div className="fs-md-5  fw-semibold mb-1 p-2 rounded bg-light w-100 text-center white-space-nowrap">
               <span>{title} </span>
             </div>
             {user && (
@@ -183,39 +183,85 @@ export default function CardIdentifier({
             {ReciverPhone && (
               <div className="mb-1 d-flex align-items-center gap-1">
                 <div className="fw-bold text-primary d-flex align-items-center gap-1">
-                  <div>
+                  <div
+                    className="fw-bold text-primary"
+                    style={{
+                      width: "40px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "40px",
+                      textAlign: "center",
+                      borderRadius: "50%",
+                      backgroundColor: "#e7f3ff",
+                    }}
+                  >
                     <FontAwesomeIcon icon={faPhone} />
                   </div>
-                  <div>Receiver: </div>
+                  <div>Receiver </div>
                 </div>
                 <span className="text-dark">{ReciverPhone}</span>
               </div>
             )}
             {describtion && (
-              <div className="fs-md-5  fw-semibold mb-1  rounded d-flex align-items-center justify-content-md-center gap-2 w-100 text-lg-center white-space-nowrap">
-                <span className="text-muted">{describtion} </span>
-                <span className="text-muted">
+              <div className="   mb-1  rounded d-flex align-items-center justify-content-start gap-2 w-100 text-lg-center white-space-nowrap">
+                <span
+                  className="fw-bold text-primary"
+                  style={{
+                    width: "40px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "40px",
+                    textAlign: "center",
+                    borderRadius: "50%",
+                    backgroundColor: "#e7f3ff",
+                  }}
+                >
                   <FontAwesomeIcon icon={faInfoCircle} />
                 </span>
+                <span className="text-muted">{describtion} </span>
               </div>
             )}
             {phone && (
-              <div className="mb-1">
-                <span className="fw-bold text-primary">
-                  <FontAwesomeIcon icon={faPhone} className="me-1" />
+              <div className="mb-1 d-flex align-items-center gap-2">
+                <span
+                  className="fw-bold text-primary"
+                  style={{
+                    width: "40px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "40px",
+                    textAlign: "center",
+                    borderRadius: "50%",
+                    backgroundColor: "#e7f3ff",
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPhone} className="" />
                 </span>
-                {": "}
-                <span className="text-primary">{phone}</span>
+                <span className="text-muted">{phone}</span>
               </div>
             )}
             {email && (
-              <div className="mb-1">
-                <span className="fw-bold">
+              <div className="mb-1 d-flex align-items-center gap-2">
+                <span
+                  className="fw-bold "
+                  style={{
+                    width: "40px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "40px",
+                    textAlign: "center",
+                    borderRadius: "50%",
+                    backgroundColor: "#e7f3ff",
+                  }}
+                >
                   <FontAwesomeIcon
                     icon={faEnvelope}
-                    className="me-1  text-primary"
-                  />
-                  :{" "}
+                    className="  text-primary"
+                  />{" "}
                 </span>
                 <a
                   href={`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Support%20Request&body=Hello,%0A%0AThanks%20for%20reaching%20out.%0A%0A%0A--%0AFrom%20Wassally%20Team`}

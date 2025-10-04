@@ -159,36 +159,68 @@ export default function CancelationOrders() {
               >
                 {/* Card Header */}
                 <div
-                  className="card-header d-flex align-items-center mb-3 pb-3 gap-3"
+                  className="card-header d-flex mb-3 pb-3 gap-3"
                   style={{ borderBottom: "1px solid #eee" }}
                 >
                   <NavLink
                     to={`/tayareen/tayaarDetails/${order?.requested_by?.id}`}
-                    className="crew-avatar d-flex align-items-center justify-content-center bg-light rounded-circle"
+                    className="crew-avatar d-flex  flex-column justify-content-center gap-2 "
                   >
-                    <FontAwesomeIcon icon={faUser} className="fs-1" />
-                  </NavLink>
-
-                  <div className="crew-info flex-grow-1 d-flex flex-column gap-2">
-                    <div className="d-flex align-items-center justify-content-between">
-                      <div className="d-flex align-items-center gap-2 fw-bold">
+                    <div className="d-flex align-items-center gap-2">
+                      <span
+                        className="fw-bold text-primary"
+                        style={{
+                          width: "40px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          height: "40px",
+                          textAlign: "center",
+                          borderRadius: "50%",
+                          backgroundColor: "#e7f3ff",
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faUser} className="fs-5" />
+                      </span>
+                      <div className="fw-bold text-dark">
+                        {" "}
                         {order?.requested_by?.username}
                       </div>
-                      <span className="badge bg-warning text-dark">
-                        {order?.status}
-                      </span>
                     </div>
                     <div className="d-flex align-items-center gap-1">
-                      <FontAwesomeIcon
-                        icon={faPhone}
-                        className="text-primary fs-5"
-                      />
+                      <span
+                        className="fw-bold text-primary"
+                        style={{
+                          width: "40px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          height: "40px",
+                          textAlign: "center",
+                          borderRadius: "50%",
+                          backgroundColor: "#e7f3ff",
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faPhone}
+                          className="text-primary fs-5"
+                        />
+                      </span>
                       <div
                         className="text-decoration-none"
                         style={{ color: "var(--mainColor)" }}
                       >
                         {order?.requested_by?.phone_number}
                       </div>
+                    </div>
+                  </NavLink>
+
+                  <div className="crew-info flex-grow-1 d-flex flex-column gap-2">
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="d-flex flex-column align-items-center gap-2 fw-bold"></div>
+                      <span className="badge bg-warning text-dark">
+                        {order?.status}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -222,7 +254,7 @@ export default function CancelationOrders() {
                       <small className="text-muted d-block">Order Code</small>
                       <strong>#{order?.order?.code}</strong>
                       <NavLink
-                        to={`/orders/orderDetails/${order?.order?.id}`}
+                        to={`/orders/active/orderDetails/${order?.order?.id}`}
                         className="text-primary bg-white rounded-pill border border-primary text-center d-inline-block px-3 py-1 mt-2  ml-2 pointer"
                       >
                         View Order
